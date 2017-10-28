@@ -1,7 +1,10 @@
-SERSRC = ./ser/main.c
+SERSRC = ./ser/main.c \
+		 ./ser/t_env.c \
+		 ./ser/t_fd.c
+				
 CLISRC = ./cli/main.c
 
-GCC_FLAGS = -Wall -Werror -Wextra -g
+GCC_FLAGS = -Wall -g
 CC = clang $(GCC_FLAGS)
 
 SEROBJ = $(SERSRC:.c=.o)
