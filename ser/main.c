@@ -30,7 +30,7 @@ void	init_fd(t_env *e)
 		if (fd->type != FD_FREE)
 		{
 			FD_SET(s, &e->fd_read);
-			if (fd->type == FD_CLIENT && ft_strlen(fd->buf_write))
+			if (fd->type == FD_CLIENT && ft_strlen(fd->bw))
 			{
 				FD_SET(s, &e->fd_write);
 			}
@@ -84,9 +84,11 @@ int main(int ac, char **argv)
 
 	while (1)
 	{
+		ft_printf("Do start");
 		init_fd(&e);
 		do_select(&e);
 		check_fd(&e);
+		ft_printf("Do finis");
 	}
 	return (0);
 }
@@ -107,7 +109,7 @@ int		srv_accept(t_env *e, int s)
 	}
 	fd_new(&e->fds[sock], e, FD_CLIENT);
 	
-
+	write(sock, "Wololo\n", 8);
 	ft_printf("SRV_ACCEPT");
 
 	return (0);
@@ -120,7 +122,21 @@ int		client_write(t_env *e, int s)
 }
 int		client_read(t_env *e, int s)
 {
-	ft_printf("CLI_READ");
+	t_fd *fd;
+
+	fd = &e->fds[s];
+
+	int n = read(s, &fd->bw[fd->brh], 4096);
+	if (n > 0)
+	{
+		fd->brh += n;
+	}
+	else if (n == 0)
+	{
+		clean_fd(fd);
+		return (0);
+	}
+	ft_printf("CLI_READ:%s", fd->bw);
 	return (0);
 }
 

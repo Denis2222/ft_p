@@ -16,5 +16,23 @@
 
 # include <libft.h>
 
+# include <sys/socket.h>
+# include <sys/types.h>
+# include <arpa/inet.h>
+# include <netdb.h>
+# include <dirent.h>
+# include <strings.h>
 
 
+# define INVALID_SOCKET	-1
+# define SOCKET_ERROR	-1
+
+typedef struct			s_client
+{
+	int					socket;
+	int					connect;
+	fd_set				fd_read;
+	fd_set				fd_writ;
+	struct sockaddr_in	sin;
+	struct hostent		*hostinfo;
+}						t_client;

@@ -15,6 +15,9 @@ LIBFT = $(LIBFTDIR)/libft.a
 
 all: client server
 
+$(LIBFT):
+	make -C $(LIBFTDIR)
+
 client: $(CLIOBJ) $(LIBFT)
 	$(CC) -o client $(CLIOBJ) -lft -L./libft/ -lncurses
 

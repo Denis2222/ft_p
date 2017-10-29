@@ -17,12 +17,12 @@ void	clean_fd(t_fd *fd)
 	fd->type = FD_FREE;
 	fd->fct_write = NULL;
 	fd->fct_read = NULL;
-	if (fd->buf_read)
-		free(fd->buf_read);
-	fd->buf_read = NULL;
-	if (fd->buf_write)
-		free(fd->buf_write);
-	fd->buf_write = NULL;
+	if (fd->br)
+		free(fd->br);
+	fd->br = NULL;
+	if (fd->bw)
+		free(fd->bw);
+	fd->bw = NULL;
 	if (fd->pwd)
 		free(fd->pwd);
 	fd->pwd = NULL;
@@ -45,7 +45,9 @@ void	fd_new(t_fd *fd, t_env *e, int type)
 		fd->fct_read = data_read;
 		fd->fct_write = data_write;
 	}
-	fd->buf_read = ft_strnew(BUF_SIZE);
-	fd->buf_write = ft_strnew(BUF_SIZE);
+	fd->br = ft_strnew(BUF_SIZE);
+	fd->bw = ft_strnew(BUF_SIZE);
+	fd->brh = 0;
+	fd->bwh = 0;
 	fd->pwd = ft_strdup(e->pwd);
 }

@@ -31,8 +31,10 @@ typedef struct		s_fd
 	int				type;
 	int				(*fct_read)();
 	int				(*fct_write)();
-	char			*buf_read;
-	char			*buf_write;
+	char			*br;
+	int				brh;
+	char			*bw;
+	int				bwh;
 	char			*pwd;
 }					t_fd;
 
