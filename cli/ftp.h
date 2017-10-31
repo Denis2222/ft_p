@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 13:46:48 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/10/24 13:49:04 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/10/31 05:12:53 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,17 +22,99 @@
 # include <netdb.h>
 # include <dirent.h>
 # include <strings.h>
-
+# include <ncurses.h>
+# include <limits.h>
 
 # define INVALID_SOCKET	-1
 # define SOCKET_ERROR	-1
+# define MAX(a, b)	((a > b) ? a : b)
+# define PROMPT_SIZE_MAX 100
+# define MAX_MSG 150
+
+typedef struct			s_input_line {
+	char				*ln;
+	int					length;
+	int					capacity;
+	int					cursor;
+	int					last_rendered;
+}						t_inline;
+
+typedef struct			s_windows
+{
+	WINDOW				*msg;
+	int					scroll;
+	WINDOW				*local;
+	int					lscroll;
+	WINDOW				*prompt;
+	WINDOW				*info;
+}						t_windows;
+
+typedef struct			s_msg
+{
+	char				*text;
+	struct s_msg		*next;
+	int					color;
+}						t_msg;
 
 typedef struct			s_client
 {
-	int					socket;
-	int					connect;
+	char				*pwd;
+	
 	fd_set				fd_read;
-	fd_set				fd_writ;
+	fd_set				fd_write;
+
 	struct sockaddr_in	sin;
 	struct hostent		*hostinfo;
+
+	int					run;
+	int					status_pi;
+	int					status_data;
+
+	char				*bw;
+
+	int					socket_pi;
+	int					socket_data;
+
+	char				*prompt;
+	int					ph;
+	int					select;
+
+	t_inline			lnbuffer;
+	//GUI
+	t_msg				*msg;
+	t_msg				*msglocal;
+
+	t_windows			*ws;
+	
 }						t_client;
+
+int		loop(t_client *client);
+void	ncurse_init(void);
+void	ncurse_end(void);
+
+void	view(t_client *c);
+void	client_reset(t_client *client);
+
+void	prompt_read(t_client *c);
+
+//prompt
+void					make_buffer(t_inline *buf);
+void					destroy_buffer(t_inline *buf);
+void					render_line(t_inline *buf, WINDOW *win);
+int						retrieve_content(t_inline *buf, char *target,
+						int max_len);
+void					add_char(t_inline *buf, char ch);
+int						handle_input(t_inline *buf, char *target, int max_len,
+						int key);
+int						get_line_non_blocking(t_client *client, t_inline *buf, char *target,
+						int max_len);
+
+//t_msg
+t_msg					*newmsg(char *text, t_client *client);
+t_msg					*addmsg(t_msg **lstmsg, t_msg *msg);
+int						lenmsg(t_msg *msg);
+void					writemsg(t_client *client, char *cmd);
+void					clearmsg(t_client *client);
+void					showmsghelp(t_client *client);
+void					writemsglocal(t_client *client, char *cmd);
+void					clearmsglocal(t_client *client);

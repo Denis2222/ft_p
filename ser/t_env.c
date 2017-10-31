@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 13:58:26 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/10/24 14:01:29 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/10/30 20:35:52 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	srv_listen(t_env *e, int port)
 	{
 		perror("bind()");
 		ft_printf("Error de bind sur le socket\n");
-		//exit (1);
+		exit (1);
 	}
 	if (listen(sock, 42) == -1)
 	{
@@ -56,7 +56,7 @@ void	srv_listen(t_env *e, int port)
 		exit(1);
 	}
 
-	fd_new(&e->fds[sock], e, FD_SERV);
+	fd_new(&e->fds[sock], e, FD_SERV, sock);
 }
 
 void	env_init(t_env *e)

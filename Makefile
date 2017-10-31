@@ -1,8 +1,18 @@
 SERSRC = ./ser/main.c \
 		 ./ser/t_env.c \
+		 ./ser/input_ls.c \
+		 ./ser/input_cd.c \
+		 ./ser/input.c \
 		 ./ser/t_fd.c
 				
-CLISRC = ./cli/main.c
+CLISRC = ./cli/main.c \
+		 ./cli/loop.c \
+		 ./cli/ncurses.c \
+		 ./cli/prompt.c \
+		 ./cli/prompt2.c \
+		 ./cli/prompt_read.c \
+		 ./cli/t_msg.c \
+		 ./cli/view.c
 
 GCC_FLAGS = -Wall -g
 CC = clang $(GCC_FLAGS)

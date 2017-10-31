@@ -6,12 +6,11 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 13:46:06 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/10/24 13:51:54 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/10/31 05:12:37 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ftp.h"
-
 
 int		checkhost(t_client *client, char *hostname)
 {
@@ -29,10 +28,10 @@ int		checkhost(t_client *client, char *hostname)
 	return (0);
 }
 
-int		checksocket(t_client *client)
+int		get_socket_pi(t_client *client)
 {
-	client->socket = socket(AF_INET, SOCK_STREAM, 0);
-	if (client->socket == INVALID_SOCKET)
+	client->socket_pi = socket(AF_INET, SOCK_STREAM, 0);
+	if (client->socket_pi == INVALID_SOCKET)
 	{
 		ft_printf("socket error \n");
 		return (1);
@@ -40,7 +39,7 @@ int		checksocket(t_client *client)
 	return (0);
 }
 
-int		connectsocket(t_client *client, char *port)
+int		socket_pi(t_client *client, char *port)
 {
 	if (port == NULL || ft_atoi(port) <= 0)
 	{
@@ -51,37 +50,79 @@ int		connectsocket(t_client *client, char *port)
 	client->sin.sin_addr = *(struct in_addr *)client->hostinfo->h_addr;
 	client->sin.sin_port = htons(ft_atoi(port));
 	client->sin.sin_family = AF_INET;
-	if (connect(client->socket, (struct sockaddr *)&client->sin,
+	if (connect(client->socket_pi, (struct sockaddr *)&client->sin,
 		sizeof(struct sockaddr)) == SOCKET_ERROR)
 	{
 		ft_printf("Connection fail : Check host and port !\n");
 		return (1);
 	}
+	client->status_pi = 1;
 	ft_printf("Connection established !");
 	return (0);
 }
 
-int		connect_host(char *host, char *port, t_client *client)
+int		connect_pi(char *host, char *port, t_client *client)
 {
 	if (checkhost(client, host) == 1)
 		return (0);
-	if (checksocket(client) == 1)
+	if (get_socket_pi(client) == 1)
 		return (0);
-	if (connectsocket(client, port) == 1)
+	if (socket_pi(client, port) == 1)
 		return (0);
 	return (1);
+}
+
+void	client_init(t_client *client, int ac, char **argv)
+{
+	(void)ac;
+	client->pwd = ft_strnew(PATH_MAX);
+	getcwd(client->pwd, PATH_MAX);
+	
+	client->status_pi = 0;
+	client->status_data = 0;
+	client->socket_pi = 0;
+	client->socket_data = 0;
+	connect_pi(argv[1], argv[2], client);
+	client->run = 1;
+	client->prompt = ft_strnew(4096);
+	client->ph = 0;
+	client->ws = malloc(sizeof(t_windows));
+	client->ws->scroll = MAX_MSG;
+	client->ws->lscroll = MAX_MSG;
+	client->msg = NULL;
+	client->msglocal = NULL;
+	make_buffer(&client->lnbuffer);
+
+
+	client->bw = ft_strnew(4096);
+}
+
+
+void	client_reset(t_client *client)
+{
+	client->status_pi = 0;
+	client->status_data = 0;
+	client->socket_pi = 0;
+	client->socket_data = 0;
+	client->run = 1;
+	free(client->prompt);
+	client->prompt = ft_strnew(4096);
+	client->ph = 0;
+	view(client);
 }
 
 int main(int ac, char **argv)
 {
 	t_client client;
-	(void)ac;
-	
-	printf("client\n");
+	client_init(&client, ac, argv);
+	ncurse_init();
 
-	connect_host(argv[1], argv[2], &client);
-
-
-	write(client.socket, "TOTO", 5);
+	view(&client);
+	refresh();
+	while (client.run)
+	{
+		loop(&client);
+	}
+	ncurse_end();
 	return (0);
 }
