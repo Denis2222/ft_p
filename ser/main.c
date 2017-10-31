@@ -6,14 +6,13 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 13:46:06 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/10/31 05:06:06 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/10/31 13:01:56 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ftpd.h"
 #include <netinet/in.h>
 #include <arpa/inet.h>
-
 
 void	do_select(t_env *e)
 {
@@ -61,6 +60,42 @@ int		srv_accept(t_env *e, int s)
 	fd_new(&e->fds[sock], e, FD_CLIENT, sock);
 	ft_printf("New client(%d)\n", sock);
 	return (0);
+}
+
+int		srv_data_accept(t_env *e, int s)
+{
+	int					sock;
+	struct sockaddr_in	socksin;
+	socklen_t			socksin_len;
+	t_fd				*fd;
+
+	socksin_len = sizeof(socksin);
+	sock = accept(s, (struct sockaddr *)&socksin, &socksin_len);
+	if (sock == -1)
+	{
+		perror("accept()");
+		ft_printf("accept srv_data going wrong !");
+		close(s);
+		close(sock);
+		clean_fd(&e->fds[s]);
+		return (0);
+	}
+	printf("Two socket: %d %d\n", s, sock);
+	ft_memcpy(&e->fds[sock], &e->fds[s], sizeof(t_fd));
+	close(s);
+	e->fds[s].type = FD_FREE;
+
+	fd = &e->fds[sock];
+	printf("pwd in accept:%s\n", fd->pwd);
+	fd->fd = open(fd->pwd, O_RDONLY);
+	fd->mmap = mmap(0, fd->size, PROT_READ, MAP_SHARED, fd->fd, 0);
+	printf("All Right\n");
+	fd->fct_write = data_write;
+	//ft_printf(fd->mmap);
+	fd->fct_read = data_read;
+
+	fd_send(&e->fds[fd->parent], "Connection OK! Ready for send \n");
+	return (1);
 }
 
 int		client_write(t_env *e, int s)
@@ -116,12 +151,62 @@ int		client_read(t_env *e, int s)
 
 int		data_read(t_env *e, int s)
 {
-	ft_printf("DATA_READ");
+	t_fd	*fd;
+//	int		n;
+	fd = &e->fds[s];
+	ft_printf("data_read()\n");
+
+	
+	
 	return (0);
 }
+
+void	data_write_fail(t_env *e, int s)
+{
+	t_fd	*fd;
+
+	fd = &e->fds[s];
+	ft_printf("data_write_fail()\n");
+	fd->way = 0;
+	close(fd->sock);
+	clean_fd(fd);
+}
+
+void	data_write_end(t_env *e, int s)
+{
+	t_fd	*fd;
+
+	ft_printf("data_write_end()\n");
+	fd = &e->fds[s];
+
+	fd->way = 0;
+	close(fd->sock);
+	clean_fd(fd);
+}
+
 int		data_write(t_env *e, int s)
 {
-	ft_printf("DATA_WRITE");
+	int		n;
+	t_fd	*fd;
+	int		to;
+
+	fd = &e->fds[s];
+	to = fd->size - fd->done;
+	to = MIN(to, BUF_SIZE);
+	//ft_printf("data_write():%d, fd:%d\n",to, s);
+	n = write(s, fd->mmap + fd->done, to);
+	if (n>0)
+	{
+		fd->done += n;
+	}
+	else if (n == 0)
+	{
+		perror("write()");
+		ft_printf("Fini Ou Deco !");
+		data_write_fail(e, s);
+	}
+	if (fd->done == fd->size)
+		data_write_end(e, s);
 	return (0);
 }
 

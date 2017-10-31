@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 13:46:48 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/10/31 05:12:53 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/10/31 10:58:39 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,9 @@
 # define MAX(a, b)	((a > b) ? a : b)
 # define PROMPT_SIZE_MAX 100
 # define MAX_MSG 150
+# define WAYIN 1
+# define WAYOUT 2
+# define BUF_SIZE 1024
 
 typedef struct			s_input_line {
 	char				*ln;
@@ -75,6 +78,12 @@ typedef struct			s_client
 	int					socket_pi;
 	int					socket_data;
 
+	long long int		data_size;
+	long long int		data_do;
+	char				*data_file;
+	int					data_way;
+	int					data_fd;
+
 	char				*prompt;
 	int					ph;
 	int					select;
@@ -96,6 +105,10 @@ void	view(t_client *c);
 void	client_reset(t_client *client);
 
 void	prompt_read(t_client *c);
+
+int		input(t_client *c, int sock, char *cmd);
+int		socket_data(t_client *client, char *port);
+
 
 //prompt
 void					make_buffer(t_inline *buf);

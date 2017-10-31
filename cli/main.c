@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 13:46:06 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/10/31 05:12:37 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/10/31 12:50:02 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,43 @@ int		socket_pi(t_client *client, char *port)
 	return (0);
 }
 
+int		get_socket_data(t_client *client)
+{
+	client->socket_data = socket(AF_INET, SOCK_STREAM, 0);
+	if (client->socket_data == INVALID_SOCKET)
+	{
+		perror("socket()");
+		ft_dprintf(2, "socket error \n");
+		return (1);
+	}
+	return (0);
+}
+
+int		socket_data(t_client *client, char *port)
+{
+	get_socket_data(client);
+	ft_dprintf(2, "Socket data");
+	ft_bzero(&(client->sin), sizeof(struct sockaddr_in));
+	client->sin.sin_addr = *(struct in_addr *)client->hostinfo->h_addr;
+	client->sin.sin_port = htons(ft_atoi(port));
+	client->sin.sin_family = AF_INET;
+	if (connect(client->socket_data, (struct sockaddr *)&client->sin,
+		sizeof(struct sockaddr)) == SOCKET_ERROR)
+	{
+		ft_dprintf(2, "Connection fail : Check host and port !\n");
+		return (1);
+	}
+	client->status_data = 1;
+	client->data_fd = open(client->data_file, O_CREAT | O_RDWR, S_IRUSR | S_IWUSR);
+	if (client->data_fd < 0)
+	{
+		ft_dprintf(2, "Cant open :%s\n", client->data_file);
+		perror("open()");
+	}
+	ft_dprintf(2, "Connection established ! fd:%d   \n", client->data_fd);
+	return (0);
+}
+
 int		connect_pi(char *host, char *port, t_client *client)
 {
 	if (checkhost(client, host) == 1)
@@ -91,6 +128,12 @@ void	client_init(t_client *client, int ac, char **argv)
 	client->ws->lscroll = MAX_MSG;
 	client->msg = NULL;
 	client->msglocal = NULL;
+
+
+	client->data_size = -1;
+	client->data_do = -1;
+	client->data_file = NULL;
+	client->data_way = 0;
 	make_buffer(&client->lnbuffer);
 
 

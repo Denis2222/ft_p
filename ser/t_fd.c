@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 13:58:26 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/10/31 04:59:24 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/10/31 11:44:41 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,12 @@ void	clean_fd(t_fd *fd)
 	fd->brh = 0;
 	fd->bwh = 0;
 	close(fd->sock);
+	
+	fd->data = 0;
+	fd->way = 0;
+	fd->port = 0;
+	fd->size = 0;
+	fd->done = 0;
 }
 
 void	fd_new(t_fd *fd, t_env *e, int type, int sock)
@@ -48,7 +54,7 @@ void	fd_new(t_fd *fd, t_env *e, int type, int sock)
 	}
 	else if (type == FD_DATA)
 	{
-		fd->fct_read = data_read;
+		fd->fct_read = srv_data_accept;
 		fd->fct_write = data_write;
 	}
 	fd->br = ft_strnew(BUF_SIZE);
@@ -57,6 +63,14 @@ void	fd_new(t_fd *fd, t_env *e, int type, int sock)
 	fd->bwh = 0;
 	fd->pwd = ft_strnew(PATH_MAX);
 	fd->pwd = ft_strcat(fd->pwd, e->pwd);
+
+	fd->data = 0;
+	fd->way = 0;
+	fd->port = 0;
+	fd->size = 0;
+	fd->done = 0;
+	fd->fd = 0;
+	fd->mmap = NULL;
 }
 
 void	fd_init(t_env *e)
@@ -76,6 +90,11 @@ void	fd_init(t_env *e)
 			FD_SET(s, &e->fd_read);
 			if (fd->type == FD_CLIENT && ft_strlen(fd->bw))
 			{
+				FD_SET(s, &e->fd_write);
+			}
+			else if (fd->type == FD_DATA && fd->way == WAYOUT)
+			{
+//				ft_dprintf(2, "Send bitch!!!!!\n");
 				FD_SET(s, &e->fd_write);
 			}
 			e->max = MAX(e->max, s);
@@ -113,7 +132,7 @@ void	fd_send(t_fd *fd, char *str)
 	//ft_printf("%ds", ft_strlen(fd->bw));
 	if ((ft_strlen(fd->bw) + ft_strlen(str)) >= BUF_SIZE +1)
 	{
-		ft_printf("Buffer overflow");
+		ft_printf("Buffer overflow\n");
 		return ;
 	}
 	else

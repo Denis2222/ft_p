@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/30 21:43:39 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/10/31 05:46:52 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/10/31 06:30:32 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,11 @@ void	input_process(t_env *e, int sock, char *cmd)
 		ft_tabfree(tab);
 		return ;
 	}
+	if (ft_strncmp(cmd, "get ", 4) == 0)
+	{
+		input_get(e, sock, cmd);
+		return ;
+	}
 	printfw(&e->fds[sock], "Command not found !\n", cmd);
 }
 
@@ -44,8 +49,6 @@ static char		*get_next_cmd(char *buffer)
 	char	*cmd;
 	char	*tmp;
 
-//	ft_printf("%p\n", buffer);
-//	return (NULL);
 	if (!ft_strchr(buffer, '\n'))
 		return (NULL);
 	length = ft_strlen(buffer);
