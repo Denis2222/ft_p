@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 13:46:06 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/10/31 13:01:56 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/10/31 13:44:25 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,6 @@ int		client_read(t_env *e, int s)
 	{
 		fd->brh += n;
 		fd->br[fd->brh] = '\0';
-//		ft_printf("CLI_READ:%s", fd->br);
 		input_pi(e, s);
 	}
 	else if (n == 0)
@@ -152,12 +151,15 @@ int		client_read(t_env *e, int s)
 int		data_read(t_env *e, int s)
 {
 	t_fd	*fd;
-//	int		n;
+	int		n;
+	char	str[BUF_SIZE + 1];
+	
 	fd = &e->fds[s];
-	ft_printf("data_read()\n");
+	
+	
+	n = recv(s, str, BUF_SIZE, 0);
 
-	
-	
+	ft_printf("data_read():%d\n", n);
 	return (0);
 }
 

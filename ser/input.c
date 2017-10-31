@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/30 21:43:39 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/10/31 06:30:32 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/10/31 13:44:19 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void	input_process(t_env *e, int sock, char *cmd)
 {
 	char **tab;
 
-	//printfw(&e->fds[sock], "%s", e->fds[sock].pwd);
 	printfw(&e->fds[sock], "[CMD]>%s\n", cmd);
 	ft_printf("Final Command ! %s !\n", cmd);
 	if (ft_strncmp(cmd, "ls", 2) == 0)
@@ -36,6 +35,11 @@ void	input_process(t_env *e, int sock, char *cmd)
 	if (ft_strncmp(cmd, "get ", 4) == 0)
 	{
 		input_get(e, sock, cmd);
+		return ;
+	}
+	if (ft_strncmp(cmd, "put ", 4) == 0)
+	{
+		input_put(e, sock, cmd);
 		return ;
 	}
 	printfw(&e->fds[sock], "Command not found !\n", cmd);

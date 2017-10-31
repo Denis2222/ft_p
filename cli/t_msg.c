@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/02 18:36:48 by anonymou          #+#    #+#             */
-/*   Updated: 2017/10/31 05:31:49 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/10/31 14:02:24 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ void clearmsg(t_client *client)
 		tmp = client->msg->next;
 		free(client->msg->text);
 		free(client->msg);
-		client->msg = tmp;		
+		client->msg = tmp;
 	}
 }
 
@@ -128,6 +128,7 @@ void	writemsglocal(t_client *client, char *cmd)
 		}
 		i++;
 	}
+	client->ws->lscroll = lenmsg(client->msglocal);
 	ft_tabfree(tab);
 }
 

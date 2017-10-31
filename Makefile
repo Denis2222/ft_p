@@ -3,6 +3,7 @@ SERSRC = ./ser/main.c \
 		 ./ser/input_ls.c \
 		 ./ser/input_cd.c \
 		 ./ser/input_get.c \
+		 ./ser/input_put.c \
 		 ./ser/input.c \
 		 ./ser/t_fd.c
 				
@@ -46,5 +47,6 @@ clean:
 fclean: clean
 	@$(RM) client
 	@$(RM) server
+	make -C $(LIBFTDIR) fclean
 
 re: fclean all

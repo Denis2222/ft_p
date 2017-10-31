@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/30 16:40:15 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/10/31 13:13:13 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/10/31 13:27:53 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	data_read_end(t_client *c, int sock)
 	c->data_size = 0;
 	c->data_fd = 0;
 	c->socket_data = 0;
+	c->status_data = 0;
 }
 
 void	data_read_fail(t_client *c, int sock)
@@ -36,6 +37,7 @@ void	data_read_fail(t_client *c, int sock)
 	c->data_size = 0;
 	c->data_fd = 0;
 	c->socket_data = 0;
+	c->status_data = 0;
 }
 
 void	data_read(t_client *c, int sock)
@@ -43,22 +45,21 @@ void	data_read(t_client *c, int sock)
 	int	n;
 	int	d;
 	char str[BUF_SIZE+1];
+	if (c->status_data)
+	{
 		n = recv(sock, str, BUF_SIZE, 0);
 		ft_dprintf(2, "data_read():%d\n", n);
 		if (n > 0)
 		{
-			if (c->status_data)
+			d = write(c->data_fd, str, n);
+			if (d < 0)
 			{
-				d = write(c->data_fd, str, n);
-				if (d < 0)
-				{
-					ft_dprintf(2, "erreur data_read write\n");
-					data_read_fail(c, sock);
-				}
-				else
-				{
-					c->data_do += n;
-				}
+				ft_dprintf(2, "erreur data_read write\n");
+				data_read_fail(c, sock);
+			}
+			else
+			{
+				c->data_do += n;
 			}
 		}
 		else
@@ -70,6 +71,12 @@ void	data_read(t_client *c, int sock)
 		{
 			data_read_end(c, sock);
 		}
+	}
+	else
+	{
+		n = recv(sock, str, BUF_SIZE, 0);
+		ft_printf("recv():%d  de l'espace\n", n);
+	}
 }
 
 void	socket_read(t_client *c, int sock)

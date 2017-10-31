@@ -3,6 +3,7 @@ SERSRC = ./ser/main.c \
 		 ./ser/input_ls.c \
 		 ./ser/input_cd.c \
 		 ./ser/input_get.c \
+		 ./ser/input_put.c \
 		 ./ser/input.c \
 		 ./ser/t_fd.c
 				

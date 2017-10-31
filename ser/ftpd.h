@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 13:46:48 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/10/31 11:52:38 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/10/31 13:41:14 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ void	input_pi(t_env *e, int sock);
 void	input_ls(t_env *e, int cs);
 void	input_cd(t_env *e, int cs, char *filename);
 void	input_get(t_env *e, int s, char *cmd);
+void	input_put(t_env *e, int s, char *cmd);
 
 void	printfw(t_fd *fd, char *format, void *data);
 void	printfd(t_fd *fd, char *format, long long int data);
