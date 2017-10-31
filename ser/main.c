@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 13:46:06 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/10/31 13:44:25 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/10/31 16:23:00 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,14 +87,20 @@ int		srv_data_accept(t_env *e, int s)
 
 	fd = &e->fds[sock];
 	printf("pwd in accept:%s\n", fd->pwd);
-	fd->fd = open(fd->pwd, O_RDONLY);
-	fd->mmap = mmap(0, fd->size, PROT_READ, MAP_SHARED, fd->fd, 0);
-	printf("All Right\n");
-	fd->fct_write = data_write;
-	//ft_printf(fd->mmap);
-	fd->fct_read = data_read;
-
-	fd_send(&e->fds[fd->parent], "Connection OK! Ready for send \n");
+	fd->fd = open(fd->pwd, O_RDWR | O_CREAT, S_IRGRP | S_IRWXU);
+	if (fd->fd >0)
+	{
+		fd->mmap = mmap(0, fd->size, PROT_READ, MAP_SHARED, fd->fd, 0);
+		printf("All Right\n");
+		fd->fct_write = data_write;
+		//ft_printf(fd->mmap);
+		fd->fct_read = data_read;
+		fd_send(&e->fds[fd->parent], "Connection OK! Ready for send \n");
+	}
+	else
+	{
+		ft_printf("Probleme de fichier open():%d  path:%s\n", fd->fd, e->pwd);
+	}
 	return (1);
 }
 
@@ -152,14 +158,29 @@ int		data_read(t_env *e, int s)
 {
 	t_fd	*fd;
 	int		n;
+	int		i;
 	char	str[BUF_SIZE + 1];
 	
 	fd = &e->fds[s];
 	
 	
 	n = recv(s, str, BUF_SIZE, 0);
-
 	ft_printf("data_read():%d\n", n);
+	if (n > 0)
+	{
+		i = write(fd->fd, str, n);
+		if (i < 0)
+		{
+			perror("write()");
+			clean_fd(fd);
+		}
+		return (1);
+	}
+	else
+	{
+		clean_fd(&e->fds[s]);
+		ft_printf("Erreur de transfert\n");
+	}
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 06:29:52 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/10/31 13:56:57 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/10/31 15:50:03 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ long long int		input_put_size(t_env *e, int s, char *filepath)
 	return (buf.st_size);
 }
 
-void	input_put_launch(t_env *e, int s, char *filepath, char *filename)
+void	input_put_launch(t_env *e, int s, int length, char *filename)
 {
 	int		sd = srv_listen_data(e);
 	t_fd	*fd;
@@ -53,8 +53,8 @@ void	input_put_launch(t_env *e, int s, char *filepath, char *filename)
 
 	ft_printf("input_put_launch()\n");
 	fd = &e->fds[sd];
-	fd->size = input_put_size(e, s, filepath);
-	fd->pwd = ft_strcpy(fd->pwd, filepath);
+	fd->size = length;
+	fd->pwd = ft_strcpy(fd->pwd, filename);
 	fd->way = WAYIN;
 	fd->parent = s;
 	e->fds[s].data = sd;
@@ -65,16 +65,28 @@ void	input_put_launch(t_env *e, int s, char *filepath, char *filename)
 
 void	input_put(t_env *e, int s, char *cmd)
 {
-	char **tab;
-	char *filepath;
+	char	**tab;
+	char	*filepath;
+	char	**tab2;
+
 	tab = ft_strsplit(cmd, ' ');
 	if (ft_tablen(tab) > 1)
 	{
-		if((filepath = input_put_check(e, s, tab[1])))
+		tab2 = ft_strsplit(tab[1], ':');
+		if (ft_tablen(tab2) == 2)
 		{
-			input_put_launch(e, s, filepath, tab[1]);
-			free(filepath);
+			if((filepath = input_put_check(e, s, tab2[0])))
+			{
+				input_put_launch(e, s, ft_atoi(tab2[1]), tab2[0]);
+				free(filepath);
+			}
+			else
+				printfw(&e->fds[s], "====ERROR file exist or not writable", 0);
 		}
+		else
+			printfw(&e->fds[s], "====ERROR command not found", 0);
 	}
+	else
+		printfw(&e->fds[s], "====ERROR incomplete command", 0);
 	ft_tabfree(tab);
 }

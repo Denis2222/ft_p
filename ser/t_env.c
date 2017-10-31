@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 13:58:26 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/10/31 13:43:35 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/10/31 14:30:08 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int		srv_listen_data(t_env *e)
 		sock = socket(PF_INET, SOCK_STREAM, getproto());
 		if (sock <= 0)
 		{
-			ft_printf("erreur socket");
+			ft_printf("erreur socket()\n");
 			exit(1);
 		}
 		sin.sin_family = AF_INET;
@@ -66,7 +66,7 @@ int		srv_listen_data(t_env *e)
 		}
 		bindport = 0;
 	}
-	ft_printf("Port bind & listen on %d", port);
+	ft_printf("Port bind & listen on %d\n", port);
 	fd_new(&e->fds[sock], e, FD_DATA, sock);
 	e->fds[sock].port = port;
 	return (sock);

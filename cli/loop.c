@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/30 16:40:15 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/10/31 13:27:53 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/10/31 16:24:53 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,45 @@ void	data_read_fail(t_client *c, int sock)
 	c->data_fd = 0;
 	c->socket_data = 0;
 	c->status_data = 0;
+}
+
+void	data_write(t_client *c, int sock)
+{
+	int	n;
+	int	d;
+	char str[BUF_SIZE+1];
+	if (c->status_data)
+	{
+		n = read(c->data_fd, str, BUF_SIZE);
+		ft_dprintf(2, "data_write():%d\n", n);
+		if (n > 0)
+		{
+			d = send(sock, str, n, 0);
+			if (d < 0)
+			{
+				ft_dprintf(2, "erreur data_write write\n");
+				data_read_fail(c, sock);
+			}
+			else
+			{
+				c->data_do += n;
+			}
+		}
+		else
+		{
+			data_read_fail(c, sock);
+			ft_dprintf(2, "erreur data_write read\n");
+		}
+		if (c->data_do == c->data_size)
+		{
+			data_read_end(c, sock);
+		}
+	}
+	else
+	{
+		n = recv(sock, str, BUF_SIZE, 0);
+		ft_dprintf(2, "recv():%d  de l'espace\n", n);
+	}
 }
 
 void	data_read(t_client *c, int sock)
@@ -173,8 +212,10 @@ int loop(t_client *client)
 		if (FD_ISSET(client->socket_data, &client->fd_write))
 		{
 			ft_dprintf(2, "socket_data:write\n");
-//			socket_(client, client->socket_data);
+			data_write(client, client->socket_data);
 		}
 	}
+	if (client->select > 0)
+		view(client);
 	return (1);
 }

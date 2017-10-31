@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 13:46:48 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/10/31 10:58:39 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/10/31 15:32:03 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <strings.h>
 # include <ncurses.h>
 # include <limits.h>
+#include <sys/stat.h>
 
 # define INVALID_SOCKET	-1
 # define SOCKET_ERROR	-1

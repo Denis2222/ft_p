@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 06:29:52 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/10/31 11:44:13 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/10/31 16:03:06 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ char	*input_get_check(t_env *e, int s, char *filename)
 {
 	char	*filepath;
 	int		fd;
+	struct stat	buf;
 
 	filepath = ft_strnew(PATH_MAX);
 	ft_strcat(filepath, e->fds[s].pwd);
@@ -27,7 +28,16 @@ char	*input_get_check(t_env *e, int s, char *filename)
 		free(filepath);
 		return (0);
 	}
-	close(fd);
+	fstat(fd, &buf);
+	close(fd);	
+
+
+	if ((buf.st_mode & S_IFMT) != S_IFREG)
+	{
+		fd_send(&e->fds[s], "====ERROR Special File");
+		return (0);
+	}
+	
 	return (filepath);
 }
 
