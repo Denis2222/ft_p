@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 13:46:48 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/10/31 13:41:14 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/01 21:18:45 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include <dirent.h>
 # include <sys/stat.h>
 # include <sys/mman.h>
+# include <netinet/in.h>
+# include <arpa/inet.h>
 # include "libft.h"
 
 # define PATH_MAX 4096
@@ -25,7 +27,7 @@
 # define FD_CLIENT 2
 # define FD_DATA 3
 
-# define BUF_SIZE 4096 * 2
+# define BUF_SIZE 1024 * 16
 
 # define MAX(a, b)	((a > b) ? a : b)
 # define MIN(a, b)	((a < b) ? a : b)
@@ -50,10 +52,11 @@ typedef struct		s_fd
 	int				parent;
 	int				way;
 	int				port;
+	char			*filepath;
 	long long int	size;
 	long long int	done;
 	int				fd;
-	void			*mmap;
+	char			*mmap;
 }					t_fd;
 
 typedef struct		s_env
@@ -68,17 +71,15 @@ typedef struct		s_env
 	char			*pwd;
 }					t_env;
 
+
 void	srv_listen(t_env *e, int port);
 int		srv_listen_data(t_env *e);
-
+int		srv_accept(t_env *e, int s);
+int		srv_data_accept(t_env *e, int s);
 
 void	env_init(t_env *e);
 void	fd_new(t_fd *fd, t_env *e, int type, int sock);
 void	clean_fd(t_fd *fd);
-
-
-int		srv_accept(t_env *e, int s);
-int		srv_data_accept(t_env *e, int s);
 
 int		client_write(t_env *e, int s);
 int		client_read(t_env *e, int s);

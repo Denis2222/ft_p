@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 06:29:52 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/10/31 16:03:06 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/01 20:47:58 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	input_get_launch(t_env *e, int s, char *filepath, char *filename)
 	ft_printf("input_get_launch()\n");
 	fd = &e->fds[sd];
 	fd->size = input_get_size(e, s, filepath);
-	fd->pwd = ft_strcpy(fd->pwd, filepath);
+	fd->filepath = ft_strdup(filepath);
 	fd->way = WAYOUT;
 	fd->parent = s;
 	e->fds[s].data = sd;

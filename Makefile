@@ -5,6 +5,8 @@ SERSRC = ./ser/main.c \
 		 ./ser/input_get.c \
 		 ./ser/input_put.c \
 		 ./ser/input.c \
+		 ./ser/io.c \
+		 ./ser/accept.c \
 		 ./ser/t_fd.c
 				
 CLISRC = ./cli/main.c \
@@ -14,6 +16,7 @@ CLISRC = ./cli/main.c \
 		 ./cli/prompt2.c \
 		 ./cli/prompt_read.c \
 		 ./cli/input.c \
+		 ./cli/io.c \
 		 ./cli/t_msg.c \
 		 ./cli/view.c
 

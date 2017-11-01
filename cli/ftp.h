@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 13:46:48 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/10/31 15:32:03 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/01 17:51:53 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 # define MAX_MSG 150
 # define WAYIN 1
 # define WAYOUT 2
-# define BUF_SIZE 1024
+# define BUF_SIZE 1024 * 16
 
 typedef struct			s_input_line {
 	char				*ln;
@@ -85,10 +85,9 @@ typedef struct			s_client
 	int					data_way;
 	int					data_fd;
 
-	char				*prompt;
-	int					ph;
 	int					select;
 
+	char				*prompt;
 	t_inline			lnbuffer;
 	//GUI
 	t_msg				*msg;
@@ -109,7 +108,6 @@ void	prompt_read(t_client *c);
 
 int		input(t_client *c, int sock, char *cmd);
 int		socket_data(t_client *client, char *port);
-
 
 //prompt
 void					make_buffer(t_inline *buf);
@@ -132,3 +130,10 @@ void					clearmsg(t_client *client);
 void					showmsghelp(t_client *client);
 void					writemsglocal(t_client *client, char *cmd);
 void					clearmsglocal(t_client *client);
+
+//io.c
+void	socket_write(t_client *c, int sock);
+void	socket_read(t_client *c, int sock);
+void	data_read(t_client *c, int sock);
+void	data_write(t_client *c, int sock);
+

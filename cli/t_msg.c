@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/02 18:36:48 by anonymou          #+#    #+#             */
-/*   Updated: 2017/10/31 14:02:24 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/01 17:44:21 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,6 @@ void	writemsglocal(t_client *client, char *cmd)
 		}
 		i++;
 	}
-	client->ws->lscroll = lenmsg(client->msglocal);
 	ft_tabfree(tab);
 }
 

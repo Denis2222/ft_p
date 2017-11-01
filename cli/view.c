@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/30 18:27:36 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/10/31 05:26:33 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/01 17:51:48 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,5 @@ void	view(t_client *c)
 	wrefresh(w->prompt);
 	wrefresh(w->info);
 	wrefresh(w->local);
-//	wrefresh(client->localbox);
 	refresh();
 }

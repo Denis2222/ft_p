@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/30 22:46:00 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/10/31 05:04:25 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/01 21:06:40 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ void input_ls(t_env *e, int cs)
 	int				fd;
 
 	dir = opendir(e->fds[cs].pwd);
+	chdir(e->fds[cs].pwd);
 	if (dir)
 	{
 		while ((dp=readdir(dir)) != NULL) {
-			fstat(fd, &buf);
 			if ( !strcmp(dp->d_name, ".") || !strcmp(dp->d_name, "..") )
 			{
 				// do nothing (straight logic)
@@ -54,5 +54,6 @@ void input_ls(t_env *e, int cs)
 	{
 		//presend(e, cs, "====ERROR invalid pwd\n");
 	}
+	chdir(e->pwd);
 }
 

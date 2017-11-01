@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 13:46:06 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/10/31 13:43:47 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/01 17:49:21 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,6 @@ void	client_init(t_client *client, int ac, char **argv)
 	connect_pi(argv[1], argv[2], client);
 	client->run = 1;
 	client->prompt = ft_strnew(4096);
-	client->ph = 0;
 	client->ws = malloc(sizeof(t_windows));
 	client->ws->scroll = MAX_MSG;
 	client->ws->lscroll = MAX_MSG;
@@ -150,7 +149,6 @@ void	client_reset(t_client *client)
 	client->run = 1;
 	free(client->prompt);
 	client->prompt = ft_strnew(4096);
-	client->ph = 0;
 	view(client);
 }
 

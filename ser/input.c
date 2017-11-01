@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/30 21:43:39 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/10/31 13:44:19 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/01 18:07:11 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	input_process(t_env *e, int sock, char *cmd)
 		input_put(e, sock, cmd);
 		return ;
 	}
-	printfw(&e->fds[sock], "Command not found !\n", cmd);
+	printfw(&e->fds[sock], "====ERROR Command not found !\n", cmd);
 }
 
 static char		*get_next_cmd(char *buffer)
@@ -80,6 +80,3 @@ void	input_pi(t_env *e, int i)
 		free(cmd);
 	}
 }
-
-
-
