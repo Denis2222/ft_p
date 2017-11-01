@@ -6,16 +6,16 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/01 17:36:23 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/01 22:20:13 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/01 23:32:50 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ftp.h"
 
-void	data_read_end(t_client *c, int sock)
+
+void	data_fd_clean(t_client *c, int sock);
 {
 	close(c->data_fd);
-	writemsg(c, "Transfert finish !");
 	free(c->data_file);
 	c->data_file = NULL;
 	c->data_do = 0;
@@ -26,18 +26,29 @@ void	data_read_end(t_client *c, int sock)
 	c->status_data = 0;
 }
 
+
+void	data_read_end(t_client *c, int sock)
+{
+	writemsg(c, "Transfert recv finish !");
+	data_fd_clean(c, sock);
+}
+
 void	data_read_fail(t_client *c, int sock)
 {
-	close(c->data_fd);
-	writemsg(c, "Transfert fail !");
-	free(c->data_file);
-	c->data_file = NULL;
-	c->data_do = 0;
-	c->data_way = 0;
-	c->data_size = 0;
-	c->data_fd = 0;
-	c->socket_data = 0;
-	c->status_data = 0;
+	writemsg(c, "Transfert recv fail !");
+	data_fd_clean(c, sock);
+}
+
+void	data_write_end(t_client *c, int sock)
+{
+	writemsg(c, "Transfert send finish !");
+	data_fd_clean(c, sock);
+}
+
+void	data_write_fail(t_client *c, int sock)
+{
+	writemsg(c, "Transfert send fail !");
+	data_fd_clean(c, sock);
 }
 
 void	data_write(t_client *c, int sock)
@@ -55,7 +66,7 @@ void	data_write(t_client *c, int sock)
 			if (d < 0)
 			{
 				//ft_dprintf(2, "erreur data_write write\n");
-				data_read_fail(c, sock);
+				data_write_fail(c, sock);
 			}
 			else
 			{
@@ -64,12 +75,12 @@ void	data_write(t_client *c, int sock)
 		}
 		else
 		{
-			data_read_fail(c, sock);
+			data_write_fail(c, sock);
 			//ft_dprintf(2, "erreur data_write read\n");
 		}
 		if (c->data_do == c->data_size)
 		{
-			data_read_end(c, sock);
+			data_write_end(c, sock);
 		}
 	}
 	else
