@@ -6,14 +6,14 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/01 17:36:23 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/01 23:32:50 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/02 00:15:16 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ftp.h"
 
 
-void	data_fd_clean(t_client *c, int sock);
+void	data_fd_clean(t_client *c, int sock)
 {
 	close(c->data_fd);
 	free(c->data_file);
