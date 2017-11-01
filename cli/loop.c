@@ -6,13 +6,13 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/30 16:40:15 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/01 17:37:19 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/01 23:20:30 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ftp.h"
 
-int loop(t_client *client)
+int loop(t_client *client, int i)
 {
 	int	fdmax;
 
@@ -30,12 +30,12 @@ int loop(t_client *client)
 	{
 		if (client->data_way == WAYIN)
 		{
-			ft_dprintf(2, "WAYIN\n");
+			//ft_dprintf(2, "WAYIN\n");
 			FD_SET(client->socket_data, &client->fd_read);
 		}
 		if (client->data_way == WAYOUT)
 		{
-			ft_dprintf(2, "WAYOUT\n");
+			//ft_dprintf(2, "WAYOUT\n");
 			FD_SET(client->socket_data, &client->fd_write);
 		}
 	}
@@ -45,12 +45,14 @@ int loop(t_client *client)
 	if (FD_ISSET(STDIN_FILENO, &client->fd_read))
 	{
 		prompt_read(client);
+		view(client);
 	}
 	if (client->status_pi)
 	{
 		if (FD_ISSET(client->socket_pi, &client->fd_read))
 		{
 			socket_read(client, client->socket_pi);
+			view(client);
 		}
 		if (FD_ISSET(client->socket_pi, &client->fd_write))
 		{
@@ -61,16 +63,21 @@ int loop(t_client *client)
 	{
 		if (FD_ISSET(client->socket_data, &client->fd_read))
 		{
-			ft_dprintf(2,"socket_data:read\n");
+			//ft_dprintf(2,"socket_data:read\n");
 			data_read(client, client->socket_data);
 		}
 		if (FD_ISSET(client->socket_data, &client->fd_write))
 		{
-			ft_dprintf(2, "socket_data:write\n");
+			//ft_dprintf(2, "socket_data:write\n");
 			data_write(client, client->socket_data);
 		}
 	}
-//	if (client->select > 0)
-//		view(client);
+	if (client->status_data && i % 10 == 0)
+	{
+		view_info(client);
+		wrefresh(client->ws->info);
+	}
+	else if (!client->status_data)
+		view(client);
 	return (1);
 }

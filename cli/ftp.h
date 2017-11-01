@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 13:46:48 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/01 17:51:53 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/01 23:13:34 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ typedef struct			s_windows
 	int					lscroll;
 	WINDOW				*prompt;
 	WINDOW				*info;
+	int					lastlscroll;
 }						t_windows;
 
 typedef struct			s_msg
@@ -97,11 +98,12 @@ typedef struct			s_client
 	
 }						t_client;
 
-int		loop(t_client *client);
+int		loop(t_client *client, int i);
 void	ncurse_init(void);
 void	ncurse_end(void);
 
 void	view(t_client *c);
+void	view_info(t_client *c);
 void	client_reset(t_client *client);
 
 void	prompt_read(t_client *c);

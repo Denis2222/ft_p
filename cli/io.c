@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/01 17:36:23 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/01 17:37:21 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/01 22:20:13 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,13 @@ void	data_write(t_client *c, int sock)
 	if (c->status_data)
 	{
 		n = read(c->data_fd, str, BUF_SIZE);
-		ft_dprintf(2, "data_write():%d\n", n);
+		//ft_dprintf(2, "data_write():%d\n", n);
 		if (n > 0)
 		{
 			d = send(sock, str, n, 0);
 			if (d < 0)
 			{
-				ft_dprintf(2, "erreur data_write write\n");
+				//ft_dprintf(2, "erreur data_write write\n");
 				data_read_fail(c, sock);
 			}
 			else
@@ -65,7 +65,7 @@ void	data_write(t_client *c, int sock)
 		else
 		{
 			data_read_fail(c, sock);
-			ft_dprintf(2, "erreur data_write read\n");
+			//ft_dprintf(2, "erreur data_write read\n");
 		}
 		if (c->data_do == c->data_size)
 		{
@@ -75,7 +75,7 @@ void	data_write(t_client *c, int sock)
 	else
 	{
 		n = recv(sock, str, BUF_SIZE, 0);
-		ft_dprintf(2, "recv():%d  de l'espace\n", n);
+		//ft_dprintf(2, "recv():%d  de l'espace\n", n);
 	}
 }
 
@@ -87,13 +87,13 @@ void	data_read(t_client *c, int sock)
 	if (c->status_data)
 	{
 		n = recv(sock, str, BUF_SIZE, 0);
-		ft_dprintf(2, "data_read():%d\n", n);
+		//ft_dprintf(2, "data_read():%d\n", n);
 		if (n > 0)
 		{
 			d = write(c->data_fd, str, n);
 			if (d < 0)
 			{
-				ft_dprintf(2, "erreur data_read write\n");
+				//ft_dprintf(2, "erreur data_read write\n");
 				data_read_fail(c, sock);
 			}
 			else
@@ -104,7 +104,7 @@ void	data_read(t_client *c, int sock)
 		else
 		{
 			data_read_fail(c, sock);
-			ft_dprintf(2, "erreur data_read read\n");
+			//ft_dprintf(2, "erreur data_read read\n");
 		}
 		if (c->data_do == c->data_size)
 		{
@@ -114,7 +114,7 @@ void	data_read(t_client *c, int sock)
 	else
 	{
 		n = recv(sock, str, BUF_SIZE, 0);
-		ft_printf("recv():%d  de l'espace\n", n);
+		//ft_printf("recv():%d  de l'espace\n", n);
 	}
 }
 

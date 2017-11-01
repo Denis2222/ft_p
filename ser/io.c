@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/01 18:00:53 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/01 21:42:36 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/01 23:21:40 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int		client_write(t_env *e, int s)
 {
-	ft_printf("CLI_WRITE");
+	//ft_printf("CLI_WRITE");
 	char tmp[BUF_SIZE];
 	int n;
 
@@ -98,12 +98,12 @@ int		data_read(t_env *e, int s)
 	fd = &e->fds[s];
 	
 	n = recv(s, str, BUF_SIZE, 0);
-	ft_printf("data_read():%d\n", n);
+	//ft_printf("data_read():%d\n", n);
 	if (n > 0)
 	{
 		write(fd->fd, str, n);
 		fd->done += n;
-		ft_printf("Write %d octets in file", n);
+		//ft_printf("Write %d octets in file", n);
 	}
 	else if(fd->size != fd->done)
 	{

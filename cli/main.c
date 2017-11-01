@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 13:46:06 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/01 17:49:21 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/01 22:26:45 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,15 +154,22 @@ void	client_reset(t_client *client)
 
 int main(int ac, char **argv)
 {
+	int i;
 	t_client client;
 	client_init(&client, ac, argv);
 	ncurse_init();
 
+
+//	ft_printf("%d    %d", (50 % 100) , (200 % 100 ));
+//	sleep(10);
+
 	view(&client);
 	refresh();
+	i = 0;
 	while (client.run)
 	{
-		loop(&client);
+		loop(&client, i);
+		i++;
 	}
 	ncurse_end();
 	return (0);
