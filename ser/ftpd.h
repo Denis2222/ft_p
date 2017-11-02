@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 13:46:48 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/02 01:37:16 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/02 03:23:33 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ typedef struct		s_fd
 	long long int	size;
 	long long int	done;
 	int				fd;
-	char			*mmap;
+	unsigned long	time;
 }					t_fd;
 
 typedef struct		s_env

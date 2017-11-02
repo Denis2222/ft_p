@@ -6,11 +6,24 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/01 18:00:53 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/02 03:17:16 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/02 03:51:22 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ftpd.h"
+
+void	calcspeed(t_env *e, t_fd *fd)
+{
+	char 			*str;
+	unsigned long	now = time(NULL);
+	unsigned long	octetsbysec;
+
+	now = now - fd->time;
+	octetsbysec = fd->size / now;
+	str = ft_mprintf("Time %d sec \nSpeed : %ldko/s\n%ld o/s\n", now, octetsbysec/1024, octetsbysec);
+	printfw(&e->fds[fd->parent], "%s\n", str);
+	free(str);
+}
 
 int		client_write(t_env *e, int s)
 {
@@ -75,16 +88,18 @@ void	data_read_fail(t_env *e, int s)
 
 	fd = &e->fds[s];
 	ft_printf("data_read_fail()\n");
-	printfw(&e->fds[fd->parent], "====ERROR Upload %s Fail", fd->filepath);
+	printfw(&e->fds[fd->parent], "====ERROR Upload %s Fail\n", fd->filepath);
 	data_fd_clean(fd);
 }
 
 void	data_read_success(t_env *e, int s)
 {
 	t_fd	*fd;
+
 	ft_printf("data_read_success()\n");
 	fd = &e->fds[s];
-	printfw(&e->fds[fd->parent], "====SUCCESS Upload %s Complete", fd->filepath);
+	printfw(&e->fds[fd->parent], "====SUCCESS Upload %s Complete\n", fd->filepath);
+	calcspeed(e, fd);
 	data_fd_clean(fd);
 }
 
@@ -123,7 +138,7 @@ void	data_write_fail(t_env *e, int s)
 
 	fd = &e->fds[s];
 	ft_printf("data_write_fail()\n");
-	printfw(&e->fds[fd->parent], "====ERROR Download %s Fail", fd->filepath);
+	printfw(&e->fds[fd->parent], "====ERROR Download %s Fail\n", fd->filepath);
 	data_fd_clean(fd);
 }
 
@@ -133,7 +148,8 @@ void	data_write_success(t_env *e, int s)
 
 	ft_printf("data_write_end()\n");
 	fd = &e->fds[s];
-	printfw(&e->fds[fd->parent], "====SUCCESS Download %s Complete", fd->filepath);
+	printfw(&e->fds[fd->parent], "====SUCCESS Download %s Complete\n", fd->filepath);
+	calcspeed(e, fd);
 	data_fd_clean(fd);
 }
 
@@ -150,7 +166,7 @@ int		data_write(t_env *e, int s)
 	//ft_printf("data_write():%d, fd:%d\n",to, s);
 	tosend = read(fd->fd, str, tosend);
 	n = send(s, str, tosend, 0);
-	ft_printf("send():%d/%d octets\n", n, tosend);
+//	ft_printf("send():%d/%d octets\n", n, tosend);
 	if (n>0)
 	{
 		fd->done += n;

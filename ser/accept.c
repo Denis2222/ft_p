@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/01 18:04:33 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/02 02:19:40 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/02 03:23:47 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ int		srv_data_accept(t_env *e, int s)
 	{
 		ft_printf("All Right ! open(%d) ok \n", fd->fd);
 		fd->fct_write = data_write;
+		fd->time = time(NULL);
 		fd->fct_read = data_read;
 		fd_send(&e->fds[fd->parent], "STARTDATA\n");
 	}

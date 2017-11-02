@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 13:58:26 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/01 23:22:25 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/02 03:30:23 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,16 +32,12 @@ void	clean_fd(t_fd *fd)
 	fd->bwh = 0;
 	close(fd->sock);
 
-	if (fd->mmap && fd->size)
-	{
-		ft_printf("{red}MMUNMAP{eoc}");
-		munmap(fd->mmap, fd->size);
-	}
 	fd->data = 0;
 	fd->way = 0;
 	fd->port = 0;
 	fd->size = 0;
 	fd->done = 0;
+	fd->time = 0;
 }
 
 void	fd_new(t_fd *fd, t_env *e, int type, int sock)
@@ -75,7 +71,6 @@ void	fd_new(t_fd *fd, t_env *e, int type, int sock)
 	fd->size = 0;
 	fd->done = 0;
 	fd->fd = 0;
-	fd->mmap = NULL;
 }
 
 void	fd_init(t_env *e)
