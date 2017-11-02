@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 02:28:48 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/02 07:54:09 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/02 13:06:53 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,8 @@ int		handle_input(t_inline *buf, char *target, int max_len, int key)
 	return (0);
 }
 
-int		get_line_non_blocking(t_client *client, t_inline *buf, char *target, int max_len)
+int		get_line_non_blocking(t_client *client, t_inline *buf,
+									char *target, int max_len)
 {
 	int key;
 	int n;
@@ -99,7 +100,6 @@ int		get_line_non_blocking(t_client *client, t_inline *buf, char *target, int ma
 	while (1)
 	{
 		key = getch();
-		//ft_dprintf(2, "key:%d", key);
 		if (key == ERR)
 			return (0);
 		if (key == KEY_RESIZE)

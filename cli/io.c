@@ -6,16 +6,17 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/01 17:36:23 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/02 03:13:41 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/02 12:52:50 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ftp.h"
 
-
 void	data_fd_clean(t_client *c, int sock)
 {
+	ft_dprintf(2, "data_fd_clean(%d)", sock);
 	close(c->data_fd);
+	close(c->socket_data);
 	free(c->data_file);
 	c->data_file = NULL;
 	c->data_do = 0;
@@ -25,7 +26,6 @@ void	data_fd_clean(t_client *c, int sock)
 	c->socket_data = 0;
 	c->status_data = 0;
 }
-
 
 void	data_read_end(t_client *c, int sock)
 {
@@ -53,86 +53,64 @@ void	data_write_fail(t_client *c, int sock)
 
 void	data_write(t_client *c, int sock)
 {
-	int	n;
-	int	d;
-	char str[BUF_SIZE+1];
+	int		n;
+	int		d;
+	char	str[BUF_SIZE + 1];
+
 	if (c->status_data)
 	{
 		n = read(c->data_fd, str, BUF_SIZE);
-		//ft_dprintf(2, "data_write():%d\n", n);
 		if (n > 0)
 		{
 			d = send(sock, str, n, 0);
 			if (d < 0)
 			{
-				//ft_dprintf(2, "erreur data_write write\n");
 				data_write_fail(c, sock);
 			}
 			else
-			{
 				c->data_do += n;
-			}
 		}
 		else
-		{
 			data_write_fail(c, sock);
-			//ft_dprintf(2, "erreur data_write read\n");
-		}
 		if (c->data_do == c->data_size)
-		{
 			data_write_end(c, sock);
-		}
 	}
 	else
-	{
 		n = recv(sock, str, BUF_SIZE, 0);
-		//ft_dprintf(2, "recv():%d  de l'espace\n", n);
-	}
 }
 
 void	data_read(t_client *c, int sock)
 {
-	int	n;
-	int	d;
-	char str[BUF_SIZE+1];
+	int		n;
+	int		d;
+	char	str[BUF_SIZE + 1];
+
 	if (c->status_data)
 	{
 		n = recv(sock, str, BUF_SIZE, 0);
-		//ft_dprintf(2, "data_read():%d\n", n);
 		if (n > 0)
 		{
 			d = write(c->data_fd, str, n);
 			if (d < 0)
 			{
-				//ft_dprintf(2, "erreur data_read write\n");
 				data_read_fail(c, sock);
 			}
 			else
-			{
 				c->data_do += n;
-			}
 		}
 		else
-		{
 			data_read_fail(c, sock);
-			//ft_dprintf(2, "erreur data_read read\n");
-		}
 		if (c->data_do == c->data_size)
-		{
 			data_read_end(c, sock);
-		}
 	}
 	else
-	{
 		n = recv(sock, str, BUF_SIZE, 0);
-		//ft_printf("recv():%d  de l'espace\n", n);
-	}
 }
 
 void	socket_read(t_client *c, int sock)
 {
-	int n;
-	char *str;
+	int		n;
+	char	*str;
 
 	str = ft_strnew(BUF_SIZE);
 	n = recv(sock, str, BUF_SIZE, 0);
@@ -165,4 +143,10 @@ void	socket_write(t_client *c, int sock)
 		else
 			writemsg(c, "Not all send ! Look at socket_write !");
 	}
+}
+
+void	socket_send(t_client *c, char *str)
+{
+	ft_strcat(c->bw, str);
+	ft_strcat(c->bw, "\n");
 }

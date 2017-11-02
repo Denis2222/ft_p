@@ -6,25 +6,20 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/30 21:43:39 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/02 08:41:42 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/02 12:48:00 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ftpd.h"
 
-//CMD IN HERE
-void	input_process(t_env *e, int sock, char *cmd)
+void			input_process(t_env *e, int sock, char *cmd)
 {
-	char **tab;
+	char	**tab;
 
 	printfw(&e->fds[sock], "[CMD]>%s\n", cmd);
-	ft_printf("Final Command ! %s !\n", cmd);
 	if (ft_strncmp(cmd, "ls", 2) == 0)
-	{
 		input_ls(e, sock, cmd);
-		return ;
-	}
-	if (ft_strncmp(cmd, "cd", 2) == 0)
+	else if (ft_strncmp(cmd, "cd", 2) == 0)
 	{
 		tab = ft_strsplit(cmd, ' ');
 		if (ft_tablen(tab) > 1)
@@ -32,17 +27,23 @@ void	input_process(t_env *e, int sock, char *cmd)
 		ft_tabfree(tab);
 		return ;
 	}
-	if (ft_strncmp(cmd, "get ", 4) == 0)
-	{
+	else if (ft_strncmp(cmd, "get ", 4) == 0)
 		input_get(e, sock, cmd);
-		return ;
-	}
-	if (ft_strncmp(cmd, "put ", 4) == 0)
-	{
+	else if (ft_strncmp(cmd, "put ", 4) == 0)
 		input_put(e, sock, cmd);
-		return ;
+	else if (ft_strncmp(cmd, "CANCELDATA", 10) == 0)
+	{
+		ft_printf("GET CANCELDATA");
+		int i = 0;
+		while (i < e->maxfd)
+		{
+			if (e->fds[i].parent == sock)
+				data_fd_clean(&e->fds[i]);
+			i++;
+		}
 	}
-	printfw(&e->fds[sock], "====ERROR Command not found !\n", cmd);
+	else
+		printfw(&e->fds[sock], "====ERROR Command not found !\n", cmd);
 }
 
 static char		*get_next_cmd(char *buffer)
@@ -66,7 +67,7 @@ static char		*get_next_cmd(char *buffer)
 	return (cmd);
 }
 
-void	input_pi(t_env *e, int i)
+void			input_pi(t_env *e, int i)
 {
 	char	*cmd;
 

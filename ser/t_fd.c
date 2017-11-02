@@ -6,13 +6,26 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 13:58:26 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/02 07:11:40 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/02 11:19:44 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ftpd.h"
 
-void	clean_fd(t_fd *fd)
+static void	bzero_fd(t_fd *fd)
+{
+	fd->data = 0;
+	fd->way = 0;
+	fd->port = 0;
+	fd->size = 0;
+	fd->done = 0;
+	fd->time = 0;
+	fd->brh = 0;
+	fd->bwh = 0;
+	fd->fd = 0;
+}
+
+void		clean_fd(t_fd *fd)
 {
 	if (fd->sock)
 		ft_printf("clean_fd(%d)\n", fd->sock);
@@ -28,27 +41,16 @@ void	clean_fd(t_fd *fd)
 	if (fd->pwd)
 		free(fd->pwd);
 	fd->pwd = NULL;
-	fd->brh = 0;
-	fd->bwh = 0;
 	close(fd->sock);
-
-	fd->data = 0;
-	fd->way = 0;
-	fd->port = 0;
-	fd->size = 0;
-	fd->done = 0;
-	fd->time = 0;
+	bzero_fd(fd);
 }
 
-void	fd_new(t_fd *fd, t_env *e, int type, int sock)
+void		fd_new(t_fd *fd, t_env *e, int type, int sock)
 {
-	ft_printf("fd_new(%d)\n", sock);
 	fd->sock = sock;
 	fd->type = type;
 	if (type == FD_SERV)
-	{
 		fd->fct_read = srv_accept;
-	}
 	else if (type == FD_CLIENT)
 	{
 		fd->fct_read = client_read;
@@ -61,23 +63,15 @@ void	fd_new(t_fd *fd, t_env *e, int type, int sock)
 	}
 	fd->br = ft_strnew(BUF_SIZE);
 	fd->bw = ft_strnew(BUF_SIZE);
-	fd->brh = 0;
-	fd->bwh = 0;
 	fd->pwd = ft_strnew(PATH_MAX);
 	fd->pwd = ft_strcat(fd->pwd, e->pwd);
-
-	fd->data = 0;
-	fd->way = 0;
-	fd->port = 0;
-	fd->size = 0;
-	fd->done = 0;
-	fd->fd = 0;
+	bzero_fd(fd);
 }
 
-void	fd_init(t_env *e)
+void		fd_init(t_env *e)
 {
-	int	s;
-	t_fd *fd;
+	int		s;
+	t_fd	*fd;
 
 	s = 0;
 	e->max = 0;
@@ -90,21 +84,16 @@ void	fd_init(t_env *e)
 		{
 			FD_SET(s, &e->fd_read);
 			if (fd->type == FD_CLIENT && ft_strlen(fd->bw))
-			{
 				FD_SET(s, &e->fd_write);
-			}
 			else if (fd->type == FD_DATA && fd->way == WAYOUT)
-			{
-//				ft_dprintf(2, "Send bitch!!!!!\n");
 				FD_SET(s, &e->fd_write);
-			}
 			e->max = MAX(e->max, s);
 		}
 		s++;
 	}
 }
 
-void	fd_check(t_env *e)
+void		fd_check(t_env *e)
 {
 	int	s;
 
@@ -125,19 +114,5 @@ void	fd_check(t_env *e)
 			}
 		}
 		s++;
-	}
-}
-
-void	fd_send(t_fd *fd, char *str)
-{
-	//ft_printf("%ds", ft_strlen(fd->bw));
-	if ((ft_strlen(fd->bw) + ft_strlen(str)) >= BUF_SIZE +1)
-	{
-		ft_printf("Buffer overflow\n");
-		return ;
-	}
-	else
-	{
-		ft_strcat(&fd->bw[fd->bwh], str);
 	}
 }

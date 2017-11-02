@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 02:42:15 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/02 07:59:12 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/02 13:15:57 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,15 +31,13 @@ int		check_put_file(t_client *c, char *filename)
 	}
 	fstat(fd, &buf);
 	close(fd);
-
 	if ((buf.st_mode & S_IFMT) != S_IFREG)
 	{
 		writemsg(c, "====ERROR Special File");
 		return (0);
 	}
-	str = ft_mprintf("put %s:%lld", filename, buf.st_size);
+	str = ft_mprintf("put %s:%lld\n", filename, buf.st_size);
 	ft_strcat(c->bw, str);
-	ft_strcat(c->bw, "\n");
 	free(str);
 	return (1);
 }
@@ -61,6 +59,22 @@ int		prompt_read_cmd(t_client *c, char *cmd)
 		ft_tabfree(tab);
 		return (1);
 	}
+	if (ft_strncmp(cmd, "get ", 4) == 0)
+	{
+		tab = ft_strsplit(cmd, ' ');
+		int fd = open(tab[1], O_WRONLY | O_CREAT);
+		if (fd > 0)
+		{
+			ft_dprintf(2, "get a le droit \n");
+			return (0);
+		}
+		else
+		{
+			ft_dprintf(2, "get a pas le droit \n");
+			return (1);
+		}
+		ft_tabfree(tab);
+	}
 	if (ft_strncmp(cmd, "put ", 4) == 0)
 	{
 		str = ft_mprintf("[CMD]>%s", cmd);
@@ -75,13 +89,9 @@ int		prompt_read_cmd(t_client *c, char *cmd)
 		return (1);
 	}
 	if (ft_strncmp(cmd, "lls", 3) == 0)
-	{
 		return (1);
-	}
 	if (ft_strncmp(cmd, "lpwd", 4) == 0)
-	{
 		return (1);
-	}
 	if (ft_strncmp(cmd, "quit", 4) == 0)
 	{
 		c->run = 0;
@@ -96,6 +106,7 @@ int	prompt_read(t_client *c)
 	int		len;
 
 	len = get_line_non_blocking(c, &c->lnbuffer, ln, sizeof(ln));
+	ft_dprintf(2, "WTF %d ", len);
 	if (len > 0 && ft_strlen(ln))
 	{
 		if (!prompt_read_cmd(c, ln))

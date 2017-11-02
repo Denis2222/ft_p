@@ -6,16 +6,16 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 06:29:52 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/02 10:11:15 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/02 11:19:14 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ftpd.h"
 
-char	*input_get_check(t_env *e, int s, char *filename)
+char			*input_get_check(t_env *e, int s, char *filename)
 {
-	char	*filepath;
-	int		fd;
+	char		*filepath;
+	int			fd;
 	struct stat	buf;
 
 	filepath = ft_strnew(PATH_MAX);
@@ -25,24 +25,22 @@ char	*input_get_check(t_env *e, int s, char *filename)
 	fd = open(filepath, O_RDONLY);
 	if (fd <= 0)
 	{
-		printfw(&e->fds[s], "====ERROR %s File not found OR Not readable\n", filename);
+		printfw(&e->fds[s],
+			"====ERROR %s File not found OR Not readable\n", filename);
 		free(filepath);
 		return (0);
 	}
 	fstat(fd, &buf);
-	close(fd);	
-
-
+	close(fd);
 	if ((buf.st_mode & S_IFMT) != S_IFREG)
 	{
 		fd_send(&e->fds[s], "====ERROR Special File");
 		return (0);
 	}
-	
 	return (filepath);
 }
 
-long long int		input_get_size(t_env *e, int s, char *filepath)
+long long int	input_get_size(t_env *e, int s, char *filepath)
 {
 	int			fd;
 	struct stat	buf;
@@ -55,12 +53,14 @@ long long int		input_get_size(t_env *e, int s, char *filepath)
 	return (buf.st_size);
 }
 
-void	input_get_launch(t_env *e, int s, char *filepath, char *filename)
+void			input_get_launch(t_env *e, int s,
+							char *filepath, char *filename)
 {
-	int		sd = srv_listen_data(e);
+	int		sd;
 	t_fd	*fd;
 	char	*str;
 
+	sd = srv_listen_data(e);
 	ft_printf("input_get_launch()\n");
 	fd = &e->fds[sd];
 	fd->size = input_get_size(e, s, filepath);
@@ -68,20 +68,21 @@ void	input_get_launch(t_env *e, int s, char *filepath, char *filename)
 	fd->way = WAYOUT;
 	fd->parent = s;
 	e->fds[s].data = sd;
-	
-	str = ft_mprintf("dataget:%d:%s:%lld:ready\n", fd->port , filename, fd->size);
+	str = ft_mprintf("dataget:%d:%s:%lld:ready\n",
+		fd->port, filename, fd->size);
 	fd_send(&e->fds[s], str);
 	free(str);
 }
 
-void	input_get(t_env *e, int s, char *cmd)
+void			input_get(t_env *e, int s, char *cmd)
 {
-	char **tab;
-	char *filepath;
+	char	**tab;
+	char	*filepath;
+
 	tab = ft_strsplit(cmd, ' ');
 	if (ft_tablen(tab) > 1)
 	{
-		if((filepath = input_get_check(e, s, tab[1])))
+		if ((filepath = input_get_check(e, s, tab[1])))
 		{
 			input_get_launch(e, s, filepath, tab[1]);
 			free(filepath);

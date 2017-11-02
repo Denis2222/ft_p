@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 13:46:48 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/02 07:52:03 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/02 12:34:25 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 # include <strings.h>
 # include <ncurses.h>
 # include <limits.h>
-#include <sys/stat.h>
+# include <sys/stat.h>
 
 # define INVALID_SOCKET	-1
 # define SOCKET_ERROR	-1
@@ -140,4 +140,4 @@ void	data_read(t_client *c, int sock);
 void	data_write(t_client *c, int sock);
 void	data_fd_clean(t_client *c, int sock);
 
-
+void	socket_send(t_client *c, char *str);

@@ -6,25 +6,33 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 13:58:26 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/02 01:44:31 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/02 11:38:19 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ftpd.h"
 
-void	env_init(t_env *e, int ac, char **argv)
+void	env_init_fd(t_env *e)
 {
 	int				i;
+
+	i = 0;
+	while (i < e->maxfd)
+	{
+		clean_fd(&e->fds[i]);
+		i++;
+	}
+}
+
+void	env_init(t_env *e, int ac, char **argv)
+{
 	struct rlimit	rlp;
 
 	getrlimit(RLIMIT_NOFILE, &rlp);
-
 	if (ac > 1 && ft_atoi(argv[1]))
 		e->port = ft_atoi(argv[1]);
 	else
 		e->port = 2000;
-
-	
 	e->maxfd = rlp.rlim_cur;
 	e->fds = (t_fd*)malloc(sizeof(*e->fds) * e->maxfd);
 	if (e->fds == NULL)
@@ -32,10 +40,8 @@ void	env_init(t_env *e, int ac, char **argv)
 		ft_printf("Malloc error");
 		exit(0);
 	}
-
 	e->pwd = ft_strnew(PATH_MAX);
 	getcwd(e->pwd, PATH_MAX);
-
 	if (ac > 2)
 	{
 		if (chdir(argv[2]) == 0)
@@ -43,13 +49,5 @@ void	env_init(t_env *e, int ac, char **argv)
 		else
 			ft_printf("Invalid pwd !\n");
 	}
-
-	
 	ft_printf("PWD : %s\n", e->pwd);
-	i = 0;
-	while (i < e->maxfd)
-	{
-		clean_fd(&e->fds[i]);
-		i++;
-	}
 }

@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 09:05:30 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/02 02:29:40 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/02 10:17:06 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,42 +56,28 @@ int		input_put_connect(t_client *c, int sock, char *cmd)
 	return (0);
 }
 
-
 int		input(t_client *c, int sock, char *cmd)
 {
-	int	i;
-	char **tab;
+	int		i;
+	char	**tab;
 
 	i = 0;
 	tab = ft_strsplit(cmd, '\n');
 	if (ft_tablen(tab) > 0)
-	while (tab[i])
-	{
-		//ft_dprintf(2, "INPUT   %d\n", ft_strncmp(tab[i], "dataget:", 8));
-		if (ft_strncmp(tab[i], "dataget:", 8) == 0)
+		while (tab[i])
 		{
-			ft_dprintf(2, "dataget\n");
-			input_get_connect(c, sock, tab[i]);
+			if (ft_strncmp(tab[i], "dataget:", 8) == 0)
+				input_get_connect(c, sock, tab[i]);
+			else if (ft_strncmp(tab[i], "dataput:", 8) == 0)
+				input_put_connect(c, sock, tab[i]);
+			else if (ft_strncmp(tab[i], "STARTDATA", 9) == 0)
+				c->status_data = 1;
+			else if (ft_strncmp(tab[i], "CANCELDATA", 9) == 0)
+				data_fd_clean(c, sock);
+			else
+				writemsg(c, tab[i]);
+			i++;
 		}
-		else if (ft_strncmp(tab[i], "dataput:", 8) == 0)
-		{
-			ft_dprintf(2, "dataput\n");
-			input_put_connect(c, sock, tab[i]);
-		}
-		else if (ft_strncmp(tab[i], "STARTDATA", 9) == 0)
-		{
-			c->status_data = 1;
-			ft_dprintf(2, "Receive STARTDATA !");
-		}
-		else if (ft_strncmp(tab[i], "CANCELDATA", 9) == 0)
-		{
-			data_fd_clean(c, sock);
-			ft_dprintf(2, "Receive CANCELDATA !");
-		}
-		else
-			writemsg(c, tab[i]);
-		i++;
-	}
 	ft_tabfree(tab);
 	free(cmd);
 	return (0);

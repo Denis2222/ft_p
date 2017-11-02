@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/02 01:28:58 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/02 07:25:59 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/02 12:18:35 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 static int	getproto(void)
 {
-	struct	protoent	*pe;
-	
+	struct protoent	*pe;
+
 	pe = getprotobyname("tcp");
 	if (!pe)
 	{
@@ -25,13 +25,42 @@ static int	getproto(void)
 	return (pe->p_proto);
 }
 
-int		srv_listen_data(t_env *e)
+void		srv_listen_sin(struct sockaddr_in *sin, int port)
 {
-	int		bindport;
-	int		sock;
-	int		port;
+	sin->sin_family = AF_INET;
+	sin->sin_addr.s_addr = INADDR_ANY;
+	sin->sin_port = htons(port);
+}
+
+int			srv_listen_data_bind_listen(
+								struct sockaddr_in *sin, int port, int sock)
+{
+	int	optval;
+
+	optval = 1;
+	srv_listen_sin(sin, port);
+	setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval));
+	ft_printf("New listen socket_data ![%d]\n", sock);
+	if (bind(sock, (struct sockaddr*)sin, sizeof(struct sockaddr_in)) == -1)
+	{
+		perror("bind()");
+		ft_printf("coninue next\n");
+		return (0);
+	}
+	if (listen(sock, 42) == -1)
+	{
+		ft_printf("Error sur listen\n");
+		return (0);
+	}
+	return (1);
+}
+
+int			srv_listen_data(t_env *e)
+{
+	int					bindport;
+	int					sock;
+	int					port;
 	struct sockaddr_in	sin;
-	int optval = 1;
 
 	port = e->port;
 	bindport = 1;
@@ -42,24 +71,10 @@ int		srv_listen_data(t_env *e)
 		if (sock <= 0)
 		{
 			ft_printf("erreur socket()\n");
-			exit(1);
+			return (0);
 		}
-		setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof optval);
-		sin.sin_family = AF_INET;
-		sin.sin_addr.s_addr = INADDR_ANY;
-		sin.sin_port = htons(port);
-		ft_printf("New listen socket_data ![%d]\n", sock);
-		if (bind(sock, (struct sockaddr*)&sin, sizeof(sin)) == -1)
-		{
-			perror("bind()");
-			ft_printf("coninue next\n");
+		if (!srv_listen_data_bind_listen(&sin, port, sock))
 			continue;
-		}
-		if (listen(sock, 42) == -1)
-		{
-			ft_printf("Error sur listen\n");
-			continue;
-		}
 		bindport = 0;
 	}
 	ft_printf("Port bind & listen on %d\n", port);
@@ -68,29 +83,25 @@ int		srv_listen_data(t_env *e)
 	return (sock);
 }
 
-void	srv_listen(t_env *e)
+void		srv_listen(t_env *e)
 {
 	struct sockaddr_in	sin;
 	int					sock;
-	int optval = 1;
+	int					optval;
 
+	optval = 1;
 	sock = socket(PF_INET, SOCK_STREAM, getproto());
 	if (socket <= 0)
 	{
 		ft_printf("Erreur socket %d\n", socket);
 		exit(1);
 	}
-	ft_printf("New listen socket ![%d]\n", sock);
-	//Creation sockaddr_in
-	setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof optval);
-	sin.sin_family = AF_INET;
-	sin.sin_addr.s_addr = INADDR_ANY;
-	sin.sin_port = htons(e->port);
+	setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval));
+	srv_listen_sin(&sin, e->port);
 	if (bind(sock, (struct sockaddr*)&sin, sizeof(sin)) == -1)
 	{
 		perror("bind()");
-		ft_printf("Error de bind sur le socket\n");
-		exit (1);
+		exit(1);
 	}
 	if (listen(sock, 42) == -1)
 	{

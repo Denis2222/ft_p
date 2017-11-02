@@ -6,6 +6,9 @@ SERSRC = ./ser/main.c \
 		 ./ser/input_put.c \
 		 ./ser/input.c \
 		 ./ser/io.c \
+		 ./ser/io_data.c \
+		 ./ser/io_data_read.c \
+		 ./ser/io_data_write.c \
 		 ./ser/accept.c \
 		 ./ser/srv_listen.c \
 		 ./ser/t_fd.c

@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 13:46:48 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/02 08:44:45 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/02 11:19:25 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,8 @@ int		client_read(t_env *e, int s);
 
 int		data_read(t_env *e, int s);
 int		data_write(t_env *e, int s);
+void	calcspeed(t_env *e, t_fd *fd);
+void	data_fd_clean(t_fd *fd);
 
 void	fd_init(t_env *e);
 void	fd_check(t_env *e);

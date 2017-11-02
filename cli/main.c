@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 13:46:06 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/02 07:47:28 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/02 12:33:49 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,6 @@ int		get_socket_data(t_client *client)
 
 int		socket_data(t_client *client, char *port)
 {
-	ft_dprintf(2, "=====socket_data()\n");
-	
 	if (client->data_way == WAYIN)
 		client->data_fd = open(client->data_file, O_CREAT | O_WRONLY, S_IRWXU | S_IRWXG | S_IRWXO);
 	if (client->data_way == WAYOUT)
@@ -84,11 +82,11 @@ int		socket_data(t_client *client, char *port)
 	if (client->data_fd < 0)
 	{
 		ft_dprintf(2, "Cant open :%s\n", client->data_file);
+		socket_send(client, "CANCELDATA");
 		data_fd_clean(client, 0);
 		perror("open()");
 		return (1);
 	}
-	
 	get_socket_data(client);
 	ft_bzero(&(client->sin), sizeof(struct sockaddr_in));
 	client->sin.sin_addr = *(struct in_addr *)client->hostinfo->h_addr;
@@ -97,11 +95,11 @@ int		socket_data(t_client *client, char *port)
 	if (connect(client->socket_data, (struct sockaddr *)&client->sin,
 		sizeof(struct sockaddr)) == SOCKET_ERROR)
 	{
-		ft_dprintf(2, "Connection fail : Check host and port !\n");
+		writemsg(client, "Connection fail : Check host and port !\n");
 		data_fd_clean(client, 0);
 		return (1);
 	}
-	ft_dprintf(2, "Connection established ! fd:%d   \n", client->data_fd);
+	writemsg(client, "Connection established !\n");
 	return (0);
 }
 
@@ -121,7 +119,6 @@ void	client_init(t_client *client, int ac, char **argv)
 	(void)ac;
 	client->pwd = ft_strnew(PATH_MAX);
 	getcwd(client->pwd, PATH_MAX);
-	
 	client->status_pi = 0;
 	client->status_data = 0;
 	client->socket_pi = 0;
@@ -134,18 +131,13 @@ void	client_init(t_client *client, int ac, char **argv)
 	client->ws->lscroll = MAX_MSG;
 	client->msg = NULL;
 	client->msglocal = NULL;
-
-
 	client->data_size = -1;
 	client->data_do = -1;
 	client->data_file = NULL;
 	client->data_way = 0;
 	make_buffer(&client->lnbuffer);
-
-
 	client->bw = ft_strnew(4096);
 }
-
 
 void	client_reset(t_client *client)
 {
@@ -159,23 +151,13 @@ void	client_reset(t_client *client)
 	view(client);
 }
 
-/*void	my_handler(int sig)
+int		main(int ac, char **argv)
 {
-	ft_dprintf(2, "signal %d", sig);
-}*/
+	t_client	client;
+	int			i;
 
-int main(int ac, char **argv)
-{
-	int i;
-	t_client client;
 	client_init(&client, ac, argv);
 	ncurse_init();
-
-
-//	signal( SIGWINCH, my_handler ); 
-//	ft_printf("%d    %d", (50 % 100) , (200 % 100 ));
-//	sleep(10);
-
 	view(&client);
 	refresh();
 	i = 0;
