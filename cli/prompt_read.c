@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 02:42:15 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/01 23:05:46 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/02 02:35:30 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int		check_put_file(t_client *c, char *filename)
 	fd = open(str, O_RDONLY);
 	if (fd <= 0)
 	{
-		writemsg(c, "File not found !");
+		writemsg(c, "====ERROR File not found OR no Read right !");
 		free(str);
 		return (0);
 	}
@@ -47,6 +47,7 @@ int		check_put_file(t_client *c, char *filename)
 int		prompt_read_cmd(t_client *c, char *cmd)
 {
 	char	**tab;
+	char	*str;
 
 	if (ft_strncmp(cmd, "lcd ", 4) == 0)
 	{
@@ -62,6 +63,9 @@ int		prompt_read_cmd(t_client *c, char *cmd)
 	}
 	if (ft_strncmp(cmd, "put ", 4) == 0)
 	{
+		str = ft_mprintf("[CMD]>%s", cmd);
+		writemsg(c, str);
+		free(str);
 		tab = ft_strsplit(cmd, ' ');
 		if (ft_tablen(tab) > 1)
 		{

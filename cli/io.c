@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/01 17:36:23 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/02 00:15:16 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/02 02:29:54 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,8 +134,8 @@ void	socket_read(t_client *c, int sock)
 	int n;
 	char *str;
 
-	str = ft_strnew(4096);
-	n = recv(sock, str, 4096, 0);
+	str = ft_strnew(BUF_SIZE);
+	n = recv(sock, str, BUF_SIZE, 0);
 	if (n == 0)
 	{
 		writemsg(c, "Disconnect from server\n");
@@ -143,7 +143,6 @@ void	socket_read(t_client *c, int sock)
 	}
 	else if (n > 0)
 	{
-		writemsg(c, str);
 		input(c, sock, str);
 		view(c);
 	}

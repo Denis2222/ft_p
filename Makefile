@@ -7,6 +7,7 @@ SERSRC = ./ser/main.c \
 		 ./ser/input.c \
 		 ./ser/io.c \
 		 ./ser/accept.c \
+		 ./ser/srv_listen.c \
 		 ./ser/t_fd.c
 				
 CLISRC = ./cli/main.c \

@@ -1,0 +1,95 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   srv_listen.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/11/02 01:28:58 by dmoureu-          #+#    #+#             */
+/*   Updated: 2017/11/02 01:34:12 by dmoureu-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "ftpd.h"
+
+static int	getproto(void)
+{
+	struct	protoent	*pe;
+	
+	pe = getprotobyname("tcp");
+	if (!pe)
+	{
+		ft_printf("Erreur getprotobyname\n");
+		exit(1);
+	}
+	return (pe->p_proto);
+}
+
+int		srv_listen_data(t_env *e)
+{
+	int		bindport;
+	int		sock;
+	int		port;
+	struct sockaddr_in	sin;
+
+	port = e->port;
+	bindport = 1;
+	while (bindport)
+	{
+		port++;
+		sock = socket(PF_INET, SOCK_STREAM, getproto());
+		if (sock <= 0)
+		{
+			ft_printf("erreur socket()\n");
+			exit(1);
+		}
+		sin.sin_family = AF_INET;
+		sin.sin_addr.s_addr = INADDR_ANY;
+		sin.sin_port = htons(port);
+		if (bind(sock, (struct sockaddr*)&sin, sizeof(sin)) == -1)
+		{
+			perror("bind()");
+			ft_printf("coninue next\n");
+			continue;
+		}
+		if (listen(sock, 42) == -1)
+		{
+			ft_printf("Error sur listen\n");
+			continue;
+		}
+		bindport = 0;
+	}
+	ft_printf("Port bind & listen on %d\n", port);
+	fd_new(&e->fds[sock], e, FD_DATA, sock);
+	e->fds[sock].port = port;
+	return (sock);
+}
+
+void	srv_listen(t_env *e)
+{
+	struct sockaddr_in	sin;
+	int					sock;
+
+	sock = socket(PF_INET, SOCK_STREAM, getproto());
+	if (socket <= 0)
+	{
+		ft_printf("Erreur socket %d\n", socket);
+		exit(1);
+	}
+	//Creation sockaddr_in
+	sin.sin_family = AF_INET;
+	sin.sin_addr.s_addr = INADDR_ANY;
+	sin.sin_port = htons(e->port);
+	if (bind(sock, (struct sockaddr*)&sin, sizeof(sin)) == -1)
+	{
+		perror("bind()");
+		ft_printf("Error de bind sur le socket\n");
+		exit (1);
+	}
+	if (listen(sock, 42) == -1)
+	{
+		ft_printf("Error sur listen\n");
+		exit(1);
+	}
+	fd_new(&e->fds[sock], e, FD_SERV, sock);
+}

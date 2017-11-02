@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/01 18:04:33 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/02 00:57:36 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/02 02:19:40 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,11 +67,13 @@ int		srv_data_accept(t_env *e, int s)
 		ft_printf("All Right ! open(%d) ok \n", fd->fd);
 		fd->fct_write = data_write;
 		fd->fct_read = data_read;
-		fd_send(&e->fds[fd->parent], "Connection OK! Ready for send \n");
+		fd_send(&e->fds[fd->parent], "STARTDATA\n");
 	}
 	else
 	{
 		perror("open()");
+		fd_send(&e->fds[fd->parent], "CANCELDATA\n");
+		fd_send(&e->fds[fd->parent], "====ERROR Permission denied\n");
 		ft_printf("Probleme de fichier open():%d  path:%s\n", fd->fd, fd->filepath);
 	}
 	return (1);

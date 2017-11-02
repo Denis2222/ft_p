@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 09:05:30 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/02 00:38:49 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/02 02:29:40 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,12 +73,26 @@ int		input(t_client *c, int sock, char *cmd)
 			ft_dprintf(2, "dataget\n");
 			input_get_connect(c, sock, tab[i]);
 		}
-		if (ft_strncmp(tab[i], "dataput:", 8) == 0)
+		else if (ft_strncmp(tab[i], "dataput:", 8) == 0)
 		{
 			ft_dprintf(2, "dataput\n");
 			input_put_connect(c, sock, tab[i]);
 		}
+		else if (ft_strncmp(tab[i], "STARTDATA", 9) == 0)
+		{
+			c->status_data = 1;
+			ft_dprintf(2, "Receive STARTDATA !");
+		}
+		else if (ft_strncmp(tab[i], "CANCELDATA", 9) == 0)
+		{
+			data_fd_clean(c, sock);
+			ft_dprintf(2, "Receive CANCELDATA !");
+		}
+		else
+			writemsg(c, tab[i]);
 		i++;
 	}
+	ft_tabfree(tab);
+	free(cmd);
 	return (0);
 }

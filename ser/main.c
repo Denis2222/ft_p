@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 13:46:06 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/01 20:20:39 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/02 01:40:34 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,11 @@ void	do_select(t_env *e)
 
 int main(int ac, char **argv)
 {
-	(void)ac;
-	(void)argv;
-	
 	t_env e;
 
-	env_init(&e);
-	srv_listen(&e, ft_atoi(argv[1]));
-
-	ft_printf("FT_PD ready on port [%d]:\n", e.port);
-
+	env_init(&e, ac, argv);
+	srv_listen(&e);
+	ft_printf("{green}Server FT_P ready on port [{red}%d{green}]{eoc}\n", e.port);
 	while (1)
 	{
 		fd_init(&e);
