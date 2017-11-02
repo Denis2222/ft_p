@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/30 21:43:39 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/01 18:07:11 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/02 08:41:42 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	input_process(t_env *e, int sock, char *cmd)
 	ft_printf("Final Command ! %s !\n", cmd);
 	if (ft_strncmp(cmd, "ls", 2) == 0)
 	{
-		input_ls(e, sock);
+		input_ls(e, sock, cmd);
 		return ;
 	}
 	if (ft_strncmp(cmd, "cd", 2) == 0)
