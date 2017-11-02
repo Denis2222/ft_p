@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/02 01:28:58 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/02 01:34:12 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/02 07:25:59 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int		srv_listen_data(t_env *e)
 	int		sock;
 	int		port;
 	struct sockaddr_in	sin;
+	int optval = 1;
 
 	port = e->port;
 	bindport = 1;
@@ -43,9 +44,11 @@ int		srv_listen_data(t_env *e)
 			ft_printf("erreur socket()\n");
 			exit(1);
 		}
+		setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof optval);
 		sin.sin_family = AF_INET;
 		sin.sin_addr.s_addr = INADDR_ANY;
 		sin.sin_port = htons(port);
+		ft_printf("New listen socket_data ![%d]\n", sock);
 		if (bind(sock, (struct sockaddr*)&sin, sizeof(sin)) == -1)
 		{
 			perror("bind()");
@@ -69,6 +72,7 @@ void	srv_listen(t_env *e)
 {
 	struct sockaddr_in	sin;
 	int					sock;
+	int optval = 1;
 
 	sock = socket(PF_INET, SOCK_STREAM, getproto());
 	if (socket <= 0)
@@ -76,7 +80,9 @@ void	srv_listen(t_env *e)
 		ft_printf("Erreur socket %d\n", socket);
 		exit(1);
 	}
+	ft_printf("New listen socket ![%d]\n", sock);
 	//Creation sockaddr_in
+	setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof optval);
 	sin.sin_family = AF_INET;
 	sin.sin_addr.s_addr = INADDR_ANY;
 	sin.sin_port = htons(e->port);

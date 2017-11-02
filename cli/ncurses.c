@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/30 18:10:24 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/10/30 18:13:19 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/02 07:30:49 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	ncurse_init(void)
 	cbreak();
 	nonl();
 	timeout(0);
-	keypad(stdscr, 1);
+	keypad(stdscr, TRUE);
 	noecho();
 	curs_set(0);
 	intrflush(stdscr, 0);

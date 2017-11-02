@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 13:46:06 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/02 06:18:17 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/02 07:47:28 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,6 +159,11 @@ void	client_reset(t_client *client)
 	view(client);
 }
 
+/*void	my_handler(int sig)
+{
+	ft_dprintf(2, "signal %d", sig);
+}*/
+
 int main(int ac, char **argv)
 {
 	int i;
@@ -167,6 +172,7 @@ int main(int ac, char **argv)
 	ncurse_init();
 
 
+//	signal( SIGWINCH, my_handler ); 
 //	ft_printf("%d    %d", (50 % 100) , (200 % 100 ));
 //	sleep(10);
 

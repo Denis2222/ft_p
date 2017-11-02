@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 13:58:26 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/02 03:30:23 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/02 07:11:40 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void	clean_fd(t_fd *fd)
 
 void	fd_new(t_fd *fd, t_env *e, int type, int sock)
 {
+	ft_printf("fd_new(%d)\n", sock);
 	fd->sock = sock;
 	fd->type = type;
 	if (type == FD_SERV)

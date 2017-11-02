@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 13:46:48 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/02 00:44:53 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/02 07:52:03 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ void	view(t_client *c);
 void	view_info(t_client *c);
 void	client_reset(t_client *client);
 
-void	prompt_read(t_client *c);
+int		prompt_read(t_client *c);
 
 int		input(t_client *c, int sock, char *cmd);
 int		socket_data(t_client *client, char *port);

@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/30 16:40:15 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/01 23:20:30 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/02 07:54:44 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,12 @@ int loop(t_client *client, int i)
 			FD_SET(client->socket_data, &client->fd_write);
 		}
 	}
-
 	fdmax = MAX(client->socket_pi, client->socket_data) + 1;
 	client->select = select(fdmax, &client->fd_read, &client->fd_write, NULL, NULL);
 	if (FD_ISSET(STDIN_FILENO, &client->fd_read))
 	{
-		prompt_read(client);
+		if(prompt_read(client))
+			return (1);//Resize bug
 		view(client);
 	}
 	if (client->status_pi)
