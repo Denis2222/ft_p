@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/01 18:00:53 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/02 01:10:28 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/02 03:17:16 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 int		client_write(t_env *e, int s)
 {
-	//ft_printf("CLI_WRITE");
 	char tmp[BUF_SIZE];
 	int n;
 
@@ -76,7 +75,7 @@ void	data_read_fail(t_env *e, int s)
 
 	fd = &e->fds[s];
 	ft_printf("data_read_fail()\n");
-	printfw(&e->fds[fd->parent], "====ERROR Upload %s Fail", fd->pwd);
+	printfw(&e->fds[fd->parent], "====ERROR Upload %s Fail", fd->filepath);
 	data_fd_clean(fd);
 }
 
@@ -124,7 +123,7 @@ void	data_write_fail(t_env *e, int s)
 
 	fd = &e->fds[s];
 	ft_printf("data_write_fail()\n");
-	printfw(&e->fds[fd->parent], "====ERROR Download %s Fail", fd->pwd);
+	printfw(&e->fds[fd->parent], "====ERROR Download %s Fail", fd->filepath);
 	data_fd_clean(fd);
 }
 
@@ -134,7 +133,7 @@ void	data_write_success(t_env *e, int s)
 
 	ft_printf("data_write_end()\n");
 	fd = &e->fds[s];
-	printfw(&e->fds[fd->parent], "====SUCCESS Upload %s Complete", fd->pwd);
+	printfw(&e->fds[fd->parent], "====SUCCESS Download %s Complete", fd->filepath);
 	data_fd_clean(fd);
 }
 

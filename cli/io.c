@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/01 17:36:23 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/02 02:29:54 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/02 03:13:41 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,5 +166,3 @@ void	socket_write(t_client *c, int sock)
 			writemsg(c, "Not all send ! Look at socket_write !");
 	}
 }
-
-
