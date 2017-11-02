@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 13:46:48 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/01 23:13:34 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/02 00:44:53 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,4 +138,6 @@ void	socket_write(t_client *c, int sock);
 void	socket_read(t_client *c, int sock);
 void	data_read(t_client *c, int sock);
 void	data_write(t_client *c, int sock);
+void	data_fd_clean(t_client *c, int sock);
+
 

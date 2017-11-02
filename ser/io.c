@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/01 18:00:53 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/01 23:21:40 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/02 01:10:28 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,15 +143,15 @@ int		data_write(t_env *e, int s)
 	int		n;
 	t_fd	*fd;
 	int		tosend;
-	char	*str;
+	char	str[BUF_SIZE];
 
-	str = ft_strnew(BUF_SIZE);
 	fd = &e->fds[s];
 	tosend = fd->size - fd->done;
 	tosend = MIN(tosend, BUF_SIZE);
 	//ft_printf("data_write():%d, fd:%d\n",to, s);
 	tosend = read(fd->fd, str, tosend);
 	n = send(s, str, tosend, 0);
+	ft_printf("send():%d/%d octets\n", n, tosend);
 	if (n>0)
 	{
 		fd->done += n;

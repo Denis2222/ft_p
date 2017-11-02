@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 06:29:52 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/01 20:47:58 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/02 01:09:19 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ void	input_get_launch(t_env *e, int s, char *filepath, char *filename)
 	
 	str = ft_mprintf("dataget:%d:%s:%lld:ready\n", fd->port , filename, fd->size);
 	fd_send(&e->fds[s], str);
+	free(str);
 }
 
 void	input_get(t_env *e, int s, char *cmd)
