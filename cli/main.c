@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 13:46:06 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/02 02:10:25 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/02 06:18:17 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int		socket_data(t_client *client, char *port)
 	ft_dprintf(2, "=====socket_data()\n");
 	
 	if (client->data_way == WAYIN)
-		client->data_fd = open(client->data_file, O_CREAT | O_WRONLY, 766);
+		client->data_fd = open(client->data_file, O_CREAT | O_WRONLY, S_IRWXU | S_IRWXG | S_IRWXO);
 	if (client->data_way == WAYOUT)
 		client->data_fd = open(client->data_file, O_RDONLY);
 	if (client->data_fd < 0)

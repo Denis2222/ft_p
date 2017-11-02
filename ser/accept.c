@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/01 18:04:33 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/02 03:23:47 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/02 06:19:41 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int		srv_data_accept(t_env *e, int s)
 	fd = &e->fds[sock];
 	
 	if (fd->way == WAYIN)
-		fd->fd = open(fd->filepath, O_WRONLY | O_CREAT, 0766);
+		fd->fd = open(fd->filepath, O_WRONLY | O_CREAT, S_IRWXU | S_IRWXG | S_IRWXO);
 	if (fd->way == WAYOUT)
 		fd->fd = open(fd->filepath, O_RDONLY);
 

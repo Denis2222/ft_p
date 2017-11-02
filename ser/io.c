@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/01 18:00:53 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/02 03:51:22 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/02 06:09:42 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,13 @@ void	calcspeed(t_env *e, t_fd *fd)
 	unsigned long	octetsbysec;
 
 	now = now - fd->time;
-	octetsbysec = fd->size / now;
-	str = ft_mprintf("Time %d sec \nSpeed : %ldko/s\n%ld o/s\n", now, octetsbysec/1024, octetsbysec);
-	printfw(&e->fds[fd->parent], "%s\n", str);
-	free(str);
+	if (now>0)
+	{
+		octetsbysec = fd->size / now;
+		str = ft_mprintf("Time %d sec \nSpeed : %ldko/s\n%ld o/s\n", now, octetsbysec/1024, octetsbysec);
+		printfw(&e->fds[fd->parent], "%s\n", str);
+		free(str);
+	}
 }
 
 int		client_write(t_env *e, int s)
