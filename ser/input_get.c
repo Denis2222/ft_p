@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 06:29:52 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/02 01:09:19 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/02 10:11:15 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ char	*input_get_check(t_env *e, int s, char *filename)
 	fd = open(filepath, O_RDONLY);
 	if (fd <= 0)
 	{
+		printfw(&e->fds[s], "====ERROR %s File not found OR Not readable\n", filename);
 		free(filepath);
 		return (0);
 	}

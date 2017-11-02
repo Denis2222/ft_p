@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/30 18:27:36 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/01 23:16:56 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/02 10:06:48 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,28 +33,49 @@ static void	render_text(t_client *client, WINDOW *w)
 	}
 }
 
+int little_ls(t_client *c, char *lsparam)
+{
+	int		link[2];
+	pid_t	pid;
+	char	*line;
+	int		nbchar;
+	int		files;
+
+	files = 0;
+	pipe(link);
+	pid = fork();
+	if(pid == 0)
+	{
+		dup2 (link[1], STDOUT_FILENO);
+		close(link[0]);
+		close(link[1]);
+		execl("/bin/ls", "ls", lsparam, (char *)0);
+	}
+	else
+	{
+		close(link[1]);
+		while ((nbchar = get_next_line_single(link[0], &line)))
+		{
+			files++;
+			writemsglocal(c, line);
+			free(line);
+		}
+		wait(NULL);
+	}
+	return (files);
+}
 
 static void	render_local(t_client *c, WINDOW *w)
 {
-	DIR				*dir;
-	struct dirent	*dp;
 	char			*str;
 	int				files;
 
 	clearmsglocal(c);
+
 	str = ft_mprintf("PATH:%s",c->pwd);
 	writemsglocal(c, str);
 	free(str);
-	files = 0;
-	writemsglocal(c, "============================");
-	dir = opendir(c->pwd);
-	while ((dp = readdir(dir)) != NULL)
-	{
-		files++;
-		writemsglocal(c, dp->d_name);
-	}
-	closedir(dir);
-
+	files = little_ls(c, "-la");
 	if (c->ws->lastlscroll != files)
 	{
 		c->ws->lscroll = lenmsg(c->msglocal);
