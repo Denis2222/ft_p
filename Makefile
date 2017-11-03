@@ -21,6 +21,10 @@ CLISRC = ./cli/main.c \
 		 ./cli/prompt2.c \
 		 ./cli/prompt_read.c \
 		 ./cli/prompt_read_lcd.c \
+		 ./cli/prompt_read_put.c \
+		 ./cli/prompt_read_get.c \
+		 ./cli/prompt_read_lls.c \
+		 ./cli/prompt_read_help.c \
 		 ./cli/input.c \
 		 ./cli/io.c \
 		 ./cli/t_msg.c \

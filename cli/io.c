@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/01 17:36:23 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/02 12:52:50 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/03 23:47:19 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void	data_read(t_client *c, int sock)
 	if (c->status_data)
 	{
 		n = recv(sock, str, BUF_SIZE, 0);
-		if (n > 0)
+		if (n > 0 || (c->data_size == 0))
 		{
 			d = write(c->data_fd, str, n);
 			if (d < 0)

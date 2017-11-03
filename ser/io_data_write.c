@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/02 11:05:59 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/02 11:15:54 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/03 23:48:25 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int		data_write(t_env *e, int s)
 	tosend = MIN(tosend, BUF_SIZE);
 	tosend = read(fd->fd, str, tosend);
 	n = send(s, str, tosend, 0);
-	if (n > 0)
+	if (n > 0 || fd->size == 0)
 	{
 		fd->done += n;
 	}

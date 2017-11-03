@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/30 18:27:36 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/02 10:36:26 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/04 00:24:53 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ static void	render_local(t_client *c, WINDOW *w)
 	str = ft_mprintf("PATH:%s", c->pwd);
 	writemsglocal(c, str);
 	free(str);
-	files = little_ls(c, "-la");
+	files = little_ls(c, c->ws->localls);
 	if (c->ws->lastlscroll != files)
 	{
 		c->ws->lscroll = lenmsg(c->msglocal);
@@ -127,6 +127,14 @@ void	view_info(t_client *c)
 	}
 }
 
+void	box_text(WINDOW *c, WINDOW *l)
+{
+	wmove(c, 0, 2);
+	waddstr(c, "Server :");
+	wmove(l, 0, 2);
+	waddstr(l, "Local :");
+}
+
 void	view(t_client *c)
 {
 	WINDOW		*cbox;
@@ -155,6 +163,7 @@ void	view(t_client *c)
 	box(cbox, ACS_VLINE, ACS_HLINE);
 	box(pbox, ACS_VLINE, ACS_HLINE);
 	box(lbox, ACS_VLINE, ACS_HLINE);
+	box_text(cbox, lbox);
 	wrefresh(w->msg);
 	wrefresh(w->prompt);
 	wrefresh(w->info);

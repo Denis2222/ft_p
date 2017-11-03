@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 13:46:48 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/02 12:34:25 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/04 00:23:53 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ typedef struct			s_windows
 	WINDOW				*prompt;
 	WINDOW				*info;
 	int					lastlscroll;
+	char				*localls;
 }						t_windows;
 
 typedef struct			s_msg
@@ -107,7 +108,11 @@ void	view_info(t_client *c);
 void	client_reset(t_client *client);
 
 int		prompt_read(t_client *c);
-int 	prompt_read_lcd(t_client *c, char *cmd);
+int		prompt_read_lcd(t_client *c, char *cmd);
+int		prompt_read_get(t_client *c, char *cmd);
+int		prompt_read_put(t_client *c, char *cmd);
+int		prompt_read_help(t_client *c, char *cmd);
+int		prompt_read_lls(t_client *c, char *cmd);
 
 int		input(t_client *c, int sock, char *cmd);
 int		socket_data(t_client *client, char *port);

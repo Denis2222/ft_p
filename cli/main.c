@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 13:46:06 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/02 12:33:49 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/04 00:14:36 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,7 @@ void	client_init(t_client *client, int ac, char **argv)
 	client->ws = malloc(sizeof(t_windows));
 	client->ws->scroll = MAX_MSG;
 	client->ws->lscroll = MAX_MSG;
+	client->ws->localls = NULL;;
 	client->msg = NULL;
 	client->msglocal = NULL;
 	client->data_size = -1;

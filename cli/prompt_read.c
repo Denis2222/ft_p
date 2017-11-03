@@ -6,85 +6,35 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 02:42:15 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/02 13:15:57 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/04 00:22:52 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ftp.h"
 
-int		check_put_file(t_client *c, char *filename)
-{
-	char		*str;
-	int			fd;
-	struct stat	buf;
-
-	str = ft_strnew(PATH_MAX);
-	ft_strcat(str, c->pwd);
-	ft_strcat(str, "/");
-	ft_strcat(str, filename);
-	fd = open(str, O_RDONLY);
-	if (fd <= 0)
-	{
-		writemsg(c, "====ERROR File not found OR no Read right !");
-		free(str);
-		return (0);
-	}
-	fstat(fd, &buf);
-	close(fd);
-	if ((buf.st_mode & S_IFMT) != S_IFREG)
-	{
-		writemsg(c, "====ERROR Special File");
-		return (0);
-	}
-	str = ft_mprintf("put %s:%lld\n", filename, buf.st_size);
-	ft_strcat(c->bw, str);
-	free(str);
-	return (1);
-}
-
 int		prompt_read_cmd(t_client *c, char *cmd)
 {
-	char	**tab;
-	char	*str;
-
+	/*
+	 * IF return(0) send to server;
+	 */
 	if (ft_strncmp(cmd, "lcd", 3) == 0)
 	{
 		return (prompt_read_lcd(c, cmd));
 	}
 	if (ft_strncmp(cmd, "get ", 4) == 0)
 	{
-		tab = ft_strsplit(cmd, ' ');
-		int fd = open(tab[1], O_WRONLY | O_CREAT);
-		if (fd > 0)
-		{
-			ft_dprintf(2, "get a le droit \n");
-			return (0);
-		}
-		else
-		{
-			ft_dprintf(2, "get a pas le droit \n");
-			return (1);
-		}
-		close(fd);
-		ft_tabfree(tab);
+		return (prompt_read_get(c, cmd));
 	}
 	if (ft_strncmp(cmd, "put ", 4) == 0)
 	{
-		str = ft_mprintf("[CMD]>%s", cmd);
-		writemsg(c, str);
-		free(str);
-		tab = ft_strsplit(cmd, ' ');
-		if (ft_tablen(tab) > 1)
-		{
-			check_put_file(c, tab[1]);
-		}
-		ft_tabfree(tab);
-		return (1);
+		return (prompt_read_put(c, cmd));
 	}
 	if (ft_strncmp(cmd, "lls", 3) == 0)
-		return (1);
+		return (prompt_read_lls(c, cmd));
 	if (ft_strncmp(cmd, "lpwd", 4) == 0)
 		return (1);
+	if (ft_strncmp(cmd, "help", 4) == 0)
+		return (prompt_read_help(c, cmd));
 	if (ft_strncmp(cmd, "close", 4) == 0)
 		close(0);
 	if (ft_strncmp(cmd, "test", 4) == 0)
@@ -92,8 +42,9 @@ int		prompt_read_cmd(t_client *c, char *cmd)
 		
 		int fd;
 
-		fd = open("file01", O_CREAT, S_IRWXU);
-		ft_dprintf(2, "open(file01,O_RDONLY): %d", fd);
+		fd = open("file01", O_WRONLY, S_IRWXU);
+		ft_dprintf(2, "open(file01,O_WRONLY): %d\n", fd);
+		write(fd, "yolo",4);
 		close(fd);
 		//int un = unlink("file01");
 		//ft_dprintf(2, "unlink():%d", un);
