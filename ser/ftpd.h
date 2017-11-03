@@ -20,11 +20,14 @@
 # include <sys/resource.h>
 # include <sys/stat.h>
 # include <sys/mman.h>
+# include <sys/types.h>
+# include <sys/wait.h>
 # include <netinet/in.h>
 # include <netdb.h>
 # include <stdlib.h>
 # include <sys/types.h>
 # include <sys/socket.h>
+# include <time.h>
 # include "libft.h"
 
 # define PATH_MAX 4096
@@ -106,6 +109,7 @@ void	input_ls(t_env *e, int cs, char *cmd);
 void	input_cd(t_env *e, int cs, char *filename);
 void	input_get(t_env *e, int s, char *cmd);
 void	input_put(t_env *e, int s, char *cmd);
+void	input_pwd(t_env *e, int s, char *cmd);
 
 void	printfw(t_fd *fd, char *format, void *data);
 void	printfd(t_fd *fd, char *format, long long int data);

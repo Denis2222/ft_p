@@ -82,7 +82,7 @@ int		socket_data(t_client *client, char *port)
 	if (client->data_fd < 0)
 	{
 		ft_dprintf(2, "Cant open :%s\n", client->data_file);
-		socket_send(client, "CANCELDATA");
+		//socket_send(client, "CANCELDATA");
 		data_fd_clean(client, 0);
 		perror("open()");
 		return (1);

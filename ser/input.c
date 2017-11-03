@@ -29,18 +29,20 @@ void			input_process(t_env *e, int sock, char *cmd)
 	}
 	else if (ft_strncmp(cmd, "get ", 4) == 0)
 		input_get(e, sock, cmd);
+	else if (ft_strncmp(cmd, "pwd", 3) == 0)
+		input_pwd(e, sock, cmd);
 	else if (ft_strncmp(cmd, "put ", 4) == 0)
 		input_put(e, sock, cmd);
 	else if (ft_strncmp(cmd, "CANCELDATA", 10) == 0)
 	{
-		ft_printf("GET CANCELDATA");
+		/*ft_printf("GET CANCELDATA");
 		int i = 0;
 		while (i < e->maxfd)
 		{
 			if (e->fds[i].parent == sock)
 				data_fd_clean(&e->fds[i]);
 			i++;
-		}
+		}*/
 	}
 	else
 		printfw(&e->fds[sock], "====ERROR Command not found !\n", cmd);

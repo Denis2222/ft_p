@@ -34,10 +34,10 @@ int	loop(t_client *client, int i)
 	}
 	fdmax = MAX(client->socket_pi, client->socket_data) + 1;
 	client->select = select(fdmax, &client->fd_read, &client->fd_write, NULL, NULL);
-	ft_dprintf(2, "select():%d", client->select);
+	//ft_dprintf(2, "select():%d", client->select);
 	if (FD_ISSET(STDIN_FILENO, &client->fd_read))
 	{
-		ft_dprintf(2, "isset stdin");
+		//ft_dprintf(2, "isset stdin");
 		if (prompt_read(client))
 			return (1);
 		view(client);
@@ -46,7 +46,7 @@ int	loop(t_client *client, int i)
 	{
 		if (FD_ISSET(client->socket_pi, &client->fd_read))
 		{
-			ft_dprintf(2, "client->status_pi read");
+			//ft_dprintf(2, "client->status_pi read");
 			socket_read(client, client->socket_pi);
 			view(client);
 		}
@@ -58,7 +58,7 @@ int	loop(t_client *client, int i)
 	}
 	if (client->status_data)
 	{
-		ft_dprintf(2, "client->status_data actif");
+		//ft_dprintf(2, "client->status_data actif");
 		if (FD_ISSET(client->socket_data, &client->fd_read))
 			data_read(client, client->socket_data);
 		if (FD_ISSET(client->socket_data, &client->fd_write))

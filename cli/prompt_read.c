@@ -47,17 +47,9 @@ int		prompt_read_cmd(t_client *c, char *cmd)
 	char	**tab;
 	char	*str;
 
-	if (ft_strncmp(cmd, "lcd ", 4) == 0)
+	if (ft_strncmp(cmd, "lcd", 3) == 0)
 	{
-		tab = ft_strsplit(cmd, ' ');
-		if (ft_tablen(tab) > 1)
-		{
-			chdir(tab[1]);
-			getcwd(c->pwd, PATH_MAX);
-			view(c);
-		}
-		ft_tabfree(tab);
-		return (1);
+		return (prompt_read_lcd(c, cmd));
 	}
 	if (ft_strncmp(cmd, "get ", 4) == 0)
 	{
@@ -73,6 +65,7 @@ int		prompt_read_cmd(t_client *c, char *cmd)
 			ft_dprintf(2, "get a pas le droit \n");
 			return (1);
 		}
+		close(fd);
 		ft_tabfree(tab);
 	}
 	if (ft_strncmp(cmd, "put ", 4) == 0)
@@ -92,6 +85,19 @@ int		prompt_read_cmd(t_client *c, char *cmd)
 		return (1);
 	if (ft_strncmp(cmd, "lpwd", 4) == 0)
 		return (1);
+	if (ft_strncmp(cmd, "close", 4) == 0)
+		close(0);
+	if (ft_strncmp(cmd, "test", 4) == 0)
+	{
+		
+		int fd;
+
+		fd = open("file01", O_CREAT, S_IRWXU);
+		ft_dprintf(2, "open(file01,O_RDONLY): %d", fd);
+		close(fd);
+		//int un = unlink("file01");
+		//ft_dprintf(2, "unlink():%d", un);
+	}
 	if (ft_strncmp(cmd, "quit", 4) == 0)
 	{
 		c->run = 0;

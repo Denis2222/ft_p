@@ -15,7 +15,7 @@
 # include <stdio.h>
 
 # include <libft.h>
-
+# include <sys/wait.h>
 # include <sys/socket.h>
 # include <sys/types.h>
 # include <arpa/inet.h>
@@ -107,6 +107,7 @@ void	view_info(t_client *c);
 void	client_reset(t_client *client);
 
 int		prompt_read(t_client *c);
+int 	prompt_read_lcd(t_client *c, char *cmd);
 
 int		input(t_client *c, int sock, char *cmd);
 int		socket_data(t_client *client, char *port);
