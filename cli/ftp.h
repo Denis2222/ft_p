@@ -30,6 +30,8 @@
 # include <limits.h>
 # include <sys/stat.h>
 
+# include "../tools/cross.h"
+
 # define INVALID_SOCKET	-1
 # define SOCKET_ERROR	-1
 # define MAX(a, b)	((a > b) ? a : b)

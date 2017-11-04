@@ -28,6 +28,9 @@
 # include <sys/types.h>
 # include <sys/socket.h>
 # include <time.h>
+
+# include "../tools/cross.h"
+
 # include "libft.h"
 
 # define PATH_MAX 4096

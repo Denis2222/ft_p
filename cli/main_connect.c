@@ -36,10 +36,8 @@ int		get_socket_pi(t_client *client)
 	client->socket_pi = socket(AF_INET, SOCK_STREAM, 0);
 	setsockopt(client->socket_pi, SOL_SOCKET,
 		SO_REUSEADDR, &optval, sizeof(optval));
-	#ifdef SO_NOSIGPIPE
-		setsockopt(client->socket_pi, SOL_SOCKET,
-			SO_NOSIGPIPE, &optval, sizeof(optval));
-	#endif
+	if (SO_NOSIGPIPE)
+		osx_pipe(client->socket_data);
 	if (client->socket_pi == INVALID_SOCKET)
 	{
 		ft_printf("socket error \n");

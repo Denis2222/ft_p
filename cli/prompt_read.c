@@ -14,12 +14,20 @@
 
 int		prompt_read_cmd(t_client *c, char *cmd)
 {
+	if (!c->status_data)
+	{
+		if (ft_strncmp(cmd, "get ", 4) == 0)
+			return (prompt_read_get(c, cmd));
+		if (ft_strncmp(cmd, "put ", 4) == 0)
+			return (prompt_read_put(c, cmd));
+	}
+	else
+	{
+		writemsg(c, "====ERROR wait for finish");
+		return (1);
+	}
 	if (ft_strncmp(cmd, "lcd", 3) == 0)
 		return (prompt_read_lcd(c, cmd));
-	if (ft_strncmp(cmd, "get ", 4) == 0)
-		return (prompt_read_get(c, cmd));
-	if (ft_strncmp(cmd, "put ", 4) == 0)
-		return (prompt_read_put(c, cmd));
 	if (ft_strncmp(cmd, "lls", 3) == 0)
 		return (prompt_read_lls(c, cmd));
 	if (ft_strncmp(cmd, "lpwd", 4) == 0)

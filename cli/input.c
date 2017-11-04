@@ -16,7 +16,7 @@ int		input_get_connect(t_client *c, int sock, char *cmd)
 {
 	char **tab;
 
-	ft_dprintf(2, "Input_get_connect()\n");
+	//ft_dprintf(2, "Input_get_connect()\n");
 	tab = ft_strsplit(cmd, ':');
 	if (ft_tablen(tab) == 5)
 	{
@@ -26,7 +26,7 @@ int		input_get_connect(t_client *c, int sock, char *cmd)
 		strcat(c->data_file, c->pwd);
 		strcat(c->data_file, "/");
 		strcat(c->data_file, tab[2]);
-		ft_dprintf(2, "c->data_file(output):%s\n", c->data_file);
+		//ft_dprintf(2, "c->data_file(output):%s\n", c->data_file);
 		c->data_way = WAYIN;
 		socket_data(c, tab[1]);
 	}
@@ -38,7 +38,7 @@ int		input_put_connect(t_client *c, int sock, char *cmd)
 {
 	char **tab;
 
-	ft_dprintf(2, "Input_put_connect()\n");
+	//ft_dprintf(2, "Input_put_connect()\n");
 	tab = ft_strsplit(cmd, ':');
 	if (ft_tablen(tab) == 5)
 	{
@@ -48,7 +48,7 @@ int		input_put_connect(t_client *c, int sock, char *cmd)
 		strcat(c->data_file, c->pwd);
 		strcat(c->data_file, "/");
 		strcat(c->data_file, tab[2]);
-		ft_dprintf(2, "c->data_file(output):%s\n", c->data_file);
+		//ft_dprintf(2, "c->data_file(output):%s\n", c->data_file);
 		c->data_way = WAYOUT;
 		socket_data(c, tab[1]);
 	}
@@ -74,10 +74,17 @@ int		input(t_client *c, int sock, char *cmd)
 				c->status_data = 1;
 			else if (ft_strncmp(tab[i], "====ERROR", 9) == 0)
 			{
-				str = ft_mprintf("%s No more space or Permission change ", tab[i]);
-				writemsg(c, str);
-				free(str);
-				data_fd_clean(c, sock);
+				if (c->status_data)
+				{
+					str = ft_mprintf("%s No more space or Permission change ", tab[i]);
+					writemsg(c, str);
+					free(str);
+					data_fd_clean(c, sock);
+				}
+				else
+				{
+					writemsg(c, tab[i]);
+				}
 			}
 			else
 				writemsg(c, tab[i]);

@@ -12,6 +12,7 @@ SERSRC = ./ser/main.c \
 		 ./ser/io_data_write.c \
 		 ./ser/accept.c \
 		 ./ser/srv_listen.c \
+		 ./tools/cross.c \
 		 ./ser/t_fd.c
 				
 CLISRC = ./cli/main.c \
@@ -33,6 +34,7 @@ CLISRC = ./cli/main.c \
 		 ./cli/t_msg.c \
 		 ./cli/t_msg_write.c \
 		 ./cli/view.c \
+		 ./tools/cross.c \
 		 ./cli/view_local.c
 
 GCC_FLAGS = -Wall -g

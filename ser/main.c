@@ -17,10 +17,19 @@ void	do_select(t_env *e)
 	e->r = select(e->max + 1, &e->fd_read, &e->fd_write, NULL, NULL);
 }
 
+void		signalstop(int c)
+{
+	signal(SIGTSTP, signalstop);
+	ft_dprintf(2, "CtrlZzzZZzzZ\n");
+}
+
 int		main(int ac, char **argv)
 {
 	t_env e;
 
+	signal(SIGTSTP, signalstop);
+	if (!SO_NOSIGPIPE)
+		linux_pipe();
 	env_init(&e, ac, argv);
 	srv_listen(&e);
 	ft_printf("{green}Server FT_P ready on port [{red}%d{green}]{eoc}\n",

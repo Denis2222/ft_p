@@ -20,14 +20,14 @@ int		get_socket_data(t_client *client)
 	client->socket_data = socket(AF_INET, SOCK_STREAM, 0);
 	setsockopt(client->socket_data, SOL_SOCKET,
 		SO_REUSEADDR, &optval, sizeof(optval));
-	#ifdef SO_NOSIGPIPE
-		setsockopt(client->socket_data, SOL_SOCKET,
-			SO_NOSIGPIPE, &optval, sizeof(optval));
-	#endif
+
+		if (SO_NOSIGPIPE)
+			osx_pipe(client->socket_data);
+
 	if (client->socket_data == INVALID_SOCKET)
 	{
 		perror("socket()");
-		ft_dprintf(2, "socket error \n");
+		//ft_dprintf(2, "socket error \n");
 		return (1);
 	}
 	return (0);
@@ -100,11 +100,20 @@ void	client_reset(t_client *client)
 	view(client);
 }
 
+void		signalstop(int c)
+{
+	signal(SIGTSTP, signalstop);
+	ft_dprintf(2, "CtrlZzzZZzzZ\n");
+}
+
 int		main(int ac, char **argv)
 {
 	t_client	client;
 	int			i;
 
+	if (!SO_NOSIGPIPE)
+		linux_pipe();
+	signal(SIGTSTP, signalstop);
 	client_init(&client, ac, argv);
 	ncurse_init();
 	view(&client);

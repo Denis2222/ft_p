@@ -40,7 +40,8 @@ int			srv_listen_data_bind_listen(
 	optval = 1;
 	srv_listen_sin(sin, port);
 	setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval));
-	setsockopt(sock, SOL_SOCKET, SO_NOSIGPIPE, &optval, sizeof(optval));
+	if (SO_NOSIGPIPE)
+		osx_pipe(sock);
 	ft_printf("New listen socket_data ![%d]\n", sock);
 	if (bind(sock, (struct sockaddr*)sin, sizeof(struct sockaddr_in)) == -1)
 	{
@@ -98,7 +99,8 @@ void		srv_listen(t_env *e)
 		exit(1);
 	}
 	setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval));
-	setsockopt(sock, SOL_SOCKET, SO_NOSIGPIPE, &optval, sizeof(optval));
+	if (SO_NOSIGPIPE)
+		osx_pipe(sock);
 	srv_listen_sin(&sin, e->port);
 	if (bind(sock, (struct sockaddr*)&sin, sizeof(sin)) == -1)
 	{
