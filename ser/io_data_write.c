@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/02 11:05:59 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/04 02:41:43 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/04 08:18:07 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,11 @@ int		data_write(t_env *e, int s)
 	{
 		ft_printf("Fini Ou Deco !");
 		data_write_fail(e, s);
+	}
+	else if (n < 0)
+	{
+		data_write_fail(e,s);
+		ft_printf("Plus de place");
 	}
 	if (fd->done == fd->size)
 		data_write_success(e, s);

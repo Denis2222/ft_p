@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/04 05:59:44 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/04 06:01:26 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/04 08:07:48 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,10 @@ int		get_socket_pi(t_client *client)
 	client->socket_pi = socket(AF_INET, SOCK_STREAM, 0);
 	setsockopt(client->socket_pi, SOL_SOCKET,
 		SO_REUSEADDR, &optval, sizeof(optval));
-	setsockopt(client->socket_pi, SOL_SOCKET,
-		SO_NOSIGPIPE, &optval, sizeof(optval));
+	#ifdef SO_NOSIGPIPE
+		setsockopt(client->socket_pi, SOL_SOCKET,
+			SO_NOSIGPIPE, &optval, sizeof(optval));
+	#endif
 	if (client->socket_pi == INVALID_SOCKET)
 	{
 		ft_printf("socket error \n");

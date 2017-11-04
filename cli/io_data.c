@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/04 05:51:34 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/04 07:48:56 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/04 08:51:14 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,24 @@ void	data_write(t_client *c, int sock)
 	int		d;
 	char	str[BUF_SIZE + 1];
 
+	ft_dprintf(2, "data_write()\n");
 	if (c->status_data)
 	{
+		ft_dprintf(2, "read()\n");
 		n = read(c->data_fd, str, BUF_SIZE);
 		if (n > 0 || c->data_size == 0)
 		{
-			d = send(sock, str, n, 0);
+			ft_dprintf(2, "avant send()\n");
+			d = write(sock, str, n);
+			ft_dprintf(2, "apres send():%d \n", d);
 			if (d < 0)
 			{
+				ft_dprintf(2, "send fail\n");
+				data_write_fail(c, sock);
+			}
+			else if (d == 0 && c->data_size != c->data_do)
+			{
+				ft_dprintf(2, "send fail2\n");
 				data_write_fail(c, sock);
 			}
 			else
@@ -65,4 +75,5 @@ void	data_write(t_client *c, int sock)
 	}
 	else
 		n = recv(sock, str, BUF_SIZE, 0);
+	ft_dprintf(2, "end of write()\n");
 }

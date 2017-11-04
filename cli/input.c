@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 09:05:30 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/02 10:17:06 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/04 09:14:26 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int		input(t_client *c, int sock, char *cmd)
 {
 	int		i;
 	char	**tab;
-
+	char	*str;
 	i = 0;
 	tab = ft_strsplit(cmd, '\n');
 	if (ft_tablen(tab) > 0)
@@ -72,8 +72,13 @@ int		input(t_client *c, int sock, char *cmd)
 				input_put_connect(c, sock, tab[i]);
 			else if (ft_strncmp(tab[i], "STARTDATA", 9) == 0)
 				c->status_data = 1;
-			else if (ft_strncmp(tab[i], "CANCELDATA", 9) == 0)
+			else if (ft_strncmp(tab[i], "====ERROR", 9) == 0)
+			{
+				str = ft_mprintf("%s No more space or Permission change ", tab[i]);
+				writemsg(c, str);
+				free(str);
 				data_fd_clean(c, sock);
+			}
 			else
 				writemsg(c, tab[i]);
 			i++;

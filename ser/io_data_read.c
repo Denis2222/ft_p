@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/02 11:09:12 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/04 02:41:58 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/04 09:00:58 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ void	data_read_fail(t_env *e, int s)
 
 	fd = &e->fds[s];
 	ft_printf("data_read_fail()\n");
+	char str[100];
+	read(s, str, 0);
 	printfw(&e->fds[fd->parent],
 		"====ERROR Upload %s Fail\n", fd->filepath);
 	data_fd_clean(fd);
@@ -45,7 +47,8 @@ int		data_read(t_env *e, int s)
 	n = read(s, str, BUF_SIZE);
 	if (n > 0 || fd->size == 0)
 	{
-		write(fd->fd, str, n);
+		if (write(fd->fd, str, n) < n)
+			data_read_fail(e, s);
 		fd->done += n;
 	}
 	else if (fd->size != fd->done)

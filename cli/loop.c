@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/30 16:40:15 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/04 05:58:11 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/04 08:44:30 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,18 +38,28 @@ static int	loop_fd_isset(t_client *client, int i)
 	{
 		if (FD_ISSET(client->socket_pi, &client->fd_read))
 		{
+			ft_dprintf(2, "pi read\n");
 			socket_read(client, client->socket_pi);
 			view(client);
 		}
 		if (FD_ISSET(client->socket_pi, &client->fd_write))
+		{
+			ft_dprintf(2, "pi write\n");
 			socket_write(client, client->socket_pi);
+		}
 	}
 	if (client->status_data)
 	{
 		if (FD_ISSET(client->socket_data, &client->fd_read))
+		{
+			ft_dprintf(2, "data read\n");
 			data_read(client, client->socket_data);
+		}
 		if (FD_ISSET(client->socket_data, &client->fd_write))
+		{
+			ft_dprintf(2, "data write\n");
 			data_write(client, client->socket_data);
+		}
 	}
 	if (client->status_data && i % 10 == 0)
 	{
@@ -69,6 +79,8 @@ int			loop(t_client *client, int i)
 	fdmax = MAX(client->socket_pi, client->socket_data) + 1;
 	client->select = select(fdmax, &client->fd_read,
 		&client->fd_write, NULL, NULL);
+	ft_dprintf(2, "select(%d):", client->select);
+	
 	if (FD_ISSET(STDIN_FILENO, &client->fd_read))
 	{
 		if (prompt_read(client))

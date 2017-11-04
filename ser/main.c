@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 13:46:06 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/02 11:55:09 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/04 08:37:55 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,14 @@ void	printfw(t_fd *fd, char *format, void *data)
 
 void	fd_send(t_fd *fd, char *str)
 {
-	if ((ft_strlen(fd->bw) + ft_strlen(str)) >= BUF_SIZE + 1)
+	if (fd->type != FD_FREE)
 	{
-		ft_printf("Buffer overflow\n");
-		return ;
+		if ((ft_strlen(fd->bw) + ft_strlen(str)) >= BUF_SIZE + 1)
+		{
+			ft_printf("Buffer overflow\n");
+			return ;
+		}
+		else
+			ft_strcat(&fd->bw[fd->bwh], str);
 	}
-	else
-		ft_strcat(&fd->bw[fd->bwh], str);
 }
