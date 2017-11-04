@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 13:46:06 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/04 00:14:36 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/04 04:55:11 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,12 @@ int		checkhost(t_client *client, char *hostname)
 
 int		get_socket_pi(t_client *client)
 {
+	int	optval;
+
+	optval = 1;
 	client->socket_pi = socket(AF_INET, SOCK_STREAM, 0);
+	setsockopt(client->socket_pi, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval));
+	setsockopt(client->socket_pi, SOL_SOCKET, SO_NOSIGPIPE, &optval, sizeof(optval));
 	if (client->socket_pi == INVALID_SOCKET)
 	{
 		ft_printf("socket error \n");
@@ -63,7 +68,12 @@ int		socket_pi(t_client *client, char *port)
 
 int		get_socket_data(t_client *client)
 {
+	int	optval;
+
+	optval = 1;
 	client->socket_data = socket(AF_INET, SOCK_STREAM, 0);
+	setsockopt(client->socket_data, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval));
+	setsockopt(client->socket_data, SOL_SOCKET, SO_NOSIGPIPE, &optval, sizeof(optval));
 	if (client->socket_data == INVALID_SOCKET)
 	{
 		perror("socket()");
@@ -129,6 +139,7 @@ void	client_init(t_client *client, int ac, char **argv)
 	client->ws = malloc(sizeof(t_windows));
 	client->ws->scroll = MAX_MSG;
 	client->ws->lscroll = MAX_MSG;
+	client->ws->lastlscroll = 0;
 	client->ws->localls = NULL;;
 	client->msg = NULL;
 	client->msglocal = NULL;

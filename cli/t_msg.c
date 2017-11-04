@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/02 18:36:48 by anonymou          #+#    #+#             */
-/*   Updated: 2017/11/02 10:38:10 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/04 04:17:21 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,9 +112,11 @@ void	writemsglocal(t_client *client, char *cmd)
 	t_msg	*tmp;
 	int		i;
 	char	**tab;
+	char	*s;
 
+	s = ft_strdup(cmd);
 	i = 0;
-	tab = ft_strsplit(cmd, '\n');
+	tab = ft_strsplit(s, '\n');
 	while (tab[i])
 	{
 		client->msglocal = addmsg(&client->msglocal, newmsg(tab[i], client));
@@ -128,6 +130,7 @@ void	writemsglocal(t_client *client, char *cmd)
 		i++;
 	}
 	ft_tabfree(tab);
+	free(s);
 }
 
 void	clearmsglocal(t_client *client)

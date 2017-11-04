@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/30 18:27:36 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/04 00:24:53 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/04 05:02:43 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,35 @@ static void	render_text(t_client *client, WINDOW *w)
 	}
 }
 
+static char		*get_next_cmd(char *buffer)
+{
+	int		length;
+	int		cmdlength;
+	int		pos;
+	char	*cmd;
+	char	*tmp;
+
+	if (!ft_strchr(buffer, '\n'))
+		return (NULL);
+	length = ft_strlen(buffer);
+	pos = ft_strlen(ft_strchr(buffer, '\n'));
+	cmdlength = length - pos;
+	cmd = ft_strsub(buffer, 0, cmdlength);
+	tmp = ft_strsub(buffer, cmdlength + 1, length);
+	ft_bzero(buffer, BUF_SIZE + 1);
+	ft_strcpy(buffer, tmp);
+	free(tmp);
+	return (cmd);
+}
+
 int			little_ls(t_client *c, char *lsparam)
 {
 	int		link[2];
 	pid_t	pid;
-	char	*line;
+	int		n;
 	int		nbchar;
 	int		files;
+	char	buf[BUF_SIZE + 1];
 
 	files = 0;
 	pipe(link);
@@ -54,11 +76,18 @@ int			little_ls(t_client *c, char *lsparam)
 	else
 	{
 		close(link[1]);
-		while ((nbchar = get_next_line_single(link[0], &line)))
+		ft_bzero(buf, BUF_SIZE + 1);
+		n = 0;
+		char *test;
+		nbchar = 0;
+		while ((n = read(link[0], buf, BUF_SIZE)))
 		{
-			files++;
-			writemsglocal(c, line);
-			free(line);
+			while ((test = get_next_cmd(buf)))
+			{
+				files++;
+				writemsglocal(c, test);
+				free(test);
+			}
 		}
 		wait(NULL);
 	}
@@ -151,9 +180,9 @@ void	view(t_client *c)
 	w->msg = subwin(stdscr, LINES - 6, COLS / 2 - 2, 1, 1);
 	w->local = subwin(stdscr, LINES - 6, COLS / 2 - 2, 1, COLS / 2 + 2);
 	w->prompt = subwin(stdscr, 2, COLS - 2, LINES - 3, 1);
+	scrollok(w->local, TRUE);
 	scrollok(w->msg, TRUE);
 	scrollok(w->prompt, TRUE);
-	scrollok(w->local, TRUE);
 	render_text(c, w->msg);
 	wmove(w->prompt, 0, 0);
 	render_line(&c->lnbuffer, w->prompt);

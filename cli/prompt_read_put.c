@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/03 22:54:10 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/03 23:10:28 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/04 04:50:16 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,12 @@
 
 int		check_put_file(t_client *c, char *filename)
 {
-	char		*str;
+	char		str[PATH_MAX];
 	int			fd;
 	struct stat	buf;
+	char		*msg;
 
-	str = ft_strnew(PATH_MAX);
+	ft_bzero(str, PATH_MAX);
 	ft_strcat(str, c->pwd);
 	ft_strcat(str, "/");
 	ft_strcat(str, filename);
@@ -26,7 +27,6 @@ int		check_put_file(t_client *c, char *filename)
 	if (fd <= 0)
 	{
 		writemsg(c, "====ERROR File not found OR no Read right !");
-		free(str);
 		return (0);
 	}
 	fstat(fd, &buf);
@@ -36,9 +36,9 @@ int		check_put_file(t_client *c, char *filename)
 		writemsg(c, "====ERROR Special File");
 		return (0);
 	}
-	str = ft_mprintf("put %s:%lld\n", filename, buf.st_size);
-	ft_strcat(c->bw, str);
-	free(str);
+	msg = ft_mprintf("put %s:%lld\n", filename, buf.st_size);
+	ft_strcat(c->bw, msg);
+	free(msg);
 	return (1);
 }
 

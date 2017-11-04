@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/02 01:28:58 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/02 12:18:35 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/04 02:46:10 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ int			srv_listen_data_bind_listen(
 	optval = 1;
 	srv_listen_sin(sin, port);
 	setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval));
+	setsockopt(sock, SOL_SOCKET, SO_NOSIGPIPE, &optval, sizeof(optval));
 	ft_printf("New listen socket_data ![%d]\n", sock);
 	if (bind(sock, (struct sockaddr*)sin, sizeof(struct sockaddr_in)) == -1)
 	{
@@ -94,19 +95,20 @@ void		srv_listen(t_env *e)
 	if (socket <= 0)
 	{
 		ft_printf("Erreur socket %d\n", socket);
-		exit(1);
+		//exit(1);
 	}
 	setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval));
+	setsockopt(sock, SOL_SOCKET, SO_NOSIGPIPE, &optval, sizeof(optval));
 	srv_listen_sin(&sin, e->port);
 	if (bind(sock, (struct sockaddr*)&sin, sizeof(sin)) == -1)
 	{
 		perror("bind()");
-		exit(1);
+		//exit(1);
 	}
 	if (listen(sock, 42) == -1)
 	{
 		ft_printf("Error sur listen\n");
-		exit(1);
+		//exit(1);
 	}
 	fd_new(&e->fds[sock], e, FD_SERV, sock);
 }

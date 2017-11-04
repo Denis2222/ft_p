@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 13:58:26 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/02 11:19:44 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/04 02:40:32 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,12 +102,12 @@ void		fd_check(t_env *e)
 	{
 		if (e->fds[s].type != FD_FREE)
 		{
-			if (FD_ISSET(s, &e->fd_read))
+			if (FD_ISSET(s, &e->fd_read) && e->fds[s].fct_read)
 			{
 				e->fds[s].fct_read(e, s);
 				e->r--;
 			}
-			if (FD_ISSET(s, &e->fd_write))
+			if (FD_ISSET(s, &e->fd_write) && e->fds[s].fct_write)
 			{
 				e->fds[s].fct_write(e, s);
 				e->r--;

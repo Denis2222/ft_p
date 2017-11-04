@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/01 17:36:23 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/04 02:10:23 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/04 03:54:26 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,10 @@
 void	data_fd_clean(t_client *c, int sock)
 {
 	ft_dprintf(2, "data_fd_clean(%d)", sock);
-	close(c->data_fd);
-	close(c->socket_data);
+	if (c->data_fd > 0)
+		close(c->data_fd);
+	if (c->socket_data > 0)
+		close(c->socket_data);
 	free(c->data_file);
 	c->data_file = NULL;
 	c->data_do = 0;
