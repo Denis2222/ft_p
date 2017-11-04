@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/30 22:46:00 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/02 11:52:16 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/04 07:35:06 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,11 @@ int		little_ls(t_env *e, int cs, char *lsparam)
 	int		link[2];
 	pid_t	pid;
 
+	if (lsparam && ft_strchr(lsparam, 'R'))
+	{
+		printfw(&e->fds[cs]," -R replace by -a\n", 0);
+		ft_strrepchr(lsparam, 'R', 'a');
+	}
 	pipe(link);
 	pid = fork();
 	if (pid == 0)

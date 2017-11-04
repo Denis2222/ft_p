@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/04 05:54:12 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/04 05:54:57 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/04 07:48:32 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,11 @@
 
 void	data_read_end(t_client *c, int sock)
 {
-	writemsg(c, "Transfert recv finish !");
 	data_fd_clean(c, sock);
 }
 
 void	data_read_fail(t_client *c, int sock)
 {
-	writemsg(c, "Transfert recv fail !");
 	data_fd_clean(c, sock);
 }
 

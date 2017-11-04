@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 02:42:15 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/04 05:58:36 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/04 07:42:57 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ int		prompt_read(t_client *c)
 {
 	char	ln[PROMPT_SIZE_MAX];
 	int		len;
+	char	*str;
 
 	len = get_line_non_blocking(c, &c->lnbuffer, ln, sizeof(ln));
 	if (len > 0 && ft_strlen(ln))
@@ -47,6 +48,12 @@ int		prompt_read(t_client *c)
 			ft_strcat(c->bw, ln);
 			ft_strcat(c->bw, "\n");
 			ft_bzero(ln, PROMPT_SIZE_MAX);
+		}
+		else
+		{
+			str = ft_mprintf("[local CMD]>%s", ln);
+			writemsg(c, str);
+			free(str);
 		}
 	}
 	else if (len == -1)
