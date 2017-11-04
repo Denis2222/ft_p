@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/30 21:43:39 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/02 12:48:00 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/04 01:39:38 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,36 +14,18 @@
 
 void			input_process(t_env *e, int sock, char *cmd)
 {
-	char	**tab;
 
 	printfw(&e->fds[sock], "[CMD]>%s\n", cmd);
 	if (ft_strncmp(cmd, "ls", 2) == 0)
 		input_ls(e, sock, cmd);
 	else if (ft_strncmp(cmd, "cd", 2) == 0)
-	{
-		tab = ft_strsplit(cmd, ' ');
-		if (ft_tablen(tab) > 1)
-			input_cd(e, sock, tab[1]);
-		ft_tabfree(tab);
-		return ;
-	}
+		input_cd(e, sock, cmd);
 	else if (ft_strncmp(cmd, "get ", 4) == 0)
 		input_get(e, sock, cmd);
 	else if (ft_strncmp(cmd, "pwd", 3) == 0)
 		input_pwd(e, sock, cmd);
 	else if (ft_strncmp(cmd, "put ", 4) == 0)
 		input_put(e, sock, cmd);
-	else if (ft_strncmp(cmd, "CANCELDATA", 10) == 0)
-	{
-		/*ft_printf("GET CANCELDATA");
-		int i = 0;
-		while (i < e->maxfd)
-		{
-			if (e->fds[i].parent == sock)
-				data_fd_clean(&e->fds[i]);
-			i++;
-		}*/
-	}
 	else
 		printfw(&e->fds[sock], "====ERROR Command not found !\n", cmd);
 }

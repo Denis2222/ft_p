@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/30 22:47:02 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/02 11:53:10 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/04 01:39:51 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,25 +37,34 @@ static void	input_cd_truepath(t_env *e, int cs, char *tmppath)
 	chdir(e->pwd);
 }
 
-void		input_cd(t_env *e, int cs, char *filename)
+void		input_cd(t_env *e, int cs, char *cmd)
 {
 	char	*tmppath;
+	char	**tab;
+	char	*filename;
 
-	if (filename)
+	tab = ft_strsplit(cmd, ' ');
+	if (ft_tablen(tab) > 1)
 	{
-		tmppath = input_cd_filepath(e, cs, filename);
-		printfw(&e->fds[cs], "cd %s\n", filename);
-		if (chdir(e->fds[cs].pwd) == 0)
-			input_cd_truepath(e, cs, tmppath);
-		else
+		filename = tab[1];
+		if (filename)
 		{
-			ft_strcpy(e->fds[cs].pwd, tmppath);
-			printfw(&e->fds[cs], "====ERROR unknow path!\npath : %s\n",
-														e->fds[cs].pwd);
+			tmppath = input_cd_filepath(e, cs, filename);
+			printfw(&e->fds[cs], "cd %s\n", filename);
+			if (chdir(e->fds[cs].pwd) == 0)
+				input_cd_truepath(e, cs, tmppath);
+			else
+			{
+				ft_strcpy(e->fds[cs].pwd, tmppath);
+				printfw(&e->fds[cs], "====ERROR unknow path!\npath : %s\n",
+															e->fds[cs].pwd);
+			}
+			free(tmppath);
 		}
-		free(tmppath);
+		else
+			printfw(&e->fds[cs], "====ERROR empty path!\npath : %s\n",
+														e->fds[cs].pwd);
 	}
-	else
-		printfw(&e->fds[cs], "====ERROR empty path!\npath : %s\n",
-													e->fds[cs].pwd);
+	ft_tabfree(tab);
+	return ;
 }

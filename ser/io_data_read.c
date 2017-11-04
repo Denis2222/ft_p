@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/02 11:09:12 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/02 11:16:51 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/04 02:11:19 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int		data_read(t_env *e, int s)
 
 	fd = &e->fds[s];
 	n = recv(s, str, BUF_SIZE, 0);
-	if (n > 0)
+	if (n > 0 || fd->size == 0)
 	{
 		write(fd->fd, str, n);
 		fd->done += n;

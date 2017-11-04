@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 06:29:52 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/02 10:47:46 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/04 01:57:06 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,26 @@
 char	*input_put_check(t_env *e, int s, char *filename)
 {
 	char	*filepath;
+	int 	fd;
+	struct stat	buf;
 
 	filepath = ft_strnew(PATH_MAX);
 	ft_strcat(filepath, e->fds[s].pwd);
 	ft_strcat(filepath, "/");
 	ft_strcat(filepath, filename);
+	fd = open(filepath, O_WRONLY | O_CREAT, S_IRWXU);
+	if (fd <= 0)
+	{
+		free(filepath);
+		return (0);
+	}
+	fstat(fd, &buf);
+	close(fd);
+	if ((buf.st_mode & S_IFMT) != S_IFREG)
+	{
+		fd_send(&e->fds[s], "====ERROR Can't put on Special File");
+		return (0);
+	}
 	return (filepath);
 }
 
