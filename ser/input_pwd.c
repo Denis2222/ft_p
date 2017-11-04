@@ -1,21 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   input_pwd.c                                        :+:      :+:    :+:   */
+/*   input_ppwd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/10/31 06:29:52 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/02 11:19:14 by dmoureu-         ###   ########.fr       */
+/*   Created: 2017/11/04 05:16:38 by dmoureu-          #+#    #+#             */
+/*   Updated: 2017/11/04 05:17:32 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ftpd.h"
 
-void			input_pwd(t_env *e, int s, char *cmd)
+void	input_pwd(t_env *e, int s, char *cmd)
 {
-    t_fd *fd;
+	t_fd	*fd;
 
-    fd = &e->fds[s];
-    printfw(fd, "%s\n====SUCCESS", fd->pwd);
+	fd = &e->fds[s];
+	printfw(fd, "%s\n====SUCCESS", fd->pwd);
 }

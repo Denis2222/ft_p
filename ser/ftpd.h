@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 13:46:48 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/02 11:19:25 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/04 06:32:54 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,9 @@
 
 # define WAYIN 1
 # define WAYOUT 2
+
+# define MSGCDUKN "====ERROR unknow path!\npath : %s\n"
+# define MSGCDEMPTY "====ERROR empty path!\npath : %s\n"
 
 typedef struct		s_fd
 {

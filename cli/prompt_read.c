@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 02:42:15 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/04 00:30:14 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/04 05:58:36 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,6 @@
 
 int		prompt_read_cmd(t_client *c, char *cmd)
 {
-	/*
-	 * IF return(0) send to server;
-	 */
 	if (ft_strncmp(cmd, "lcd", 3) == 0)
 		return (prompt_read_lcd(c, cmd));
 	if (ft_strncmp(cmd, "get ", 4) == 0)
@@ -37,13 +34,12 @@ int		prompt_read_cmd(t_client *c, char *cmd)
 	return (0);
 }
 
-int	prompt_read(t_client *c)
+int		prompt_read(t_client *c)
 {
 	char	ln[PROMPT_SIZE_MAX];
 	int		len;
 
 	len = get_line_non_blocking(c, &c->lnbuffer, ln, sizeof(ln));
-//	ft_dprintf(2, "WTF %d ", len);
 	if (len > 0 && ft_strlen(ln))
 	{
 		if (!prompt_read_cmd(c, ln))

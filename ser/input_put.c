@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 06:29:52 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/04 01:57:06 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/04 05:10:20 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 char	*input_put_check(t_env *e, int s, char *filename)
 {
-	char	*filepath;
-	int 	fd;
+	char		*filepath;
+	int			fd;
 	struct stat	buf;
 
 	filepath = ft_strnew(PATH_MAX);

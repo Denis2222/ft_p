@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/02 18:36:48 by anonymou          #+#    #+#             */
-/*   Updated: 2017/11/04 04:17:21 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/04 05:33:42 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,30 +70,6 @@ int		lenmsg(t_msg *msg)
 	return (length);
 }
 
-void	writemsg(t_client *client, char *cmd)
-{
-	t_msg	*tmp;
-	int		i;
-	char	**tab;
-
-	i = 0;
-	tab = ft_strsplit(cmd, '\n');
-	while (tab[i])
-	{
-		client->msg = addmsg(&client->msg, newmsg(tab[i], client));
-		if (lenmsg(client->msg) > MAX_MSG)
-		{
-			tmp = client->msg->next;
-			free(client->msg->text);
-			free(client->msg);
-			client->msg = tmp;
-		}
-		i++;
-	}
-	client->ws->scroll = lenmsg(client->msg);
-	ft_tabfree(tab);
-}
-
 void	clearmsg(t_client *client)
 {
 	t_msg *tmp;
@@ -105,32 +81,6 @@ void	clearmsg(t_client *client)
 		free(client->msg);
 		client->msg = tmp;
 	}
-}
-
-void	writemsglocal(t_client *client, char *cmd)
-{
-	t_msg	*tmp;
-	int		i;
-	char	**tab;
-	char	*s;
-
-	s = ft_strdup(cmd);
-	i = 0;
-	tab = ft_strsplit(s, '\n');
-	while (tab[i])
-	{
-		client->msglocal = addmsg(&client->msglocal, newmsg(tab[i], client));
-		if (lenmsg(client->msglocal) > MAX_MSG)
-		{
-			tmp = client->msglocal->next;
-			free(client->msglocal->text);
-			free(client->msglocal);
-			client->msglocal = tmp;
-		}
-		i++;
-	}
-	ft_tabfree(tab);
-	free(s);
 }
 
 void	clearmsglocal(t_client *client)

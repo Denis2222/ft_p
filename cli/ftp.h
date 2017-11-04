@@ -6,9 +6,13 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 13:46:48 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/04 00:23:53 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/04 06:32:33 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#ifndef FTP_H
+
+# define FTP_H
 
 # include <stdlib.h>
 # include <unistd.h>
@@ -34,6 +38,9 @@
 # define WAYIN 1
 # define WAYOUT 2
 # define BUF_SIZE 1024 * 16
+
+# define OPENOPT O_CREAT | O_WRONLY
+# define OPENPERM S_IRWXU | S_IRWXG | S_IRWXO
 
 typedef struct			s_input_line {
 	char				*ln;
@@ -65,7 +72,6 @@ typedef struct			s_msg
 typedef struct			s_client
 {
 	char				*pwd;
-	
 	fd_set				fd_read;
 	fd_set				fd_write;
 
@@ -91,33 +97,33 @@ typedef struct			s_client
 
 	char				*prompt;
 	t_inline			lnbuffer;
-	//GUI
 	t_msg				*msg;
 	t_msg				*msglocal;
 
 	t_windows			*ws;
-	
 }						t_client;
 
-int		loop(t_client *client, int i);
-void	ncurse_init(void);
-void	ncurse_end(void);
+int						connect_pi(char *host, char *port, t_client *client);
 
-void	view(t_client *c);
-void	view_info(t_client *c);
-void	client_reset(t_client *client);
+int						loop(t_client *client, int i);
+void					ncurse_init(void);
+void					ncurse_end(void);
 
-int		prompt_read(t_client *c);
-int		prompt_read_lcd(t_client *c, char *cmd);
-int		prompt_read_get(t_client *c, char *cmd);
-int		prompt_read_put(t_client *c, char *cmd);
-int		prompt_read_help(t_client *c, char *cmd);
-int		prompt_read_lls(t_client *c, char *cmd);
+void					view(t_client *c);
+void					render_local(t_client *c, WINDOW *w);
+void					view_info(t_client *c);
+void					client_reset(t_client *client);
 
-int		input(t_client *c, int sock, char *cmd);
-int		socket_data(t_client *client, char *port);
+int						prompt_read(t_client *c);
+int						prompt_read_lcd(t_client *c, char *cmd);
+int						prompt_read_get(t_client *c, char *cmd);
+int						prompt_read_put(t_client *c, char *cmd);
+int						prompt_read_help(t_client *c, char *cmd);
+int						prompt_read_lls(t_client *c, char *cmd);
 
-//prompt
+int						input(t_client *c, int sock, char *cmd);
+int						socket_data(t_client *client, char *port);
+
 void					make_buffer(t_inline *buf);
 void					destroy_buffer(t_inline *buf);
 void					render_line(t_inline *buf, WINDOW *win);
@@ -126,10 +132,9 @@ int						retrieve_content(t_inline *buf, char *target,
 void					add_char(t_inline *buf, char ch);
 int						handle_input(t_inline *buf, char *target, int max_len,
 						int key);
-int						get_line_non_blocking(t_client *client, t_inline *buf, char *target,
-						int max_len);
+int						get_line_non_blocking(t_client *client,
+t_inline *buf, char *target, int max_len);
 
-//t_msg
 t_msg					*newmsg(char *text, t_client *client);
 t_msg					*addmsg(t_msg **lstmsg, t_msg *msg);
 int						lenmsg(t_msg *msg);
@@ -139,11 +144,12 @@ void					showmsghelp(t_client *client);
 void					writemsglocal(t_client *client, char *cmd);
 void					clearmsglocal(t_client *client);
 
-//io.c
-void	socket_write(t_client *c, int sock);
-void	socket_read(t_client *c, int sock);
-void	data_read(t_client *c, int sock);
-void	data_write(t_client *c, int sock);
-void	data_fd_clean(t_client *c, int sock);
+void					socket_write(t_client *c, int sock);
+void					socket_read(t_client *c, int sock);
+void					data_read(t_client *c, int sock);
+void					data_write(t_client *c, int sock);
+void					data_fd_clean(t_client *c, int sock);
 
-void	socket_send(t_client *c, char *str);
+void					socket_send(t_client *c, char *str);
+
+#endif

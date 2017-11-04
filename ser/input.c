@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/30 21:43:39 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/04 04:31:50 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/04 05:23:32 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void			input_process(t_env *e, int sock, char *cmd)
 {
-
 	printfw(&e->fds[sock], "[CMD]>%s\n", cmd);
 	if (ft_strncmp(cmd, "ls", 2) == 0)
 		input_ls(e, sock, cmd);

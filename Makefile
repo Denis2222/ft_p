@@ -15,6 +15,7 @@ SERSRC = ./ser/main.c \
 		 ./ser/t_fd.c
 				
 CLISRC = ./cli/main.c \
+		 ./cli/main_connect.c \
 		 ./cli/loop.c \
 		 ./cli/ncurses.c \
 		 ./cli/prompt.c \
@@ -27,8 +28,12 @@ CLISRC = ./cli/main.c \
 		 ./cli/prompt_read_help.c \
 		 ./cli/input.c \
 		 ./cli/io.c \
+		 ./cli/io_data.c \
+		 ./cli/io_data_read.c \
 		 ./cli/t_msg.c \
-		 ./cli/view.c
+		 ./cli/t_msg_write.c \
+		 ./cli/view.c \
+		 ./cli/view_local.c
 
 GCC_FLAGS = -Wall -g
 CC = clang $(GCC_FLAGS)

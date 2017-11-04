@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/30 22:47:02 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/04 01:39:51 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/04 05:22:49 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,7 @@ void		input_cd(t_env *e, int cs, char *cmd)
 	char	**tab;
 	char	*filename;
 
-	tab = ft_strsplit(cmd, ' ');
-	if (ft_tablen(tab) > 1)
+	if ((tab = ft_strsplit(cmd, ' ')) && ft_tablen(tab) > 1)
 	{
 		filename = tab[1];
 		if (filename)
@@ -56,14 +55,12 @@ void		input_cd(t_env *e, int cs, char *cmd)
 			else
 			{
 				ft_strcpy(e->fds[cs].pwd, tmppath);
-				printfw(&e->fds[cs], "====ERROR unknow path!\npath : %s\n",
-															e->fds[cs].pwd);
+				printfw(&e->fds[cs], MSGCDUKN, e->fds[cs].pwd);
 			}
 			free(tmppath);
 		}
 		else
-			printfw(&e->fds[cs], "====ERROR empty path!\npath : %s\n",
-														e->fds[cs].pwd);
+			printfw(&e->fds[cs], MSGCDEMPTY, e->fds[cs].pwd);
 	}
 	ft_tabfree(tab);
 	return ;

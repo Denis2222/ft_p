@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/03 22:51:16 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/04 01:54:58 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/04 05:31:39 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,12 @@ static int	prompt_read_get_fstat(t_client *c, int fd, int ret)
 	return (0);
 }
 
+static void	fucknorme(t_client *c, int *ret)
+{
+	writemsg(c, "====ERROR No permission to write");
+	*ret = 1;
+}
+
 int			prompt_read_get(t_client *c, char *cmd)
 {
 	char	**tab;
@@ -44,10 +50,7 @@ int			prompt_read_get(t_client *c, char *cmd)
 		if (fd > 0)
 			create = 1;
 		else
-		{
-			writemsg(c, "====ERROR No permission to write");
-			ret = 1;
-		}
+			fucknorme(c, &ret);
 	}
 	ret = prompt_read_get_fstat(c, fd, ret);
 	if (create)
