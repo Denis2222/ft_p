@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 13:58:26 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/05 15:25:18 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/05 17:47:50 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,7 @@ void	env_init(t_env *e, int ac, char **argv)
 	e->maxfd = rlp.rlim_cur;
 	e->fds = (t_fd*)malloc(sizeof(*e->fds) * e->maxfd);
 	if (e->fds == NULL)
-	{
-		ft_printf("Malloc error");
 		exit(0);
-	}
 	e->pwd = ft_strnew(PATH_MAX);
 	getcwd(e->pwd, PATH_MAX);
 	if (ac > 2)

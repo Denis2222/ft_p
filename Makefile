@@ -12,6 +12,7 @@ SERSRC = ./ser/main.c \
 		 ./ser/io_data_write.c \
 		 ./ser/accept.c \
 		 ./ser/srv_listen.c \
+		 ./ser/srv_listen_data.c \
 		 ./tools/cross.c \
 		 ./ser/t_fd.c
 				
@@ -40,7 +41,7 @@ CLISRC = ./cli/main.c \
 		 ./tools/cross.c \
 		 ./cli/view_local.c
 
-GCC_FLAGS = -Wall -Wextra -Werror -g
+GCC_FLAGS = -Wall -Wextra -Werror
 CC = clang $(GCC_FLAGS)
 
 SEROBJ = $(SERSRC:.c=.o)

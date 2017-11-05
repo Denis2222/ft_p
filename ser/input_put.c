@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 06:29:52 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/05 11:05:24 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/05 17:25:51 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	*input_put_check(t_env *e, int s, char *filename)
 	return (filepath);
 }
 
-int		input_put_launch(t_env *e, int s, int length, char *filename)
+int		input_put_launch(t_env *e, int s, long long int length, char *filename)
 {
 	int		sd;
 	t_fd	*fd;

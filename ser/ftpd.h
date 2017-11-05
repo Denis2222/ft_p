@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 13:46:48 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/05 15:17:40 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/05 18:23:39 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,9 @@
 
 # include "libft.h"
 
-# define PATH_MAX 3000
+# ifndef PATH_MAX
+#  define PATH_MAX 4096
+# endif
 
 # define FD_FREE 0
 # define FD_SERV 1
@@ -89,8 +91,11 @@ typedef struct		s_env
 	char			*pwd;
 }					t_env;
 
+int					getproto(void);
 void				srv_listen(t_env *e);
 int					srv_listen_data(t_env *e);
+void				srv_setsockopt(int sock);
+void				srv_listen_sin(struct sockaddr_in *sin, int port);
 int					srv_accept(t_env *e, int s);
 int					srv_data_accept(t_env *e, int s);
 
