@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/04 05:32:26 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/04 05:33:40 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/05 06:03:35 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	writemsglocal(t_client *client, char *cmd)
 	tab = ft_strsplit(s, '\n');
 	while (tab[i])
 	{
-		client->msglocal = addmsg(&client->msglocal, newmsg(tab[i], client));
+		client->msglocal = addmsg(&client->msglocal, newmsg(tab[i]));
 		if (lenmsg(client->msglocal) > MAX_MSG)
 		{
 			tmp = client->msglocal->next;
@@ -48,7 +48,7 @@ void	writemsg(t_client *client, char *cmd)
 	tab = ft_strsplit(cmd, '\n');
 	while (tab[i])
 	{
-		client->msg = addmsg(&client->msg, newmsg(tab[i], client));
+		client->msg = addmsg(&client->msg, newmsg(tab[i]));
 		if (lenmsg(client->msg) > MAX_MSG)
 		{
 			tmp = client->msg->next;

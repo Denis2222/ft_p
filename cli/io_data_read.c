@@ -6,23 +6,23 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/04 05:54:12 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/04 08:07:03 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/05 06:02:26 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ftp.h"
 
-void	data_read_end(t_client *c, int sock)
+static void	data_read_end(t_client *c)
 {
-	data_fd_clean(c, sock);
+	data_fd_clean(c);
 }
 
-void	data_read_fail(t_client *c, int sock)
+static void	data_read_fail(t_client *c)
 {
-	data_fd_clean(c, sock);
+	data_fd_clean(c);
 }
 
-void	data_read(t_client *c, int sock)
+void		data_read(t_client *c, int sock)
 {
 	int		n;
 	int		d;
@@ -36,15 +36,15 @@ void	data_read(t_client *c, int sock)
 			d = write(c->data_fd, str, n);
 			if (d < 0)
 			{
-				data_read_fail(c, sock);
+				data_read_fail(c);
 			}
 			else
 				c->data_do += n;
 		}
 		else
-			data_read_fail(c, sock);
+			data_read_fail(c);
 		if (c->data_do == c->data_size)
-			data_read_end(c, sock);
+			data_read_end(c);
 	}
 	else
 		n = recv(sock, str, BUF_SIZE, 0);

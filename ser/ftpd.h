@@ -6,9 +6,12 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 13:46:48 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/05 05:08:08 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/05 06:38:02 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#ifndef FTPD_H
+# define FTPD_H
 
 # include <stdlib.h>
 # include <unistd.h>
@@ -62,9 +65,8 @@ typedef struct		s_fd
 	char			*bw;
 	int				bwh;
 	char			*pwd;
-	int				data;//DATA FD
+	int				data;
 
-	//Only DATA
 	int				parent;
 	int				way;
 	int				port;
@@ -87,38 +89,38 @@ typedef struct		s_env
 	char			*pwd;
 }					t_env;
 
+void				srv_listen(t_env *e);
+int					srv_listen_data(t_env *e);
+int					srv_accept(t_env *e, int s);
+int					srv_data_accept(t_env *e, int s);
 
-void	srv_listen(t_env *e);
-int		srv_listen_data(t_env *e);
-int		srv_accept(t_env *e, int s);
-int		srv_data_accept(t_env *e, int s);
+void				env_init(t_env *e, int ac, char **argv);
+void				fd_new(t_fd *fd, t_env *e, int type, int sock);
+void				clean_fd(t_fd *fd);
 
-void	env_init(t_env *e, int ac, char **argv);
-void	fd_new(t_fd *fd, t_env *e, int type, int sock);
-void	clean_fd(t_fd *fd);
+int					client_write(t_env *e, int s);
+int					client_read(t_env *e, int s);
 
-int		client_write(t_env *e, int s);
-int		client_read(t_env *e, int s);
+int					data_read(t_env *e, int s);
+int					data_write(t_env *e, int s);
+void				calcspeed(t_env *e, t_fd *fd);
+void				data_fd_clean(t_fd *fd);
 
-int		data_read(t_env *e, int s);
-int		data_write(t_env *e, int s);
-void	calcspeed(t_env *e, t_fd *fd);
-void	data_fd_clean(t_fd *fd);
+void				fd_init(t_env *e);
+void				fd_check(t_env *e);
+void				fd_send(t_fd *fd, char *str);
 
-void	fd_init(t_env *e);
-void	fd_check(t_env *e);
-void	fd_send(t_fd *fd, char *str);
+void				input_pi(t_env *e, int sock);
 
-void	input_pi(t_env *e, int sock);
+void				input_ls(t_env *e, int cs, char *cmd);
+void				input_cd(t_env *e, int cs, char *filename);
+void				input_get(t_env *e, int s, char *cmd);
+void				input_put(t_env *e, int s, char *cmd);
+void				input_pwd(t_env *e, int s);
 
-void	input_ls(t_env *e, int cs, char *cmd);
-void	input_cd(t_env *e, int cs, char *filename);
-void	input_get(t_env *e, int s, char *cmd);
-void	input_put(t_env *e, int s, char *cmd);
-void	input_pwd(t_env *e, int s, char *cmd);
+void				printfw(t_fd *fd, char *format, void *data);
+void				printfd(t_fd *fd, char *format, long long int data);
 
-void	printfw(t_fd *fd, char *format, void *data);
-void	printfd(t_fd *fd, char *format, long long int data);
+void				close_fd(int fd);
 
-
-void	close_fd(int fd);
+#endif

@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 13:46:06 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/05 03:23:40 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/05 06:12:45 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,11 @@ int		get_socket_data(t_client *client)
 	client->socket_data = socket(AF_INET, SOCK_STREAM, 0);
 	setsockopt(client->socket_data, SOL_SOCKET,
 		SO_REUSEADDR, &optval, sizeof(optval));
-
-		if (SO_NOSIGPIPE)
-			osx_pipe(client->socket_data);
-
+	if (SO_NOSIGPIPE)
+		osx_pipe(client->socket_data);
 	if (client->socket_data == INVALID_SOCKET)
 	{
-		perror("socket()");
-		//ft_dprintf(2, "socket error \n");
+		ft_dprintf(2, "socket error \n");
 		return (1);
 	}
 	return (0);
@@ -41,8 +38,7 @@ int		socket_data(t_client *client, char *port)
 		client->data_fd = open(client->data_file, O_RDONLY);
 	if (client->data_fd < 0)
 	{
-		data_fd_clean(client, 0);
-		perror("open()");
+		data_fd_clean(client);
 		return (1);
 	}
 	get_socket_data(client);
@@ -53,9 +49,8 @@ int		socket_data(t_client *client, char *port)
 	if (connect(client->socket_data, (struct sockaddr *)&client->sin,
 		sizeof(struct sockaddr)) == SOCKET_ERROR)
 	{
-		perror("connect()");
 		writemsg(client, "Connection fail : Check host and port !\n");
-		data_fd_clean(client, 0);
+		data_fd_clean(client);
 		return (1);
 	}
 	writemsg(client, "Connection established !\n");
@@ -73,7 +68,7 @@ void	client_init(t_client *client, int ac, char **argv)
 	client->socket_data = 0;
 	connect_pi(argv[1], argv[2], client);
 	client->run = 1;
-	client->prompt = ft_strnew(4096);
+	client->prompt = ft_strnew(BUF_SIZE + 1);
 	client->ws = malloc(sizeof(t_windows));
 	client->ws->scroll = MAX_MSG;
 	client->ws->lscroll = MAX_MSG;
@@ -86,7 +81,7 @@ void	client_init(t_client *client, int ac, char **argv)
 	client->data_file = NULL;
 	client->data_way = 0;
 	make_buffer(&client->lnbuffer);
-	client->bw = ft_strnew(4096);
+	client->bw = ft_strnew(BUF_SIZE + 1);
 }
 
 void	client_reset(t_client *client)
@@ -99,12 +94,6 @@ void	client_reset(t_client *client)
 	free(client->prompt);
 	client->prompt = ft_strnew(4096);
 	view(client);
-}
-
-void		signalstop(int c)
-{
-	signal(SIGTSTP, signalstop);
-	ft_dprintf(2, "CtrlZzzZZzzZ\n");
 }
 
 int		main(int ac, char **argv)

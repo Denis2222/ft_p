@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 13:58:26 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/05 05:13:40 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/05 05:43:42 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,13 +82,11 @@ void		fd_init(t_env *e)
 	e->max = 0;
 	FD_ZERO(&e->fd_read);
 	FD_ZERO(&e->fd_write);
-	printf("====\n");
 	while (s < e->maxfd)
 	{
 		fd = &e->fds[s];
 		if (fd->type != FD_FREE)
 		{
-			printf(" S:%d type:%d sock:%d, data:%d, parent:%d, fd:%d fctr:%p fctw:%p \n", s, fd->type,fd->sock, fd->data, fd->parent, fd->fd, fd->fct_read, fd->fct_write );
 			FD_SET(s, &e->fd_read);
 			if (fd->type == FD_CLIENT && ft_strlen(fd->bw))
 				FD_SET(s, &e->fd_write);

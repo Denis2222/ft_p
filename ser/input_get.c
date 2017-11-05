@@ -6,13 +6,13 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 06:29:52 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/05 05:10:19 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/05 06:10:49 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ftpd.h"
 
-char			*input_get_check(t_env *e, int s, char *filename)
+char					*input_get_check(t_env *e, int s, char *filename)
 {
 	char		*filepath;
 	int			fd;
@@ -40,7 +40,7 @@ char			*input_get_check(t_env *e, int s, char *filename)
 	return (filepath);
 }
 
-long long int	input_get_size(t_env *e, int s, char *filepath)
+static long long int	input_get_size(char *filepath)
 {
 	int			fd;
 	struct stat	buf;
@@ -53,7 +53,7 @@ long long int	input_get_size(t_env *e, int s, char *filepath)
 	return (buf.st_size);
 }
 
-void			input_get_launch(t_env *e, int s,
+void					input_get_launch(t_env *e, int s,
 							char *filepath, char *filename)
 {
 	int		sd;
@@ -63,7 +63,7 @@ void			input_get_launch(t_env *e, int s,
 	sd = srv_listen_data(e);
 	ft_printf("input_get_launch()\n");
 	fd = &e->fds[sd];
-	fd->size = input_get_size(e, s, filepath);
+	fd->size = input_get_size(filepath);
 	fd->filepath = ft_strdup(filepath);
 	fd->way = WAYOUT;
 	fd->parent = s;
@@ -74,7 +74,7 @@ void			input_get_launch(t_env *e, int s,
 	free(str);
 }
 
-void			input_get(t_env *e, int s, char *cmd)
+void					input_get(t_env *e, int s, char *cmd)
 {
 	char	**tab;
 	char	*filepath;

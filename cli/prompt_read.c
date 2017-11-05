@@ -6,26 +6,41 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 02:42:15 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/04 07:42:57 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/05 06:30:48 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ftp.h"
 
-int		prompt_read_cmd(t_client *c, char *cmd)
+static int	prompt_error_wait(t_client *c)
 {
-	if (!c->status_data)
+	writemsg(c, "====ERROR wait for finish");
+	return (1);
+}
+
+static int	prompt_read_cmd_getput(t_client *c, char *cmd)
+{
+	if (ft_strncmp(cmd, "get ", 4) == 0)
 	{
-		if (ft_strncmp(cmd, "get ", 4) == 0)
+		if (!c->status_data)
 			return (prompt_read_get(c, cmd));
-		if (ft_strncmp(cmd, "put ", 4) == 0)
-			return (prompt_read_put(c, cmd));
+		else
+			return (prompt_error_wait(c));
 	}
-	else
+	if (ft_strncmp(cmd, "put ", 4) == 0)
 	{
-		writemsg(c, "====ERROR wait for finish");
-		return (1);
+		if (!c->status_data)
+			return (prompt_read_put(c, cmd));
+		else
+			return (prompt_error_wait(c));
 	}
+	return (0);
+}
+
+int			prompt_read_cmd(t_client *c, char *cmd)
+{
+	if (prompt_read_cmd_getput(c, cmd))
+		return (1);
 	if (ft_strncmp(cmd, "lcd", 3) == 0)
 		return (prompt_read_lcd(c, cmd));
 	if (ft_strncmp(cmd, "lls", 3) == 0)
@@ -33,7 +48,7 @@ int		prompt_read_cmd(t_client *c, char *cmd)
 	if (ft_strncmp(cmd, "lpwd", 4) == 0)
 		return (1);
 	if (ft_strncmp(cmd, "help", 4) == 0)
-		return (prompt_read_help(c, cmd));
+		return (prompt_read_help(c));
 	if (ft_strncmp(cmd, "quit", 4) == 0)
 	{
 		c->run = 0;
@@ -42,7 +57,7 @@ int		prompt_read_cmd(t_client *c, char *cmd)
 	return (0);
 }
 
-int		prompt_read(t_client *c)
+int			prompt_read(t_client *c)
 {
 	char	ln[PROMPT_SIZE_MAX];
 	int		len;

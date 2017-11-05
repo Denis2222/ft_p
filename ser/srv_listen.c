@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/02 01:28:58 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/04 05:09:39 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/05 05:51:11 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,6 @@ void		srv_listen(t_env *e)
 	srv_listen_sin(&sin, e->port);
 	if (bind(sock, (struct sockaddr*)&sin, sizeof(sin)) == -1)
 	{
-		perror("bind()");
 		exit(1);
 	}
 	if (listen(sock, 42) == -1)

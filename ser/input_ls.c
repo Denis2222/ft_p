@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/30 22:46:00 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/05 05:09:30 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/05 05:48:01 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int		little_ls(t_env *e, int cs, char *lsparam)
 
 	if (lsparam && ft_strchr(lsparam, 'R'))
 	{
-		printfw(&e->fds[cs]," -R replace by -a\n", 0);
+		printfw(&e->fds[cs], " -R replace by -a\n", 0);
 		ft_strrepchr(lsparam, 'R', 'a');
 	}
 	pipe(link);

@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/30 18:27:36 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/05 03:37:44 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/05 06:15:22 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,6 @@ void		view_info(t_client *c)
 		wmove(c->ws->info, 1, COLS / 2 - 3);
 		waddstr(c->ws->info, str);
 		free(str);
-	}
-	else
-	{
-		wmove(c->ws->info, 1, 1);
-		str = ft_mprintf("socket_pi:%d, socket_data:%d, data_fd:%d ", c->socket_pi, c->socket_data, c->data_fd);
-		waddstr(c->ws->info, str);
 	}
 }
 

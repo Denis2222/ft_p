@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 13:46:06 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/05 05:23:40 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/05 06:10:16 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,6 @@ void	do_select(t_env *e)
 	if (e->r < 0)
 		perror("select()");
 	ft_printf("select:%d\n", e->r);
-}
-
-void		signalstop(int c)
-{
-	signal(SIGTSTP, signalstop);
-	ft_dprintf(2, "CtrlZzzZZzzZ\n");
 }
 
 int		main(int ac, char **argv)
@@ -84,12 +78,4 @@ void	fd_send(t_fd *fd, char *str)
 		else
 			ft_strcat(&fd->bw[fd->bwh], str);
 	}
-}
-
-
-void	close_fd(int fd)
-{
-	if (fd == 0)
-		return ;
-	close(fd);
 }

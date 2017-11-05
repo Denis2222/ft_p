@@ -6,13 +6,13 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 09:05:30 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/05 05:24:01 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/05 06:30:28 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ftp.h"
 
-int		input_get_connect(t_client *c, int sock, char *cmd)
+static int		input_get_connect(t_client *c, char *cmd)
 {
 	char **tab;
 
@@ -32,7 +32,7 @@ int		input_get_connect(t_client *c, int sock, char *cmd)
 	return (0);
 }
 
-int		input_put_connect(t_client *c, int sock, char *cmd)
+static int		input_put_connect(t_client *c, char *cmd)
 {
 	char **tab;
 
@@ -52,36 +52,39 @@ int		input_put_connect(t_client *c, int sock, char *cmd)
 	return (0);
 }
 
-int		input(t_client *c, int sock, char *cmd)
+static void		input_error(t_client *c, char *cmd)
+{
+	char *str;
+
+	if (c->status_data)
+	{
+		str = ft_mprintf("%s No more space or Permission change ", cmd);
+		writemsg(c, str);
+		free(str);
+		data_fd_clean(c);
+	}
+	else
+		writemsg(c, cmd);
+}
+
+int				input(t_client *c, char *cmd)
 {
 	int		i;
 	char	**tab;
-	char	*str;
+
 	i = 0;
 	tab = ft_strsplit(cmd, '\n');
 	if (ft_tablen(tab) > 0)
 		while (tab[i])
 		{
 			if (ft_strncmp(tab[i], "dataget:", 8) == 0)
-				input_get_connect(c, sock, tab[i]);
+				input_get_connect(c, tab[i]);
 			else if (ft_strncmp(tab[i], "dataput:", 8) == 0)
-				input_put_connect(c, sock, tab[i]);
+				input_put_connect(c, tab[i]);
 			else if (ft_strncmp(tab[i], "STARTDATA", 9) == 0)
 				c->status_data = 1;
 			else if (ft_strncmp(tab[i], "====ERROR", 9) == 0)
-			{
-				if (c->status_data)
-				{
-					str = ft_mprintf("%s No more space or Permission change ", tab[i]);
-					writemsg(c, str);
-					free(str);
-					data_fd_clean(c, sock);
-				}
-				else
-				{
-					writemsg(c, tab[i]);
-				}
-			}
+				input_error(c, tab[i]);
 			else
 				writemsg(c, tab[i]);
 			i++;

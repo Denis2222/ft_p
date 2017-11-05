@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/01 17:36:23 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/04 05:53:02 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/05 06:09:43 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	socket_read(t_client *c, int sock)
 	}
 	else if (n > 0)
 	{
-		input(c, sock, str);
+		input(c, str);
 		view(c);
 	}
 }
@@ -43,8 +43,8 @@ void	socket_write(t_client *c, int sock)
 	}
 	else if (n > 0)
 	{
-		if (ft_strlen(c->bw) == n)
-			bzero(c->bw, 4096);
+		if (ft_strlen(c->bw) == (size_t)n)
+			bzero(c->bw, BUF_SIZE + 1);
 		else
 			writemsg(c, "Not all send ! Look at socket_write !");
 	}

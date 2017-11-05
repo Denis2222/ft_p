@@ -37,7 +37,7 @@ CLISRC = ./cli/main.c \
 		 ./tools/cross.c \
 		 ./cli/view_local.c
 
-GCC_FLAGS = -Wall -g
+GCC_FLAGS = -Wall -Wextra -Werror -g
 CC = clang $(GCC_FLAGS)
 
 SEROBJ = $(SERSRC:.c=.o)

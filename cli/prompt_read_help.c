@@ -6,13 +6,13 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/04 00:01:33 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/04 05:26:26 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/05 05:56:27 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ftp.h"
 
-int	prompt_read_help(t_client *c, char *cmd)
+int	prompt_read_help(t_client *c)
 {
 	writemsg(c, "================");
 	writemsg(c, "======HELP======");

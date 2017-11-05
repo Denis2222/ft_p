@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/02 11:05:59 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/05 03:08:30 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/05 05:49:55 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,14 +54,8 @@ int		data_write(t_env *e, int s)
 			data_write_success(e, s);
 	}
 	else if (n == 0)
-	{
-		ft_printf("Fini Ou Deco !");
 		data_write_fail(e, s);
-	}
 	else if (n < 0)
-	{
-		data_write_fail(e,s);
-		ft_printf("Plus de place");
-	}
+		data_write_fail(e, s);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/30 21:43:39 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/04 05:23:32 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/05 06:06:24 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void			input_process(t_env *e, int sock, char *cmd)
 	else if (ft_strncmp(cmd, "get ", 4) == 0)
 		input_get(e, sock, cmd);
 	else if (ft_strncmp(cmd, "pwd", 3) == 0)
-		input_pwd(e, sock, cmd);
+		input_pwd(e, sock);
 	else if (ft_strncmp(cmd, "put ", 4) == 0)
 		input_put(e, sock, cmd);
 	else

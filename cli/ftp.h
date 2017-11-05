@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 13:46:48 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/04 06:32:33 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/05 06:09:30 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,10 +120,10 @@ int						prompt_read(t_client *c);
 int						prompt_read_lcd(t_client *c, char *cmd);
 int						prompt_read_get(t_client *c, char *cmd);
 int						prompt_read_put(t_client *c, char *cmd);
-int						prompt_read_help(t_client *c, char *cmd);
+int						prompt_read_help(t_client *c);
 int						prompt_read_lls(t_client *c, char *cmd);
 
-int						input(t_client *c, int sock, char *cmd);
+int						input(t_client *c, char *cmd);
 int						socket_data(t_client *client, char *port);
 
 void					make_buffer(t_inline *buf);
@@ -137,7 +137,7 @@ int						handle_input(t_inline *buf, char *target, int max_len,
 int						get_line_non_blocking(t_client *client,
 t_inline *buf, char *target, int max_len);
 
-t_msg					*newmsg(char *text, t_client *client);
+t_msg					*newmsg(char *text);
 t_msg					*addmsg(t_msg **lstmsg, t_msg *msg);
 int						lenmsg(t_msg *msg);
 void					writemsg(t_client *client, char *cmd);
@@ -150,7 +150,7 @@ void					socket_write(t_client *c, int sock);
 void					socket_read(t_client *c, int sock);
 void					data_read(t_client *c, int sock);
 void					data_write(t_client *c, int sock);
-void					data_fd_clean(t_client *c, int sock);
+void					data_fd_clean(t_client *c);
 
 void					socket_send(t_client *c, char *str);
 

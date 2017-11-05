@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/01 18:00:53 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/05 04:12:21 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/05 06:06:52 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int		client_write(t_env *e, int s)
 	n = write(s, e->fds[s].bw, ft_strlen(e->fds[s].bw));
 	if (n > 0)
 	{
-		if (n < ft_strlen(e->fds[s].bw))
+		if ((size_t)n < ft_strlen(e->fds[s].bw))
 		{
 			ft_strcpy(tmp, &e->fds[s].bw[n]);
 			ft_bzero(e->fds[s].bw, BUF_SIZE);

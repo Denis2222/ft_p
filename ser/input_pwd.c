@@ -6,13 +6,13 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/04 05:16:38 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/04 05:17:32 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/05 06:05:42 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ftpd.h"
 
-void	input_pwd(t_env *e, int s, char *cmd)
+void	input_pwd(t_env *e, int s)
 {
 	t_fd	*fd;
 

@@ -6,13 +6,13 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/02 18:36:48 by anonymou          #+#    #+#             */
-/*   Updated: 2017/11/04 05:33:42 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/05 06:02:57 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ftp.h"
 
-t_msg	*newmsg(char *text, t_client *client)
+t_msg	*newmsg(char *text)
 {
 	t_msg	*msg;
 	char	**tab;
