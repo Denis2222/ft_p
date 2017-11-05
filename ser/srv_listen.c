@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/02 01:28:58 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/05 05:51:11 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/05 11:43:40 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ int			srv_listen_data_bind_listen(
 	ft_printf("New listen socket_data ![%d]\n", sock);
 	if (bind(sock, (struct sockaddr*)sin, sizeof(struct sockaddr_in)) == -1)
 	{
-		perror("bind()");
 		ft_printf("coninue next\n");
 		return (0);
 	}

@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/01 18:04:33 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/05 05:44:04 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/05 11:42:28 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ int			srv_accept(t_env *e, int s)
 	sock = accept(s, (struct sockaddr *)&socksin, &socksin_len);
 	if (sock == -1)
 	{
-		perror("accept()");
 		ft_printf("accept going wrong !\n");
 		return (0);
 	}
@@ -49,7 +48,6 @@ static void	srv_data_accept_open_file(t_env *e, t_fd *fd)
 	}
 	else
 	{
-		perror("open()");
 		fd_send(&e->fds[fd->parent], "CANCELDATA\n");
 		fd_send(&e->fds[fd->parent], "====ERROR Permission denied\n");
 		ft_printf("Probleme de fichier open():%d  path:%s\n",
@@ -68,7 +66,6 @@ int			srv_data_accept(t_env *e, int s)
 	sock = accept(s, (struct sockaddr *)&socksin, &socksin_len);
 	if (sock == -1)
 	{
-		perror("accept()");
 		close_fd(s);
 		close_fd(sock);
 		clean_fd(&e->fds[s]);
