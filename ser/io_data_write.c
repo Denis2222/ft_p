@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/02 11:05:59 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/05 05:49:55 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/05 08:03:50 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,15 +37,17 @@ void	data_write_success(t_env *e, int s)
 
 int		data_write(t_env *e, int s)
 {
-	int		n;
-	t_fd	*fd;
-	int		tosend;
-	char	str[BUF_SIZE];
+	int				n;
+	t_fd			*fd;
+	long long int	tosend;
+	char			str[BUF_SIZE];
 
 	fd = &e->fds[s];
 	tosend = fd->size - fd->done;
+	ft_printf("%ld");
 	tosend = MIN(tosend, BUF_SIZE);
 	tosend = read(fd->fd, str, tosend);
+
 	n = write(s, str, tosend);
 	if (n > 0 || fd->size == 0)
 	{

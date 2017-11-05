@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 09:05:30 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/05 06:30:28 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/05 07:51:42 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,14 @@ static void		input_error(t_client *c, char *cmd)
 		writemsg(c, cmd);
 }
 
+static void		input_write(t_client *c, char *cmd)
+{
+	if (ft_strncmp(cmd, "====SUCCESS Down", 16) == 0)
+		if (c->data_size == 0)
+			data_fd_clean(c);
+	writemsg(c, cmd);
+}
+
 int				input(t_client *c, char *cmd)
 {
 	int		i;
@@ -86,7 +94,7 @@ int				input(t_client *c, char *cmd)
 			else if (ft_strncmp(tab[i], "====ERROR", 9) == 0)
 				input_error(c, tab[i]);
 			else
-				writemsg(c, tab[i]);
+				input_write(c, tab[i]);
 			i++;
 		}
 	ft_tabfree(tab);

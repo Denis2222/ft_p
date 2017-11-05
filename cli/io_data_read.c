@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/04 05:54:12 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/05 06:02:26 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/05 07:57:29 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void		data_read(t_client *c, int sock)
 	int		d;
 	char	str[BUF_SIZE + 1];
 
+	ft_dprintf(2, "Data_read()");
 	if (c->status_data)
 	{
 		n = recv(sock, str, BUF_SIZE, 0);
