@@ -47,7 +47,7 @@ CLIOBJ = $(CLISRC:.c=.o)
 LIBFTDIR = ./libft
 LIBFT = $(LIBFTDIR)/libft.a
 
-all: client server
+all: client serveur
 
 $(LIBFT):
 	make -C $(LIBFTDIR)
@@ -55,8 +55,8 @@ $(LIBFT):
 client: $(CLIOBJ) $(LIBFT)
 	$(CC) -o client $(CLIOBJ) -lft -L./libft/ -lncurses
 
-server: $(SEROBJ) $(LIBFT)
-	$(CC) -o server $(SEROBJ) -lft -L./libft/ -lncurses
+serveur: $(SEROBJ) $(LIBFT)
+	$(CC) -o serveur $(SEROBJ) -lft -L./libft/ -lncurses
 
 %.o : %.c
 	@$(CC) -o $@ -c $^ -I./libft/
@@ -67,7 +67,7 @@ clean:
 
 fclean: clean
 	@$(RM) client
-	@$(RM) server
+	@$(RM) serveur
 	make -C $(LIBFTDIR) fclean
 
 re: fclean all
