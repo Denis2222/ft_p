@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 06:29:52 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/05 05:08:56 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/05 11:05:24 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ int		input_put_launch(t_env *e, int s, int length, char *filename)
 	str = ft_mprintf("dataput:%d:%s:%lld:ready\n",
 						fd->port, filename, fd->size);
 	fd_send(&e->fds[s], str);
+	free(str);
 	return (1);
 }
 
@@ -79,6 +80,7 @@ void	input_put(t_env *e, int s, char *cmd)
 		}
 		else
 			printfw(&e->fds[s], "====ERROR command not found", 0);
+		ft_tabfree(tab2);
 	}
 	else
 		printfw(&e->fds[s], "====ERROR incomplete command", 0);

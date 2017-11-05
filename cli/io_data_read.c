@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/04 05:54:12 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/05 08:05:10 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/05 11:32:14 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void		data_read(t_client *c, int sock)
 			d = write(c->data_fd, str, n);
 			if (d < 0)
 			{
+				writemsg(c, "====ERROR Disk Full or Permission change");
 				data_read_fail(c);
 			}
 			else

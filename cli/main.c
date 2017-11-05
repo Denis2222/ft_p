@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 13:46:06 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/05 06:12:45 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/05 09:40:48 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,45 +57,6 @@ int		socket_data(t_client *client, char *port)
 	return (0);
 }
 
-void	client_init(t_client *client, int ac, char **argv)
-{
-	(void)ac;
-	client->pwd = ft_strnew(PATH_MAX);
-	getcwd(client->pwd, PATH_MAX);
-	client->status_pi = 0;
-	client->status_data = 0;
-	client->socket_pi = 0;
-	client->socket_data = 0;
-	connect_pi(argv[1], argv[2], client);
-	client->run = 1;
-	client->prompt = ft_strnew(BUF_SIZE + 1);
-	client->ws = malloc(sizeof(t_windows));
-	client->ws->scroll = MAX_MSG;
-	client->ws->lscroll = MAX_MSG;
-	client->ws->lastlscroll = 0;
-	client->ws->localls = NULL;
-	client->msg = NULL;
-	client->msglocal = NULL;
-	client->data_size = -1;
-	client->data_do = -1;
-	client->data_file = NULL;
-	client->data_way = 0;
-	make_buffer(&client->lnbuffer);
-	client->bw = ft_strnew(BUF_SIZE + 1);
-}
-
-void	client_reset(t_client *client)
-{
-	client->status_pi = 0;
-	client->status_data = 0;
-	client->socket_pi = 0;
-	client->socket_data = 0;
-	client->run = 1;
-	free(client->prompt);
-	client->prompt = ft_strnew(4096);
-	view(client);
-}
-
 int		main(int ac, char **argv)
 {
 	t_client	client;
@@ -104,8 +65,11 @@ int		main(int ac, char **argv)
 	if (!SO_NOSIGPIPE)
 		linux_pipe();
 	signal(SIGTSTP, signalstop);
-	client_init(&client, ac, argv);
+	client_init(&client);
 	ncurse_init();
+	view(&client);
+	refresh();
+	connect_pi(ac, argv, &client);
 	view(&client);
 	refresh();
 	i = 0;

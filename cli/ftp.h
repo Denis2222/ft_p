@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 13:46:48 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/05 06:09:30 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/05 09:45:24 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@
 # define INVALID_SOCKET	-1
 # define SOCKET_ERROR	-1
 # define MAX(a, b)	((a > b) ? a : b)
-# define PROMPT_SIZE_MAX 100
+# define PROMPT_SIZE_MAX 10
 # define MAX_MSG 150
 # define WAYIN 1
 # define WAYOUT 2
@@ -105,7 +105,7 @@ typedef struct			s_client
 	t_windows			*ws;
 }						t_client;
 
-int						connect_pi(char *host, char *port, t_client *client);
+int						connect_pi(int ac, char **argv, t_client *client);
 
 int						loop(t_client *client, int i);
 void					ncurse_init(void);
@@ -114,6 +114,8 @@ void					ncurse_end(void);
 void					view(t_client *c);
 void					render_local(t_client *c, WINDOW *w);
 void					view_info(t_client *c);
+
+void					client_init(t_client *client);
 void					client_reset(t_client *client);
 
 int						prompt_read(t_client *c);

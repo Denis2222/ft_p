@@ -16,6 +16,7 @@ SERSRC = ./ser/main.c \
 		 ./ser/t_fd.c
 				
 CLISRC = ./cli/main.c \
+		 ./cli/init.c \
 		 ./cli/main_connect.c \
 		 ./cli/loop.c \
 		 ./cli/ncurses.c \

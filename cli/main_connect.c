@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/04 05:59:44 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/04 08:07:48 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/05 11:36:34 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,15 @@
 int		checkhost(t_client *client, char *hostname)
 {
 	struct hostent	*hostinfo;
+	char			*str;
 
 	hostinfo = NULL;
 	hostinfo = gethostbyname(hostname);
 	if (hostinfo == NULL)
 	{
-		ft_printf("        Unknown host\n");
-		ft_printf("Unknown host %s.\n", hostname);
+		str = ft_mprintf("Unknow host %s", hostname);
+		writemsg(client, str);
+		free(str);
 		return (1);
 	}
 	client->hostinfo = hostinfo;
@@ -46,32 +48,44 @@ int		get_socket_pi(t_client *client)
 	return (0);
 }
 
-int		socket_pi(t_client *client, char *port)
+int		socket_pi(t_client *client, int port)
 {
-	if (port == NULL || ft_atoi(port) <= 0)
-	{
-		ft_printf("Invalid port number");
-		return (1);
-	}
 	ft_bzero(&(client->sin), sizeof(struct sockaddr_in));
 	client->sin.sin_addr = *(struct in_addr *)client->hostinfo->h_addr;
-	client->sin.sin_port = htons(ft_atoi(port));
+	client->sin.sin_port = htons(port);
 	client->sin.sin_family = AF_INET;
 	if (connect(client->socket_pi, (struct sockaddr *)&client->sin,
 		sizeof(struct sockaddr)) == SOCKET_ERROR)
 	{
-		ft_printf("Connection fail : Check host and port !\n");
+		writemsg(client, "Connection fail : Check host and port !");
 		return (1);
 	}
 	client->status_pi = 1;
-	ft_printf("Connection established !");
+	writemsg(client, "Connection established !");
 	return (0);
 }
 
-int		connect_pi(char *host, char *port, t_client *client)
+int		connect_pi(int ac, char **argv, t_client *client)
 {
+	char	*host;
+	int		port;
+	char	*str;
+
+	port = 2000;
+	if (ac == 1)
+		host = ft_strdup("localhost");
+	if (ac > 1)
+		host = argv[1];
+	if (ac > 2)
+		port = ft_atoi(argv[2]);
+	if (port < 1200 || port > 65000)
+		port = 2000;
+	str = ft_mprintf("Connection to %s:%d", host, port);
+	writemsg(client, str);
+	free(str);
 	if (checkhost(client, host) == 1)
 		return (0);
+	free(host);
 	if (get_socket_pi(client) == 1)
 		return (0);
 	if (socket_pi(client, port) == 1)
