@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/01 18:04:33 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/05 11:42:28 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/05 13:23:43 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ int			srv_data_accept(t_env *e, int s)
 	}
 	ft_memcpy(&e->fds[sock], &e->fds[s], sizeof(t_fd));
 	close_fd(s);
+	e->fds[s].filepath = NULL;
 	e->fds[s].type = FD_FREE;
 	fd = &e->fds[sock];
 	srv_data_accept_open_file(e, fd);

@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/04 00:15:07 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/04 07:39:31 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/05 14:04:32 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,11 @@
 int		prompt_read_lls(t_client *c, char *cmd)
 {
 	char	**tab;
+	char	*str;
 
+	str = ft_mprintf("[local CMD]>%s", cmd);
+	writemsg(c, str);
+	free(str);
 	tab = ft_strsplit(cmd, ' ');
 	if (ft_tablen(tab) > 1)
 	{
@@ -29,5 +33,6 @@ int		prompt_read_lls(t_client *c, char *cmd)
 		}
 	}
 	ft_tabfree(tab);
+	writemsg(c, "====SUCCESS");
 	return (1);
 }

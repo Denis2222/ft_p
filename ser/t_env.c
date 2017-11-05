@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 13:58:26 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/02 11:38:19 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/05 15:25:18 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ void	env_init(t_env *e, int ac, char **argv)
 	if (ac > 1 && ft_atoi(argv[1]))
 		e->port = ft_atoi(argv[1]);
 	else
+		e->port = 2000;
+	if (e->port < 1024 || e->port > 65534)
 		e->port = 2000;
 	e->maxfd = rlp.rlim_cur;
 	e->fds = (t_fd*)malloc(sizeof(*e->fds) * e->maxfd);

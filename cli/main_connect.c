@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/04 05:59:44 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/05 11:36:34 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/05 15:30:38 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,25 +67,23 @@ int		socket_pi(t_client *client, int port)
 
 int		connect_pi(int ac, char **argv, t_client *client)
 {
-	char	*host;
 	int		port;
 	char	*str;
 
 	port = 2000;
 	if (ac == 1)
-		host = ft_strdup("localhost");
+		client->host = ft_strdup("localhost");
 	if (ac > 1)
-		host = argv[1];
+		client->host = ft_strdup(argv[1]);
 	if (ac > 2)
 		port = ft_atoi(argv[2]);
 	if (port < 1200 || port > 65000)
 		port = 2000;
-	str = ft_mprintf("Connection to %s:%d", host, port);
+	str = ft_mprintf("Connection to %s:%d", client->host, port);
 	writemsg(client, str);
 	free(str);
-	if (checkhost(client, host) == 1)
+	if (checkhost(client, client->host) == 1)
 		return (0);
-	free(host);
 	if (get_socket_pi(client) == 1)
 		return (0);
 	if (socket_pi(client, port) == 1)

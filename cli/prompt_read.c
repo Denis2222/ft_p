@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 02:42:15 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/05 06:30:48 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/05 15:35:23 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,10 @@ int			prompt_read_cmd(t_client *c, char *cmd)
 		return (prompt_read_lcd(c, cmd));
 	if (ft_strncmp(cmd, "lls", 3) == 0)
 		return (prompt_read_lls(c, cmd));
+	if (ft_strncmp(cmd, "clear", 2) == 0)
+		return (prompt_read_clear(c, cmd));
 	if (ft_strncmp(cmd, "lpwd", 4) == 0)
-		return (1);
+		return (prompt_read_lpwd(c, cmd));
 	if (ft_strncmp(cmd, "help", 4) == 0)
 		return (prompt_read_help(c));
 	if (ft_strncmp(cmd, "quit", 4) == 0)
@@ -61,7 +63,6 @@ int			prompt_read(t_client *c)
 {
 	char	ln[PROMPT_SIZE_MAX];
 	int		len;
-	char	*str;
 
 	len = get_line_non_blocking(c, &c->lnbuffer, ln, sizeof(ln));
 	if (len > 0 && ft_strlen(ln))
@@ -71,12 +72,6 @@ int			prompt_read(t_client *c)
 			ft_strcat(c->bw, ln);
 			ft_strcat(c->bw, "\n");
 			ft_bzero(ln, PROMPT_SIZE_MAX);
-		}
-		else
-		{
-			str = ft_mprintf("[local CMD]>%s", ln);
-			writemsg(c, str);
-			free(str);
 		}
 	}
 	else if (len == -1)

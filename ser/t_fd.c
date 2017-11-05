@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 13:58:26 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/05 06:46:07 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/05 13:23:53 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,22 +54,26 @@ void		fd_new(t_fd *fd, t_env *e, int type, int sock)
 {
 	fd->sock = sock;
 	fd->type = type;
+	fd->bw = NULL;
+	fd->br = NULL;
+	fd->pwd = NULL;
+	fd->filepath = NULL;
 	if (type == FD_SERV)
 		fd->fct_read = srv_accept;
 	else if (type == FD_CLIENT)
 	{
 		fd->fct_read = client_read;
 		fd->fct_write = client_write;
+		fd->br = ft_strnew(BUF_SIZE);
+		fd->bw = ft_strnew(BUF_SIZE);
+		fd->pwd = ft_strnew(PATH_MAX);
+		fd->pwd = ft_strcat(fd->pwd, e->pwd);
 	}
 	else if (type == FD_DATA)
 	{
 		fd->fct_read = srv_data_accept;
 		fd->fct_write = data_write;
 	}
-	fd->br = ft_strnew(BUF_SIZE);
-	fd->bw = ft_strnew(BUF_SIZE);
-	fd->pwd = ft_strnew(PATH_MAX);
-	fd->pwd = ft_strcat(fd->pwd, e->pwd);
 	bzero_fd(fd);
 }
 

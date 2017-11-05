@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 13:46:48 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/05 08:03:28 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/05 15:17:40 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@
 
 # include "libft.h"
 
-# define PATH_MAX 4096
+# define PATH_MAX 3000
 
 # define FD_FREE 0
 # define FD_SERV 1

@@ -1,41 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   prompt_read.c                                      :+:      :+:    :+:   */
+/*   prompt_read_lpwd.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/10/31 02:42:15 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/05 13:51:23 by dmoureu-         ###   ########.fr       */
+/*   Created: 2017/11/05 13:53:36 by dmoureu-          #+#    #+#             */
+/*   Updated: 2017/11/05 14:02:53 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ftp.h"
 
-int	prompt_read_lcd(t_client *c, char *cmd)
+int	prompt_read_lpwd(t_client *c, char *cmd)
 {
-	char	**tab;
-	char	*str;
+	char *str;
 
-	str = ft_mprintf("[local CMD]>%s", cmd);
+	str = ft_mprintf("[local CMD]>%s\n %s", cmd, c->pwd);
 	writemsg(c, str);
 	free(str);
-	tab = ft_strsplit(cmd, ' ');
-	if (ft_tablen(tab) > 1)
-	{
-		if (chdir(tab[1]) == 0)
-		{
-			getcwd(c->pwd, PATH_MAX);
-			writemsg(c, "====SUCCESS Change localdir");
-		}
-		else
-		{
-			writemsg(c, "====ERROR folder not found");
-		}
-		view(c);
-	}
-	else
-		writemsg(c, "====ERROR syntax \"lcd folderName\"");
-	ft_tabfree(tab);
+	writemsg(c, "====SUCCESS");
 	return (1);
 }

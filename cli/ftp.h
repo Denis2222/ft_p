@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 13:46:48 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/05 09:45:24 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/05 15:38:57 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@
 # define INVALID_SOCKET	-1
 # define SOCKET_ERROR	-1
 # define MAX(a, b)	((a > b) ? a : b)
-# define PROMPT_SIZE_MAX 10
+# define PROMPT_SIZE_MAX 300
 # define MAX_MSG 150
 # define WAYIN 1
 # define WAYOUT 2
@@ -73,6 +73,7 @@ typedef struct			s_msg
 
 typedef struct			s_client
 {
+	char				*host;
 	char				*pwd;
 	fd_set				fd_read;
 	fd_set				fd_write;
@@ -124,6 +125,8 @@ int						prompt_read_get(t_client *c, char *cmd);
 int						prompt_read_put(t_client *c, char *cmd);
 int						prompt_read_help(t_client *c);
 int						prompt_read_lls(t_client *c, char *cmd);
+int						prompt_read_clear(t_client *c, char *cmd);
+int						prompt_read_lpwd(t_client *c, char *cmd);
 
 int						input(t_client *c, char *cmd);
 int						socket_data(t_client *client, char *port);
