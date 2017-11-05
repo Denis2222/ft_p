@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 13:46:06 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/05 06:10:16 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/05 06:46:30 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,6 @@
 void	do_select(t_env *e)
 {
 	e->r = select(e->max + 1, &e->fd_read, &e->fd_write, NULL, NULL);
-	if (e->r < 0)
-		perror("select()");
-	ft_printf("select:%d\n", e->r);
 }
 
 int		main(int ac, char **argv)
