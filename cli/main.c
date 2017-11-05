@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 13:46:06 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/04 08:08:43 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/05 03:23:40 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ int		socket_data(t_client *client, char *port)
 	if (connect(client->socket_data, (struct sockaddr *)&client->sin,
 		sizeof(struct sockaddr)) == SOCKET_ERROR)
 	{
+		perror("connect()");
 		writemsg(client, "Connection fail : Check host and port !\n");
 		data_fd_clean(client, 0);
 		return (1);

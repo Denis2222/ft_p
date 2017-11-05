@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 13:46:48 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/04 06:32:54 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/05 05:08:08 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,3 +120,5 @@ void	input_pwd(t_env *e, int s, char *cmd);
 void	printfw(t_fd *fd, char *format, void *data);
 void	printfd(t_fd *fd, char *format, long long int data);
 
+
+void	close_fd(int fd);

@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/02 11:05:59 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/04 08:18:07 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/05 03:08:30 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ int		data_write(t_env *e, int s)
 	if (n > 0 || fd->size == 0)
 	{
 		fd->done += n;
+		if (fd->done == fd->size)
+			data_write_success(e, s);
 	}
 	else if (n == 0)
 	{
@@ -61,7 +63,5 @@ int		data_write(t_env *e, int s)
 		data_write_fail(e,s);
 		ft_printf("Plus de place");
 	}
-	if (fd->done == fd->size)
-		data_write_success(e, s);
 	return (0);
 }

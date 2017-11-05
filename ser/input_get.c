@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 06:29:52 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/02 11:19:14 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/05 05:10:19 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char			*input_get_check(t_env *e, int s, char *filename)
 		return (0);
 	}
 	fstat(fd, &buf);
-	close(fd);
+	close_fd(fd);
 	if ((buf.st_mode & S_IFMT) != S_IFREG)
 	{
 		fd_send(&e->fds[s], "====ERROR Special File");
@@ -49,7 +49,7 @@ long long int	input_get_size(t_env *e, int s, char *filepath)
 	if (fd <= 0)
 		return (-1);
 	fstat(fd, &buf);
-	close(fd);
+	close_fd(fd);
 	return (buf.st_size);
 }
 

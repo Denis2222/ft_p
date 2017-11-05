@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/30 22:46:00 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/04 07:35:06 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/05 05:09:30 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	little_ls_while(t_env *e, int cs, int *link)
 	int		nbchar;
 	char	foo[500 + 1];
 
-	close(link[1]);
+	close_fd(link[1]);
 	bzero(foo, 500 + 1);
 	while ((nbchar = read(link[0], foo, 500)))
 	{

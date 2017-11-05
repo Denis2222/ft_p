@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/01 18:00:53 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/02 11:19:52 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/05 04:12:21 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int		client_write(t_env *e, int s)
 	char	tmp[BUF_SIZE];
 	int		n;
 
+	ft_printf("client_write():%d]n", s);
 	n = write(s, e->fds[s].bw, ft_strlen(e->fds[s].bw));
 	if (n > 0)
 	{
@@ -45,6 +46,7 @@ int		client_read(t_env *e, int s)
 	t_fd	*fd;
 	int		n;
 
+	ft_printf("client_read():%d]n", s);
 	fd = &e->fds[s];
 	n = read(s, &fd->br[fd->brh], 4096);
 	if (n > 0)
@@ -53,7 +55,7 @@ int		client_read(t_env *e, int s)
 		fd->br[fd->brh] = '\0';
 		input_pi(e, s);
 	}
-	else if (n == 0)
+	else if (n <= 0)
 	{
 		clean_fd(fd);
 		return (0);

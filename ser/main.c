@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 13:46:06 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/04 08:37:55 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/05 05:23:40 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 void	do_select(t_env *e)
 {
 	e->r = select(e->max + 1, &e->fd_read, &e->fd_write, NULL, NULL);
+	if (e->r < 0)
+		perror("select()");
+	ft_printf("select:%d\n", e->r);
 }
 
 void		signalstop(int c)
@@ -81,4 +84,12 @@ void	fd_send(t_fd *fd, char *str)
 		else
 			ft_strcat(&fd->bw[fd->bwh], str);
 	}
+}
+
+
+void	close_fd(int fd)
+{
+	if (fd == 0)
+		return ;
+	close(fd);
 }

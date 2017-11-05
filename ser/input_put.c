@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/31 06:29:52 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/04 05:10:20 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/05 05:08:56 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	*input_put_check(t_env *e, int s, char *filename)
 		return (0);
 	}
 	fstat(fd, &buf);
-	close(fd);
+	close_fd(fd);
 	if ((buf.st_mode & S_IFMT) != S_IFREG)
 	{
 		fd_send(&e->fds[s], "====ERROR Can't put on Special File");

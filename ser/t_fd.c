@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/24 13:58:26 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/04 02:40:32 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/05 05:13:40 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ static void	bzero_fd(t_fd *fd)
 	fd->brh = 0;
 	fd->bwh = 0;
 	fd->fd = 0;
+	fd->parent = 0;
 }
 
 void		clean_fd(t_fd *fd)
@@ -41,7 +42,11 @@ void		clean_fd(t_fd *fd)
 	if (fd->pwd)
 		free(fd->pwd);
 	fd->pwd = NULL;
-	close(fd->sock);
+	if (fd->filepath)
+		free(fd->filepath);
+	fd->filepath = NULL;
+	if (fd->sock)
+		close_fd(fd->sock);
 	bzero_fd(fd);
 }
 
@@ -77,11 +82,13 @@ void		fd_init(t_env *e)
 	e->max = 0;
 	FD_ZERO(&e->fd_read);
 	FD_ZERO(&e->fd_write);
+	printf("====\n");
 	while (s < e->maxfd)
 	{
 		fd = &e->fds[s];
 		if (fd->type != FD_FREE)
 		{
+			printf(" S:%d type:%d sock:%d, data:%d, parent:%d, fd:%d fctr:%p fctw:%p \n", s, fd->type,fd->sock, fd->data, fd->parent, fd->fd, fd->fct_read, fd->fct_write );
 			FD_SET(s, &e->fd_read);
 			if (fd->type == FD_CLIENT && ft_strlen(fd->bw))
 				FD_SET(s, &e->fd_write);
@@ -104,11 +111,13 @@ void		fd_check(t_env *e)
 		{
 			if (FD_ISSET(s, &e->fd_read) && e->fds[s].fct_read)
 			{
+				ft_printf("%d read\n", s);
 				e->fds[s].fct_read(e, s);
 				e->r--;
 			}
 			if (FD_ISSET(s, &e->fd_write) && e->fds[s].fct_write)
 			{
+				ft_printf("%d write\n", s);
 				e->fds[s].fct_write(e, s);
 				e->r--;
 			}

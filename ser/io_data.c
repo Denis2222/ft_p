@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/02 11:13:25 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/04 07:46:38 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/05 05:08:41 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,15 @@ void	calcspeed(t_env *e, t_fd *fd)
 void	data_fd_clean(t_fd *fd)
 {
 	fd->way = 0;
-	close(fd->sock);
-	close(fd->fd);
+	if (fd->sock)
+	{
+		close_fd(fd->sock);
+		fd->sock = 0;
+	}
+	if (fd->fd)
+	{
+		close_fd(fd->fd);
+		fd->fd = 0;
+	}
 	clean_fd(fd);
 }
