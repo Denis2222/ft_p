@@ -6,13 +6,13 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/04 05:59:44 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/13 16:59:49 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/13 17:42:08 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ftp.h"
 
-int		checkhost(t_client *client, char *hostname)
+int			checkhost(t_client *client, char *hostname)
 {
 	struct hostent	*hostinfo;
 	char			*str;
@@ -30,7 +30,7 @@ int		checkhost(t_client *client, char *hostname)
 	return (0);
 }
 
-int		get_socket_pi(t_client *client)
+int			get_socket_pi(t_client *client)
 {
 	int	optval;
 
@@ -48,7 +48,7 @@ int		get_socket_pi(t_client *client)
 	return (0);
 }
 
-int		socket_pi(t_client *client, int port)
+int			socket_pi(t_client *client, int port)
 {
 	ft_bzero(&(client->sin), sizeof(struct sockaddr_in));
 	client->sin.sin_addr = *(struct in_addr *)client->hostinfo->h_addr;
@@ -65,7 +65,21 @@ int		socket_pi(t_client *client, int port)
 	return (0);
 }
 
-int		connect_pi(int ac, char **argv, t_client *client)
+static int	connect_pi_port_range(t_client *c, int port)
+{
+	char *str;
+
+	if (port < 1024 || port > 65534)
+	{
+		str = ft_mprintf("Port range [1024-65534] default to 2000\n");
+		writemsg(c, str);
+		free(str);
+		port = 2000;
+	}
+	return (port);
+}
+
+int			connect_pi(int ac, char **argv, t_client *client)
 {
 	int		port;
 	char	*str;
@@ -77,8 +91,7 @@ int		connect_pi(int ac, char **argv, t_client *client)
 		client->host = ft_strdup(argv[1]);
 	if (ac > 2)
 		port = ft_atoi(argv[2]);
-	if (port < 1024 || port > 65000)
-		port = 2000;
+	port = connect_pi_port_range(client, port);
 	str = ft_mprintf("Connection to %s:%d", client->host, port);
 	writemsg(client, str);
 	free(str);

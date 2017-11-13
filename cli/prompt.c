@@ -6,7 +6,7 @@
 /*   By: dmoureu- <dmoureu-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/10 02:28:48 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/02 13:06:53 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/13 17:22:22 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,8 +100,11 @@ int		get_line_non_blocking(t_client *client, t_inline *buf,
 	while (1)
 	{
 		key = getch();
+		ft_dprintf(2, "key:%d, %c", key, key);
 		if (key == ERR)
+		{
 			return (0);
+		}
 		if (key == KEY_RESIZE)
 			return (-1);
 		if (key == 339 && client->ws->scroll > LINES - 7)
