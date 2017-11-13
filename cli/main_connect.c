@@ -6,7 +6,7 @@
 /*   By: dmoureu- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/04 05:59:44 by dmoureu-          #+#    #+#             */
-/*   Updated: 2017/11/13 16:45:11 by dmoureu-         ###   ########.fr       */
+/*   Updated: 2017/11/13 16:59:49 by dmoureu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int		connect_pi(int ac, char **argv, t_client *client)
 		client->host = ft_strdup(argv[1]);
 	if (ac > 2)
 		port = ft_atoi(argv[2]);
-	if (port < 1 || port > 65000)
+	if (port < 1024 || port > 65000)
 		port = 2000;
 	str = ft_mprintf("Connection to %s:%d", client->host, port);
 	writemsg(client, str);
